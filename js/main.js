@@ -360,18 +360,23 @@
   });
 
   /* ------------------------------------------------------------
-     CURSOR — big liquid blob (buttermax style) + afterimage trail
+     CURSOR — liquid blob + DOM trail dots (anime.js v4 powered)
+
+     Replaces the old canvas afterimage with lightweight DOM nodes.
+     Each trail dot lerps toward the previous one, creating a
+     clean snake-like tail that fades in size and opacity.
+     The main blob uses anime.utils.damp for spring-damped motion
+     and squash-stretches along its velocity vector.
      ------------------------------------------------------------ */
   var glow = document.getElementById("glow");
+  /* hide the legacy comet canvas — no longer used for trail */
   var comet = document.getElementById("comet");
-  var cctx = comet ? comet.getContext("2d") : null;
-  var trail = [];
-  function sizeComet() { if (comet) { comet.width = window.innerWidth; comet.height = window.innerHeight; } }
-  if (comet) sizeComet();
-  window.addEventListener("resize", sizeComet);
+  if (comet) comet.style.display = "none";
 
   if (finePointer && !reducedMotion && glow) {
     document.body.classList.add("has-cursor");
+
+    /* ---- create or find the main blob ---- */
     var blob = document.getElementById("cursorBlob");
     if (!blob) {
       blob = document.createElement("div");
@@ -380,53 +385,79 @@
       blob.setAttribute("aria-hidden", "true");
       document.body.appendChild(blob);
     }
-    var mx = -100, my = -100, bx = -100, by = -100, gx = -100, gy = -100, moved = false, followT = 0;
+
+    /* ---- build DOM trail dots ---- */
+    var TRAIL_N = 5;
+    var trailDots = [];
+    for (var ti = 0; ti < TRAIL_N; ti++) {
+      var dot = document.createElement("div");
+      dot.className = "cursor-trail";
+      dot.setAttribute("aria-hidden", "true");
+      /* each successive dot is smaller and more transparent */
+      var s = 1 - (ti + 1) / (TRAIL_N + 1);
+      dot.style.cssText = "position:fixed;top:0;left:0;pointer-events:none;border-radius:50%;z-index:298;" +
+        "width:" + (28 * s) + "px;height:" + (28 * s) + "px;opacity:" + (0.35 * s * s) + ";" +
+        "background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.5) 0%,rgba(" + accentRgb.join(",") + ",.45) 50%,transparent 78%);" +
+        "filter:blur(" + (1.5 + ti * 0.6) + "px);will-change:transform;transform:translate(-100px,-100px)";
+      document.body.appendChild(dot);
+      trailDots.push({ el: dot, x: -100, y: -100 });
+    }
+
+    /* ---- state ---- */
+    var mx = -100, my = -100, bx = -100, by = -100, gx = -100, gy = -100;
+    var moved = false, followT = 0;
+
     window.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
       if (!moved) { moved = true; blob.style.opacity = ""; }
-      if (cctx) trail.push({ x: mx, y: my, t: performance.now() });
-      if (trail.length > 24) trail.shift();
     }, { passive: true });
     blob.style.opacity = "0";
+
+    /* ---- animation loop ---- */
     function follow() {
       var now = performance.now();
       var dt = Math.min(50, now - (followT || now));
       followT = now;
+
+      /* damp the blob toward the mouse */
       if (window.anime && anime.utils && anime.utils.damp) {
-        /* anime's damp solver drives the blob spring */
-        bx = anime.utils.damp(bx, mx, 13, dt); by = anime.utils.damp(by, my, 13, dt);
-        gx = anime.utils.damp(gx, mx, 5, dt); gy = anime.utils.damp(gy, my, 5, dt);
+        bx = anime.utils.damp(bx, mx, 14, dt); by = anime.utils.damp(by, my, 14, dt);
+        gx = anime.utils.damp(gx, mx, 5, dt);  gy = anime.utils.damp(gy, my, 5, dt);
       } else {
-        bx += (mx - bx) * 0.14; by += (my - by) * 0.14;
+        bx += (mx - bx) * 0.15; by += (my - by) * 0.15;
         gx += (mx - gx) * 0.05; gy += (my - gy) * 0.05;
       }
-      /* the blob elongates along motion — liquid trailing feel */
+
+      /* squash-stretch along velocity */
       var vx = mx - bx, vy = my - by;
       var dist = Math.sqrt(vx * vx + vy * vy);
       var ang = Math.atan2(vy, vx);
-      var st = Math.min(0.55, dist * 0.007);
-      blob.style.transform = "translate(" + bx + "px," + by + "px) translate(-50%,-50%) rotate(" + ang + "rad) scale(" + (1 + st) + "," + (1 - st * 0.5) + ")";
+      var st = Math.min(0.45, dist * 0.006);
+      blob.style.transform = "translate(" + bx + "px," + by + "px) translate(-50%,-50%) rotate(" + ang + "rad) scale(" + (1 + st) + "," + (1 - st * 0.45) + ")";
       glow.style.transform = "translate(" + gx + "px," + gy + "px) translate(-50%,-50%)";
-      if (cctx) {
-        /* fading blob afterimages */
-        cctx.clearRect(0, 0, comet.width, comet.height);
-        cctx.globalCompositeOperation = "lighter";
-        var now = performance.now();
-        for (var i = 0; i < trail.length; i++) {
-          var a = (now - trail[i].t) / 360;
-          if (a > 1) continue;
-          var alpha = (1 - a) * 0.3;
-          var r = 15 * (1 - a) + 3;
-          cctx.fillStyle = "rgba(" + accentRgb[0] + "," + accentRgb[1] + "," + accentRgb[2] + "," + alpha + ")";
-          cctx.beginPath();
-          cctx.arc(trail[i].x, trail[i].y, r, 0, Math.PI * 2);
-          cctx.fill();
+
+      /* trail dots follow in a chain — each lerps toward the previous */
+      var prevX = bx, prevY = by;
+      for (var i = 0; i < TRAIL_N; i++) {
+        var d = trailDots[i];
+        var ease = 0.18 - i * 0.022;          /* each node is slightly lazier */
+        if (window.anime && anime.utils && anime.utils.damp) {
+          d.x = anime.utils.damp(d.x, prevX, 10 - i * 1.3, dt);
+          d.y = anime.utils.damp(d.y, prevY, 10 - i * 1.3, dt);
+        } else {
+          d.x += (prevX - d.x) * ease;
+          d.y += (prevY - d.y) * ease;
         }
-        cctx.globalCompositeOperation = "source-over";
+        d.el.style.transform = "translate(" + d.x + "px," + d.y + "px) translate(-50%,-50%)";
+        prevX = d.x;
+        prevY = d.y;
       }
+
       requestAnimationFrame(follow);
     }
     follow();
+
+    /* ---- interactive states ---- */
     document.addEventListener("mouseover", function (e) {
       if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head")) blob.classList.add("is-big");
     });
@@ -434,6 +465,7 @@
       if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head")) blob.classList.remove("is-big");
     });
 
+    /* ---- 3D tilt on cards ---- */
     var tiltEls = Array.prototype.slice.call(document.querySelectorAll(".row, .uni"));
     tiltEls.forEach(function (el) {
       el.addEventListener("mousemove", function (e) {
