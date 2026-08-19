@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>08 · Training Plan — BENJAMIN WU</title>
+<meta name="description" content="Growth-plate-safe training split, plyometrics and conditioning, and the daily 15-minute Height Unlock sequence." />
+<meta name="theme-color" content="#e9dfce" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101010'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%238a6a4f' stroke-width='2.4'/%3E%3Ccircle cx='19.5' cy='12.5' r='2.6' fill='%238a6a4f'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"
+} }
+</script>
+</head>
+<body data-planet="training">
+
+<canvas id="scene3d" aria-hidden="true"></canvas>
+<canvas id="comet" aria-hidden="true"></canvas>
+
+<div class="cursor cursor--dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor cursor--ring" id="cursorRing" aria-hidden="true"></div>
+<div class="glow" id="glow" aria-hidden="true"></div>
+<div class="warp" id="warp" aria-hidden="true"></div>
+<div class="navFade" id="navFade" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="nav__brand" href="index.html" data-warp>BW<span class="nav__reg">®</span></a>
+  <nav class="nav__links" id="navLinks" aria-label="Sections">
+    <a href="index.html" data-warp>System</a>
+    <a href="mission.html" data-warp>Mission</a>
+    <a href="studies.html" data-warp>Studies</a>
+    <a href="college.html" data-warp>College</a>
+    <a href="applications.html" data-warp>Apps</a>
+    <a href="extracurriculars.html" data-warp>Extracurriculars</a>
+    <a href="schedule.html" data-warp>Schedule</a>
+    <a href="meal.html" data-warp>Meal</a>
+    <a href="training.html" data-warp>Training</a>
+    <a href="deadlines.html" data-warp>Deadlines</a>
+  </nav>
+  <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="progress" id="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+<nav class="rail" id="rail" aria-label="Orbit navigation">
+  <a class="rail__node" href="index.html" data-warp data-planet="sol"><i></i><b>SOL</b></a>
+  <a class="rail__node" href="mission.html" data-warp data-planet="mission"><i></i><b>01</b></a>
+  <a class="rail__node" href="studies.html" data-warp data-planet="studies"><i></i><b>02</b></a>
+  <a class="rail__node" href="college.html" data-warp data-planet="college"><i></i><b>03</b></a>
+  <a class="rail__node" href="applications.html" data-warp data-planet="applications"><i></i><b>04</b></a>
+  <a class="rail__node" href="extracurriculars.html" data-warp data-planet="extracurriculars"><i></i><b>05</b></a>
+  <a class="rail__node" href="schedule.html" data-warp data-planet="schedule"><i></i><b>06</b></a>
+  <a class="rail__node" href="meal.html" data-warp data-planet="meal"><i></i><b>07</b></a>
+  <a class="rail__node" href="training.html" data-warp data-planet="training"><i></i><b>08</b></a>
+  <a class="rail__node" href="deadlines.html" data-warp data-planet="deadlines"><i></i><b>09</b></a>
+</nav>
+
+<main class="page" id="top">
+
+<section class="sec sec--page" id="training">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p8)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">08</span></span>
+      <span class="sec__num">08</span>
+      <div><h2 class="sec__title">Training Plan</h2><p class="sec__label">Growth-plate-safe split · vertical jump · lipid-clearing cardio</p></div>
+    </header>
+
+    <div class="split reveal">
+      <div class="split__day split__day--main"><b>MON</b><span>Lower Power</span></div>
+      <div class="split__day split__day--main"><b>TUE</b><span>Upper Strength</span></div>
+      <div class="split__day split__day--plyo"><b>WED</b><span>Plyo &amp; Agility</span></div>
+      <div class="split__day split__day--main"><b>THU</b><span>Lower Strength</span></div>
+      <div class="split__day split__day--rec"><b>FRI</b><span>Recovery · Club</span></div>
+      <div class="split__day split__day--fun"><b>SAT</b><span>Full-Body Functional</span></div>
+      <div class="split__day split__day--mob"><b>SUN</b><span>Mobility · Volleyball</span></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel reveal">
+        <h3 class="mini-h">Resistance — growth-plate safe</h3>
+        <ul class="check">
+          <li class="off"><strong>Removed:</strong> heavy barbell back squats &amp; deadlifts (epiphyseal plate protection)</li>
+          <li><strong>Replaced with:</strong> leg press, goblet/split squats, DB Romanian deadlifts</li>
+          <li>Double-progression model on a 4-day upper/lower split</li>
+          <li>Hypertrophy focus — muscle retention while cutting</li>
+          <li>High-protein snack immediately post-lift</li>
+        </ul>
+      </div>
+      <div class="panel reveal">
+        <h3 class="mini-h">Plyometrics &amp; conditioning</h3>
+        <ul class="check">
+          <li>12-week vertical jump program — volume escalates 6 → 7 days/week</li>
+          <li>Broad jumps · lateral bounds · sprint intervals · jump rope</li>
+          <li>50–55 min brisk morning walks, 3–4×/week (BCAA intra-cardio)</li>
+          <li>Cardio skipped on heavy lift days</li>
+          <li>Volleyball conditioning — lateral speed + explosive reach for matches</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel reveal">
+      <h3 class="mini-h">Daily 15-min Height Unlock sequence</h3>
+      <div class="stack">
+        <span class="stack__i">Passive Dead Hangs</span>
+        <span class="stack__i">Cobra Stretches</span>
+        <span class="stack__i">Wall Slides</span>
+        <span class="stack__i">Hip Flexor Stretches</span>
+        <span class="stack__i">RKC Planks</span>
+      </div>
+      <p class="note">Corrects anterior pelvic tilt, thoracic kyphosis, and rounded shoulders — recovering 0.5–1.5" of hidden height. Baseline: 5'8" · 152 lbs · BMI 23.1.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot__giant" aria-hidden="true">BEN WU<sup>*</sup></div>
+  <div class="wrap foot__in">
+    <div class="foot__nav">
+      <a href="meal.html" data-warp class="fn__prev"><span class="fn__k">← previous body</span><span class="fn__t">Meal</span></a>
+      <a href="deadlines.html" data-warp class="fn__next"><span class="fn__k">next body →</span><span class="fn__t">Deadlines</span></a>
+    </div>
+    <p class="foot__sol"><a href="index.html" data-warp>↺ return to sol</a></p>
+    <p class="foot__line">Benjamin Xianming Wu — <span class="dim">Carnegie Vanguard HS · Houston, TX · est. 2009</span></p>
+    <p class="foot__sub">Aggregated from the Second Brain vault · smooth scrolling by <a href="https://github.com/darkroomengineering/lenis" target="_blank" rel="noopener">Lenis</a> · design language inspired by <a href="https://www.igloo.inc/" target="_blank" rel="noopener">igloo.inc</a>, <a href="https://buttermax.net/" target="_blank" rel="noopener">buttermax.net</a> &amp; the GSAP-Awwwards milk-tea system · 1% better every week.</p>
+  </div>
+</footer>
+</main>
+
+<script src="vendor/lenis.min.js"></script>
+<script src="js/main.js"></script>
+<script type="module" src="js/scene.js"></script>
+</body>
+</html>

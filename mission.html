@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>01 · Mission — BENJAMIN WU</title>
+<meta name="description" content="Mission: study astronautical engineering at a top-tier university and work at the frontier of space. Short, medium, and long-term goals." />
+<meta name="theme-color" content="#e9dfce" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101010'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23e3a458' stroke-width='2.4'/%3E%3Ccircle cx='19.5' cy='12.5' r='2.6' fill='%23e3a458'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"
+} }
+</script>
+</head>
+<body data-planet="mission">
+
+<canvas id="scene3d" aria-hidden="true"></canvas>
+<canvas id="comet" aria-hidden="true"></canvas>
+
+<div class="cursor cursor--dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor cursor--ring" id="cursorRing" aria-hidden="true"></div>
+<div class="glow" id="glow" aria-hidden="true"></div>
+<div class="warp" id="warp" aria-hidden="true"></div>
+<div class="navFade" id="navFade" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="nav__brand" href="index.html" data-warp>BW<span class="nav__reg">®</span></a>
+  <nav class="nav__links" id="navLinks" aria-label="Sections">
+    <a href="index.html" data-warp>System</a>
+    <a href="mission.html" data-warp>Mission</a>
+    <a href="studies.html" data-warp>Studies</a>
+    <a href="college.html" data-warp>College</a>
+    <a href="applications.html" data-warp>Apps</a>
+    <a href="extracurriculars.html" data-warp>Extracurriculars</a>
+    <a href="schedule.html" data-warp>Schedule</a>
+    <a href="meal.html" data-warp>Meal</a>
+    <a href="training.html" data-warp>Training</a>
+    <a href="deadlines.html" data-warp>Deadlines</a>
+  </nav>
+  <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="progress" id="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+<nav class="rail" id="rail" aria-label="Orbit navigation">
+  <a class="rail__node" href="index.html" data-warp data-planet="sol"><i></i><b>SOL</b></a>
+  <a class="rail__node" href="mission.html" data-warp data-planet="mission"><i></i><b>01</b></a>
+  <a class="rail__node" href="studies.html" data-warp data-planet="studies"><i></i><b>02</b></a>
+  <a class="rail__node" href="college.html" data-warp data-planet="college"><i></i><b>03</b></a>
+  <a class="rail__node" href="applications.html" data-warp data-planet="applications"><i></i><b>04</b></a>
+  <a class="rail__node" href="extracurriculars.html" data-warp data-planet="extracurriculars"><i></i><b>05</b></a>
+  <a class="rail__node" href="schedule.html" data-warp data-planet="schedule"><i></i><b>06</b></a>
+  <a class="rail__node" href="meal.html" data-warp data-planet="meal"><i></i><b>07</b></a>
+  <a class="rail__node" href="training.html" data-warp data-planet="training"><i></i><b>08</b></a>
+  <a class="rail__node" href="deadlines.html" data-warp data-planet="deadlines"><i></i><b>09</b></a>
+</nav>
+
+<main class="page" id="top">
+
+<section class="sec sec--page" id="mission">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p1)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">01</span></span>
+      <span class="sec__num">01</span>
+      <div><h2 class="sec__title">Mission</h2><p class="sec__label">North Star · short / medium / long-term goals</p></div>
+    </header>
+    <blockquote class="manifesto reveal">
+      “Study <em>astronautical engineering</em> at a top-tier university and work at the <em>frontier of space</em>. Everything I build — projects, research, skills, reps in the gym — compounds toward being the kind of applicant and future engineer who belongs there.”
+    </blockquote>
+    <div class="mission__cols">
+      <div class="mission__col reveal">
+        <h3 class="mini-h">Short-term · Summer 2026</h3>
+        <ul class="check">
+          <li class="done">GridEvac AI submitted — Congressional App Challenge</li>
+          <li class="done">Schollective deployed — Citizen Entrepreneurship Challenge</li>
+          <li>Sea Cadets rank push SA → PO1 · IU cybersecurity, Jul 27 – Aug 1</li>
+          <li>Technician Ham Radio license — target Aug 2026</li>
+          <li>1-Axis Reaction Wheel (CubeSat) prototype — target Aug 2026</li>
+        </ul>
+      </div>
+      <div class="mission__col reveal">
+        <h3 class="mini-h">Medium-term · 11th grade (2026–27)</h3>
+        <ul class="check">
+          <li>NASA Student Launch Initiative — team by early fall 2026</li>
+          <li>High-Power Rocketry L1 cert (NAR/Tripoli) — Oct 2026</li>
+          <li>SolidWorks CSWA — Nov 2026 · FAA Part 107 — Dec 2026</li>
+          <li>Maintain GPA &gt; 4.6 · score 5s on all junior APs</li>
+          <li>PSAT / National Merit — Oct 2026</li>
+        </ul>
+      </div>
+      <div class="mission__col reveal">
+        <h3 class="mini-h">Long-term · Career</h3>
+        <ul class="check">
+          <li>Admission to a top astronautical/aerospace program — MIT, Caltech, Stanford, Georgia Tech, Purdue, UC Berkeley</li>
+          <li>GNC, propulsion, or autonomous space systems — NASA, SpaceX, JPL, AFRL, or a frontier startup</li>
+          <li>Disciplined, curious, rigorous — builds things that actually fly</li>
+        </ul>
+      </div>
+    </div>
+    <p class="mission__note reveal">Anti-goals: mindless scrolling, low-yield optimization, and treating programs as check-boxes instead of deep skill-building environments.</p>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot__giant" aria-hidden="true">BEN WU<sup>*</sup></div>
+  <div class="wrap foot__in">
+    <div class="foot__nav">
+      <a href="index.html" data-warp class="fn__prev"><span class="fn__k">← previous body</span><span class="fn__t">Sol</span></a>
+      <a href="studies.html" data-warp class="fn__next"><span class="fn__k">next body →</span><span class="fn__t">Studies</span></a>
+    </div>
+    <p class="foot__sol"><a href="index.html" data-warp>↺ return to sol</a></p>
+    <p class="foot__line">Benjamin Xianming Wu — <span class="dim">Carnegie Vanguard HS · Houston, TX · est. 2009</span></p>
+    <p class="foot__sub">Aggregated from the Second Brain vault · smooth scrolling by <a href="https://github.com/darkroomengineering/lenis" target="_blank" rel="noopener">Lenis</a> · design language inspired by <a href="https://www.igloo.inc/" target="_blank" rel="noopener">igloo.inc</a>, <a href="https://buttermax.net/" target="_blank" rel="noopener">buttermax.net</a> &amp; the GSAP-Awwwards milk-tea system · 1% better every week.</p>
+  </div>
+</footer>
+</main>
+
+<script src="vendor/lenis.min.js"></script>
+<script src="js/main.js"></script>
+<script type="module" src="js/scene.js"></script>
+</body>
+</html>

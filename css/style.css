@@ -507,12 +507,17 @@ ul.check li strong{color:var(--text);font-weight:600}
 .split__day--fun{box-shadow:inset 0 2px 0 var(--c-cardio)}
 .split__day--mob{box-shadow:inset 0 2px 0 var(--c-mobility)}
 
-/* ---------- deadlines — dark section ---------- */
-#deadlines{background:var(--dark);color:#fff}
-#deadlines .sec__num{-webkit-text-stroke:1px rgba(255,255,255,.3)}
-#deadlines .sec__title{color:#fff}
-#deadlines .sec__label{color:rgba(255,255,255,.45)}
-#deadlines .mini-h{color:var(--lime)}
+/* ---------- deadlines — the whole page is dark ---------- */
+body[data-planet="deadlines"]{
+  --bg:#222123; --bg2:#2c2b2f;
+  --panel:rgba(255,255,255,.05); --panel2:#2c2b2f;
+  --line:rgba(255,255,255,.12); --line-strong:rgba(255,255,255,.26);
+  --text:#f2e7d5; --muted:rgba(242,231,213,.66); --dim:rgba(242,231,213,.42);
+  --accent:var(--p9); --on-accent:#222123;
+}
+body[data-planet="deadlines"] .sec__num{-webkit-text-stroke:1px rgba(255,255,255,.3)}
+body[data-planet="deadlines"] .mini-h{color:var(--p9)}
+body[data-planet="deadlines"] .sched td:first-child{background:rgba(34,33,35,.95)}
 
 /* ---------- deadlines (accordion) ---------- */
 .dl{display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,.14)}
@@ -612,9 +617,9 @@ ul.check li strong{color:var(--text);font-weight:600}
 @keyframes planetFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes ringSpin{from{transform:rotateX(68deg) rotateZ(0deg)}to{transform:rotateX(68deg) rotateZ(360deg)}}
 
-/* dark section planet overrides */
-#deadlines .planet__ring{border-color:rgba(255,255,255,.4);opacity:.7}
-#deadlines .planet__num{background:var(--dark);color:#fff;border-color:rgba(255,255,255,.3)}
+/* dark page planet overrides */
+body[data-planet="deadlines"] .planet__ring{border-color:rgba(255,255,255,.4);opacity:.7}
+body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;border-color:rgba(255,255,255,.3)}
 
 /* ---------- the system map (orbital navigation) ---------- */
 .sys-sec{background:radial-gradient(circle at 50% 34%,rgba(227,164,88,.08),transparent 62%)}
@@ -744,3 +749,74 @@ ul.check li strong{color:var(--text);font-weight:600}
   .sys{width:min(96vw,420px)}
   .planet{width:52px;height:52px}
 }
+
+/* ============================================================
+   MULTI-PAGE — one page per planet.
+   Each page tints the whole UI to its planet's accent, has a
+   page-level header, a prev/next planet footer, a no-flash
+   warp handoff (View Transitions + overlay fallback), and
+   boots the same 3D solar system.
+   ============================================================ */
+
+/* per-planet accents — cursor, links, progress, selection follow */
+body[data-planet="mission"]{--accent:var(--p1)}
+body[data-planet="studies"]{--accent:var(--p2)}
+body[data-planet="college"]{--accent:var(--p3)}
+body[data-planet="applications"]{--accent:var(--p4)}
+body[data-planet="extracurriculars"]{--accent:var(--p5)}
+body[data-planet="schedule"]{--accent:var(--p6)}
+body[data-planet="meal"]{--accent:var(--p7)}
+body[data-planet="training"]{--accent:var(--p8)}
+body[data-planet="deadlines"]{--accent:var(--p9)}
+
+/* glow follows the page accent (color-mix with legacy fallback) */
+.glow{
+  background:radial-gradient(circle,rgba(162,104,51,.75) 0%,rgba(162,104,51,.2) 38%,transparent 70%);
+  background:radial-gradient(circle,color-mix(in srgb,var(--accent) 75%,transparent) 0%,color-mix(in srgb,var(--accent) 20%,transparent) 38%,transparent 70%);
+}
+
+/* a section page: header clears the fixed nav */
+.sec--page{padding-top:clamp(7rem,13vw,10rem);border-top:0}
+
+/* ---------- cross-document View Transitions — zero-flash warp ---------- */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:vtOld .55s var(--ease) both}
+::view-transition-new(root){animation:vtNew .55s var(--ease) both}
+@keyframes vtOld{to{transform:scale(1.06);opacity:0;filter:blur(9px)}}
+@keyframes vtNew{from{transform:scale(.95);opacity:0;filter:blur(9px)}}
+@media (prefers-reduced-motion:reduce){
+  ::view-transition-old(root),::view-transition-new(root){animation-duration:.01ms}
+}
+
+/* fallback warp overlay for browsers without View Transitions */
+.navFade{
+  position:fixed;inset:0;z-index:400;pointer-events:none;
+  background:#222123;opacity:0;transition:opacity .24s ease;
+  display:grid;place-items:center;
+}
+.navFade.is-on{opacity:1}
+.navFade::after{
+  content:'⏣';font-family:var(--f-display);font-size:2.6rem;color:var(--lime);
+  opacity:0;transition:opacity .2s .1s;
+}
+.navFade.is-on::after{opacity:1;animation:spin 2.4s linear infinite}
+
+/* ---------- prev / next planet footer nav ---------- */
+.foot__nav{
+  display:flex;align-items:stretch;gap:.8rem;margin:0 0 1.8rem;
+  border-bottom:1px solid rgba(255,255,255,.14);padding-bottom:1.8rem;
+}
+.foot__nav a{
+  flex:1;border:1px solid rgba(255,255,255,.16);border-radius:1.2em;
+  padding:1.15rem 1.5rem;display:flex;flex-direction:column;gap:.3rem;
+  transition:background .3s var(--ease),border-color .3s;
+}
+.foot__nav a:hover{background:rgba(255,255,255,.07);border-color:var(--lime)}
+.foot__nav .fn__k{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.foot__nav .fn__t{font-family:var(--f-display);font-weight:400;font-size:clamp(1.15rem,2.2vw,1.6rem);text-transform:uppercase;letter-spacing:-.01em;color:#fff;transition:color .3s}
+.foot__nav a:hover .fn__t{color:var(--lime)}
+.foot__nav .fn__next{text-align:right;align-items:flex-end}
+@media (max-width:560px){.foot__nav{flex-direction:column}}
+
+/* dead pages keep the giant footer legible */
+body[data-planet="deadlines"] .foot{border-color:rgba(242,231,213,.5)}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>07 · Meal Plan — BENJAMIN WU</title>
+<meta name="description" content="Calorie-cycling meal plan — lipid-safe rules, 140–152g protein, the original 8-week training-day macros, and the bone-mineralization stack." />
+<meta name="theme-color" content="#e9dfce" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101010'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23d9b26a' stroke-width='2.4'/%3E%3Ccircle cx='19.5' cy='12.5' r='2.6' fill='%23d9b26a'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"
+} }
+</script>
+</head>
+<body data-planet="meal">
+
+<canvas id="scene3d" aria-hidden="true"></canvas>
+<canvas id="comet" aria-hidden="true"></canvas>
+
+<div class="cursor cursor--dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor cursor--ring" id="cursorRing" aria-hidden="true"></div>
+<div class="glow" id="glow" aria-hidden="true"></div>
+<div class="warp" id="warp" aria-hidden="true"></div>
+<div class="navFade" id="navFade" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="nav__brand" href="index.html" data-warp>BW<span class="nav__reg">®</span></a>
+  <nav class="nav__links" id="navLinks" aria-label="Sections">
+    <a href="index.html" data-warp>System</a>
+    <a href="mission.html" data-warp>Mission</a>
+    <a href="studies.html" data-warp>Studies</a>
+    <a href="college.html" data-warp>College</a>
+    <a href="applications.html" data-warp>Apps</a>
+    <a href="extracurriculars.html" data-warp>Extracurriculars</a>
+    <a href="schedule.html" data-warp>Schedule</a>
+    <a href="meal.html" data-warp>Meal</a>
+    <a href="training.html" data-warp>Training</a>
+    <a href="deadlines.html" data-warp>Deadlines</a>
+  </nav>
+  <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="progress" id="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+<nav class="rail" id="rail" aria-label="Orbit navigation">
+  <a class="rail__node" href="index.html" data-warp data-planet="sol"><i></i><b>SOL</b></a>
+  <a class="rail__node" href="mission.html" data-warp data-planet="mission"><i></i><b>01</b></a>
+  <a class="rail__node" href="studies.html" data-warp data-planet="studies"><i></i><b>02</b></a>
+  <a class="rail__node" href="college.html" data-warp data-planet="college"><i></i><b>03</b></a>
+  <a class="rail__node" href="applications.html" data-warp data-planet="applications"><i></i><b>04</b></a>
+  <a class="rail__node" href="extracurriculars.html" data-warp data-planet="extracurriculars"><i></i><b>05</b></a>
+  <a class="rail__node" href="schedule.html" data-warp data-planet="schedule"><i></i><b>06</b></a>
+  <a class="rail__node" href="meal.html" data-warp data-planet="meal"><i></i><b>07</b></a>
+  <a class="rail__node" href="training.html" data-warp data-planet="training"><i></i><b>08</b></a>
+  <a class="rail__node" href="deadlines.html" data-warp data-planet="deadlines"><i></i><b>09</b></a>
+</nav>
+
+<main class="page" id="top">
+
+<section class="sec sec--page" id="meal">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p7)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">07</span></span>
+      <span class="sec__num">07</span>
+      <div><h2 class="sec__title">Meal Plan</h2><p class="sec__label">Calorie-cycling · lipid-safe · 140–152g protein</p></div>
+    </header>
+
+    <div class="kpis reveal">
+      <div class="kpi"><b>2,500</b><span>kcal · workout days</span></div>
+      <div class="kpi"><b>2,200–2,300</b><span>kcal · rest days</span></div>
+      <div class="kpi"><b>140–152g</b><span>protein · 2.0–2.2 g/kg</span></div>
+      <div class="kpi"><b>≤ 55g</b><span>fat daily cap</span></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel reveal">
+        <h3 class="mini-h">Reconciled rules — lipid-panel optimized</h3>
+        <p class="note">Total Cholesterol 216 mg/dL · LDL 136 mg/dL → saturated fat and dietary cholesterol dialed down hard.</p>
+        <ul class="check">
+          <li class="off"><strong>Eliminated:</strong> red meat (beef), whole egg yolks</li>
+          <li><strong>Protein core:</strong> lean poultry, egg whites, fish — 140–152g/day</li>
+          <li><strong>LDL support:</strong> soluble fiber daily — oats, berries, leafy greens, walnuts</li>
+          <li><strong>Omega-3 / unsaturated:</strong> salmon, extra-virgin olive oil, avocado</li>
+          <li><strong>Fasting window:</strong> no food after 8:00 PM (2h before sleep) for GH optimization</li>
+        </ul>
+      </div>
+      <div class="panel reveal">
+        <h3 class="mini-h">Original 8-week plan — training days</h3>
+        <ul class="check">
+          <li><strong>~3,389 kcal:</strong> 303g protein · 183g carbs · 160g fat — 6 meals</li>
+          <li><strong>Pre-workout:</strong> 50g whey isolate + ¼ cup cream of rice + 1 tbsp almond butter</li>
+          <li><strong>Intra-workout:</strong> 90g cyclic dextrin carbs + 40g casein hydrolysate (1.5 L water)</li>
+          <li><strong>Off/pump days:</strong> 1,903–2,218 kcal · 260–267g protein · lean carbs</li>
+          <li><strong>Primary sources:</strong> grass-fed beef, tilapia, cod, chicken, whey isolate, casein, whole eggs</li>
+          <li><strong>Carb sources:</strong> cream of rice, sweet potato, Ezekiel toast, dark berries, yam</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel reveal">
+      <h3 class="mini-h">Bone-mineralization stack — late-growth support</h3>
+      <div class="stack">
+        <span class="stack__i"><b>1,300 mg</b>Calcium</span>
+        <span class="stack__i"><b>1,000–2,000 IU</b>Vitamin D3</span>
+        <span class="stack__i"><b>100 mcg</b>Vitamin K2 (MK-7)</span>
+        <span class="stack__i"><b>11 mg</b>Zinc</span>
+        <span class="stack__i"><b>410 mg</b>Magnesium</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot__giant" aria-hidden="true">BEN WU<sup>*</sup></div>
+  <div class="wrap foot__in">
+    <div class="foot__nav">
+      <a href="schedule.html" data-warp class="fn__prev"><span class="fn__k">← previous body</span><span class="fn__t">Schedule</span></a>
+      <a href="training.html" data-warp class="fn__next"><span class="fn__k">next body →</span><span class="fn__t">Training</span></a>
+    </div>
+    <p class="foot__sol"><a href="index.html" data-warp>↺ return to sol</a></p>
+    <p class="foot__line">Benjamin Xianming Wu — <span class="dim">Carnegie Vanguard HS · Houston, TX · est. 2009</span></p>
+    <p class="foot__sub">Aggregated from the Second Brain vault · smooth scrolling by <a href="https://github.com/darkroomengineering/lenis" target="_blank" rel="noopener">Lenis</a> · design language inspired by <a href="https://www.igloo.inc/" target="_blank" rel="noopener">igloo.inc</a>, <a href="https://buttermax.net/" target="_blank" rel="noopener">buttermax.net</a> &amp; the GSAP-Awwwards milk-tea system · 1% better every week.</p>
+  </div>
+</footer>
+</main>
+
+<script src="vendor/lenis.min.js"></script>
+<script src="js/main.js"></script>
+<script type="module" src="js/scene.js"></script>
+</body>
+</html>

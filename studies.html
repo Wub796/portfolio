@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>02 · Studies — BENJAMIN WU</title>
+<meta name="description" content="Carnegie Vanguard HS transcript — 4.6818 weighted GPA, course grades, EOC results, and the junior-year AP ladder." />
+<meta name="theme-color" content="#e9dfce" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101010'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23a26833' stroke-width='2.4'/%3E%3Ccircle cx='19.5' cy='12.5' r='2.6' fill='%23a26833'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"
+} }
+</script>
+</head>
+<body data-planet="studies">
+
+<canvas id="scene3d" aria-hidden="true"></canvas>
+<canvas id="comet" aria-hidden="true"></canvas>
+
+<div class="cursor cursor--dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor cursor--ring" id="cursorRing" aria-hidden="true"></div>
+<div class="glow" id="glow" aria-hidden="true"></div>
+<div class="warp" id="warp" aria-hidden="true"></div>
+<div class="navFade" id="navFade" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="nav__brand" href="index.html" data-warp>BW<span class="nav__reg">®</span></a>
+  <nav class="nav__links" id="navLinks" aria-label="Sections">
+    <a href="index.html" data-warp>System</a>
+    <a href="mission.html" data-warp>Mission</a>
+    <a href="studies.html" data-warp>Studies</a>
+    <a href="college.html" data-warp>College</a>
+    <a href="applications.html" data-warp>Apps</a>
+    <a href="extracurriculars.html" data-warp>Extracurriculars</a>
+    <a href="schedule.html" data-warp>Schedule</a>
+    <a href="meal.html" data-warp>Meal</a>
+    <a href="training.html" data-warp>Training</a>
+    <a href="deadlines.html" data-warp>Deadlines</a>
+  </nav>
+  <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="progress" id="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+<nav class="rail" id="rail" aria-label="Orbit navigation">
+  <a class="rail__node" href="index.html" data-warp data-planet="sol"><i></i><b>SOL</b></a>
+  <a class="rail__node" href="mission.html" data-warp data-planet="mission"><i></i><b>01</b></a>
+  <a class="rail__node" href="studies.html" data-warp data-planet="studies"><i></i><b>02</b></a>
+  <a class="rail__node" href="college.html" data-warp data-planet="college"><i></i><b>03</b></a>
+  <a class="rail__node" href="applications.html" data-warp data-planet="applications"><i></i><b>04</b></a>
+  <a class="rail__node" href="extracurriculars.html" data-warp data-planet="extracurriculars"><i></i><b>05</b></a>
+  <a class="rail__node" href="schedule.html" data-warp data-planet="schedule"><i></i><b>06</b></a>
+  <a class="rail__node" href="meal.html" data-warp data-planet="meal"><i></i><b>07</b></a>
+  <a class="rail__node" href="training.html" data-warp data-planet="training"><i></i><b>08</b></a>
+  <a class="rail__node" href="deadlines.html" data-warp data-planet="deadlines"><i></i><b>09</b></a>
+</nav>
+
+<main class="page" id="top">
+
+<section class="sec sec--page" id="studies">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p2)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">02</span></span>
+      <span class="sec__num">02</span>
+      <div><h2 class="sec__title">Studies</h2><p class="sec__label">Carnegie Vanguard HS · Houston ISD · transcript as of 01-13-2026</p></div>
+    </header>
+
+    <div class="kpis reveal">
+      <div class="kpi"><b>4.6818</b><span>Weighted GPA</span></div>
+      <div class="kpi"><b>DNR</b><span>Class Rank</span></div>
+      <div class="kpi"><b>12.0</b><span>State / Local Credits</span></div>
+      <div class="kpi"><b>STEM+</b><span>STEM &amp; Multi-Disciplinary Endorsements</span></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel reveal">
+        <h3 class="mini-h">Coursework — 9th &amp; 10th grade</h3>
+        <table class="tbl">
+          <thead><tr><th>Subject</th><th>Course</th><th>Grade</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="3">Math</td><td>Algebra 1 <span class="tag">pre-HS · 97</span></td><td>A</td></tr>
+            <tr><td>Geometry</td><td>96/94</td></tr>
+            <tr><td>Algebra 2</td><td>98</td></tr>
+            <tr><td rowspan="3">Science</td><td>Biology</td><td>94/94</td></tr>
+            <tr><td>AP Biology</td><td>93</td></tr>
+            <tr><td>Chemistry</td><td>92</td></tr>
+            <tr><td rowspan="2">Social Studies</td><td>AP Human Geography</td><td>90/93</td></tr>
+            <tr><td>AP World History</td><td>90</td></tr>
+            <tr><td>English</td><td>English 1 · English 2 <span class="tag">Honors</span></td><td>95/92 · 91/95</td></tr>
+            <tr><td>Tech</td><td>AP Computer Science Principles</td><td>94</td></tr>
+            <tr><td>Language</td><td>French 1</td><td>93/90</td></tr>
+            <tr><td>Arts</td><td>Art 1</td><td>98/99</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel reveal">
+        <h3 class="mini-h">State assessments &amp; milestones</h3>
+        <ul class="check">
+          <li class="done">Algebra I EOC — <em>waived</em> (05/2024)</li>
+          <li class="done">Biology EOC — <em>Masters</em> level (04/2025)</li>
+          <li class="done">English I EOC — <em>Meets</em> level (04/2025)</li>
+          <li>English II EOC — pending</li>
+          <li>U.S. History EOC — pending</li>
+          <li class="done">Speech requirement — completed 06/2025</li>
+          <li class="done">CPR / AED instruction — completed 06/2025</li>
+        </ul>
+        <h3 class="mini-h">Junior-year ladder (2026–27)</h3>
+        <ul class="check">
+          <li>7 AP courses · weighted GPA target &gt; 4.6</li>
+          <li><strong>AP Calculus BC</strong> — after pre-calc over Summer 2026 (97% of incoming aerospace freshmen finish calc before senior year)</li>
+          <li><strong>AP Physics C</strong> — calculus-based, the elite-engineering standard</li>
+          <li><strong>AP Research</strong> — AI × Aerospace spike (autonomous navigation / ML in propulsion)</li>
+          <li>PSAT / NMSQT — October 14, 2026</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot__giant" aria-hidden="true">BEN WU<sup>*</sup></div>
+  <div class="wrap foot__in">
+    <div class="foot__nav">
+      <a href="mission.html" data-warp class="fn__prev"><span class="fn__k">← previous body</span><span class="fn__t">Mission</span></a>
+      <a href="college.html" data-warp class="fn__next"><span class="fn__k">next body →</span><span class="fn__t">College</span></a>
+    </div>
+    <p class="foot__sol"><a href="index.html" data-warp>↺ return to sol</a></p>
+    <p class="foot__line">Benjamin Xianming Wu — <span class="dim">Carnegie Vanguard HS · Houston, TX · est. 2009</span></p>
+    <p class="foot__sub">Aggregated from the Second Brain vault · smooth scrolling by <a href="https://github.com/darkroomengineering/lenis" target="_blank" rel="noopener">Lenis</a> · design language inspired by <a href="https://www.igloo.inc/" target="_blank" rel="noopener">igloo.inc</a>, <a href="https://buttermax.net/" target="_blank" rel="noopener">buttermax.net</a> &amp; the GSAP-Awwwards milk-tea system · 1% better every week.</p>
+  </div>
+</footer>
+</main>
+
+<script src="vendor/lenis.min.js"></script>
+<script src="js/main.js"></script>
+<script type="module" src="js/scene.js"></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>06 · Daily Schedule — BENJAMIN WU</title>
+<meta name="description" content="The reconciled ideal week — school year vs summer toggle, 10:00 PM shutdown, deep work protected, height unlock, and morning cardio." />
+<meta name="theme-color" content="#e9dfce" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101010'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23b98a5a' stroke-width='2.4'/%3E%3Ccircle cx='19.5' cy='12.5' r='2.6' fill='%23b98a5a'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"
+} }
+</script>
+</head>
+<body data-planet="schedule">
+
+<canvas id="scene3d" aria-hidden="true"></canvas>
+<canvas id="comet" aria-hidden="true"></canvas>
+
+<div class="cursor cursor--dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor cursor--ring" id="cursorRing" aria-hidden="true"></div>
+<div class="glow" id="glow" aria-hidden="true"></div>
+<div class="warp" id="warp" aria-hidden="true"></div>
+<div class="navFade" id="navFade" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="nav__brand" href="index.html" data-warp>BW<span class="nav__reg">®</span></a>
+  <nav class="nav__links" id="navLinks" aria-label="Sections">
+    <a href="index.html" data-warp>System</a>
+    <a href="mission.html" data-warp>Mission</a>
+    <a href="studies.html" data-warp>Studies</a>
+    <a href="college.html" data-warp>College</a>
+    <a href="applications.html" data-warp>Apps</a>
+    <a href="extracurriculars.html" data-warp>Extracurriculars</a>
+    <a href="schedule.html" data-warp>Schedule</a>
+    <a href="meal.html" data-warp>Meal</a>
+    <a href="training.html" data-warp>Training</a>
+    <a href="deadlines.html" data-warp>Deadlines</a>
+  </nav>
+  <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="progress" id="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+<nav class="rail" id="rail" aria-label="Orbit navigation">
+  <a class="rail__node" href="index.html" data-warp data-planet="sol"><i></i><b>SOL</b></a>
+  <a class="rail__node" href="mission.html" data-warp data-planet="mission"><i></i><b>01</b></a>
+  <a class="rail__node" href="studies.html" data-warp data-planet="studies"><i></i><b>02</b></a>
+  <a class="rail__node" href="college.html" data-warp data-planet="college"><i></i><b>03</b></a>
+  <a class="rail__node" href="applications.html" data-warp data-planet="applications"><i></i><b>04</b></a>
+  <a class="rail__node" href="extracurriculars.html" data-warp data-planet="extracurriculars"><i></i><b>05</b></a>
+  <a class="rail__node" href="schedule.html" data-warp data-planet="schedule"><i></i><b>06</b></a>
+  <a class="rail__node" href="meal.html" data-warp data-planet="meal"><i></i><b>07</b></a>
+  <a class="rail__node" href="training.html" data-warp data-planet="training"><i></i><b>08</b></a>
+  <a class="rail__node" href="deadlines.html" data-warp data-planet="deadlines"><i></i><b>09</b></a>
+</nav>
+
+<main class="page" id="top">
+
+<section class="sec sec--page" id="schedule">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p6)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">06</span></span>
+      <span class="sec__num">06</span>
+      <div><h2 class="sec__title">Daily Schedule</h2><p class="sec__label">Reconciled ideal week · 10:00 PM shutdown · deep work protected</p></div>
+    </header>
+
+    <div class="toggle reveal" role="tablist" aria-label="Schedule mode">
+      <button class="toggle__b is-on" id="modeSchool" role="tab" aria-selected="true">School Year</button>
+      <button class="toggle__b" id="modeSummer" role="tab" aria-selected="false">Summer</button>
+    </div>
+
+    <div class="schedule-wrap reveal" id="tableSchool">
+      <table class="sched">
+        <thead>
+          <tr><th>Time</th><th>Mon <small>Gym</small></th><th>Tue <small>Gym</small></th><th>Wed <small>Agility</small></th><th>Thu <small>Gym</small></th><th>Fri <small>Recovery</small></th><th>Sat <small>Functional</small></th><th>Sun <small>Mobility</small></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>06:30</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake (07:30)</td><td data-t="wake">Wake (07:30)</td></tr>
+          <tr><td>06:45</td><td data-t="study">Morning Review</td><td data-t="study">Morning Review</td><td data-t="cardio">Morning Walk</td><td data-t="study">Morning Review</td><td data-t="cardio">Morning Walk</td><td data-t="cardio">Morning Walk</td><td data-t="meal">Breakfast</td></tr>
+          <tr><td>07:45</td><td data-t="commute">Commute / Prep</td><td data-t="commute">Commute / Prep</td><td data-t="commute">Commute / Prep</td><td data-t="commute">Commute / Prep</td><td data-t="commute">Commute / Prep</td><td data-t="meal">Breakfast</td><td data-t="free">Personal Time</td></tr>
+          <tr><td>08:30</td><td data-t="school" colspan="5">School — Carnegie Vanguard HS</td><td data-t="gym">Full-Body Gym</td><td data-t="sport">Volleyball / Club</td></tr>
+          <tr><td>15:30</td><td data-t="gym">Lower Power</td><td data-t="gym">Upper Strength</td><td data-t="plyo">Plyo &amp; Agility</td><td data-t="gym">Lower Strength</td><td data-t="free">Personal Time</td><td data-t="posture">Height Unlock</td><td data-t="mobility">Mobility / Stretch</td></tr>
+          <tr><td>16:45</td><td data-t="posture">Height Unlock</td><td data-t="posture">Height Unlock</td><td data-t="posture">Height Unlock</td><td data-t="posture">Height Unlock</td><td data-t="commute">Commute / Prep</td><td data-t="meal">Lunch</td><td data-t="meal">Lunch</td></tr>
+          <tr><td>17:15</td><td data-t="deep" colspan="4">Power Block 1 — Deep Study / Project Build</td><td data-t="sport">Club Practice</td><td data-t="deep" colspan="2">Deep Code Block</td></tr>
+          <tr><td>19:15</td><td data-t="meal" colspan="4">Dinner &amp; Chill</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="free">Leisure / Family</td><td data-t="meal">Dinner &amp; Chill</td></tr>
+          <tr><td>19:45</td><td data-t="deep" colspan="5">Power Block 2</td><td data-t="free">Leisure / Family</td><td data-t="free">Wind Down</td></tr>
+          <tr><td>20:30</td><td data-t="deep">Power Block 2</td><td data-t="deep">Power Block 2</td><td data-t="lesson">Coding Lesson</td><td data-t="deep">Power Block 2</td><td data-t="deep">Power Block 2</td><td data-t="free">Leisure / Family</td><td data-t="free">Wind Down</td></tr>
+          <tr><td>21:30</td><td data-t="wind" colspan="7">Wind Down — blue-light block, screen off, pack bag</td></tr>
+          <tr><td>22:00</td><td data-t="sleep" colspan="7">⏻ Shutdown — 8.5–9.5h sleep, cool room, GH pulse optimization</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="schedule-wrap reveal" id="tableSummer" hidden>
+      <table class="sched">
+        <thead>
+          <tr><th>Time</th><th>Mon <small>Gym</small></th><th>Tue <small>Gym</small></th><th>Wed <small>Agility</small></th><th>Thu <small>Gym</small></th><th>Fri <small>Recovery</small></th><th>Sat <small>Functional</small></th><th>Sun <small>Mobility</small></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>06:30</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake (07:30)</td><td data-t="wake">Wake (07:30)</td></tr>
+          <tr><td>06:45</td><td data-t="cardio" colspan="6">Morning Walk — 50–55 min brisk cardio (HDL ↑ · LDL ↓ · triglycerides ↓)</td><td data-t="meal">Breakfast</td></tr>
+          <tr><td>07:45</td><td data-t="meal" colspan="6">Breakfast — lipid-safe: oats, egg whites, berries</td><td data-t="cardio">Walk</td></tr>
+          <tr><td>08:30</td><td data-t="deep" colspan="5">Deep Code Block — 3h uninterrupted build (Orbital Watch / trajectory research)</td><td data-t="gym">Full-Body Gym</td><td data-t="free">Leisure / Rest</td></tr>
+          <tr><td>11:30</td><td data-t="posture" colspan="7">Height Unlock — dead hangs · wall slides · hip flexor stretches</td></tr>
+          <tr><td>11:45</td><td data-t="meal" colspan="7">Lunch — lean chicken, green salad, extra-virgin olive oil</td></tr>
+          <tr><td>12:30</td><td data-t="study" colspan="5">AP / SAT Study</td><td data-t="free">Personal Time</td><td data-t="study">Weekly Prep</td></tr>
+          <tr><td>15:30</td><td data-t="gym">Lower Power</td><td data-t="gym">Upper Strength</td><td data-t="plyo">Plyo &amp; Agility</td><td data-t="gym">Lower Strength</td><td data-t="free">Personal Time</td><td data-t="free">Personal Time</td><td data-t="mobility">Mobility / Stretch</td></tr>
+          <tr><td>17:00</td><td data-t="posture" colspan="5">Posture / Decompression</td><td data-t="free">Personal Time</td><td data-t="meal">Dinner</td></tr>
+          <tr><td>17:30</td><td data-t="deep" colspan="5">Project Builds — Flight Logger / Rover / reaction wheel</td><td data-t="free">Personal Time</td><td data-t="free">Wind Down</td></tr>
+          <tr><td>19:30</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="lesson">Coding Lesson</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="free">Wind Down</td></tr>
+          <tr><td>20:30</td><td data-t="study">Night Review</td><td data-t="study">Night Review</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="study">Night Review</td><td data-t="study">Night Review</td><td data-t="free">Wind Down</td><td data-t="free">Wind Down</td></tr>
+          <tr><td>21:30</td><td data-t="wind" colspan="7">Wind Down</td></tr>
+          <tr><td>22:00</td><td data-t="sleep" colspan="7">⏻ Shutdown — strict 8:00 PM food cutoff (9:00 PM Wed)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="legend reveal">
+      <span class="lg"><i style="background:var(--c-deep)"></i>Deep Work</span>
+      <span class="lg"><i style="background:var(--c-study)"></i>Study / Review</span>
+      <span class="lg"><i style="background:var(--c-gym)"></i>Resistance</span>
+      <span class="lg"><i style="background:var(--c-plyo)"></i>Plyo / Agility</span>
+      <span class="lg"><i style="background:var(--c-cardio)"></i>Cardio</span>
+      <span class="lg"><i style="background:var(--c-posture)"></i>Height Unlock</span>
+      <span class="lg"><i style="background:var(--c-school)"></i>School</span>
+      <span class="lg"><i style="background:var(--c-meal)"></i>Nutrition</span>
+      <span class="lg"><i style="background:var(--c-sport)"></i>Sport / Club</span>
+      <span class="lg"><i style="background:var(--c-free)"></i>Free / Wind Down</span>
+    </div>
+
+    <div class="rules reveal">
+      <div class="rule"><b>10:00 PM Shutdown</b><p>8.5–9.5 hours of sleep in a cool room — 75% of daily GH release happens during deep sleep.</p></div>
+      <div class="rule"><b>2-hour pre-sleep fast</b><p>Strict no-food rule after 8:00 PM (9:00 PM on summer Wednesdays) to maximize the GH pulse.</p></div>
+      <div class="rule"><b>15-min daily Height Unlock</b><p>Dead hangs, cobra stretches, wall slides, hip flexor stretches, RKC planks — unlocks 0.5–1.5" of postural height.</p></div>
+      <div class="rule"><b>Morning cardio 3–4×/week</b><p>50-min brisk walks raise HDL and clear triglycerides (measured 95 mg/dL).</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot__giant" aria-hidden="true">BEN WU<sup>*</sup></div>
+  <div class="wrap foot__in">
+    <div class="foot__nav">
+      <a href="extracurriculars.html" data-warp class="fn__prev"><span class="fn__k">← previous body</span><span class="fn__t">Extracurriculars</span></a>
+      <a href="meal.html" data-warp class="fn__next"><span class="fn__k">next body →</span><span class="fn__t">Meal</span></a>
+    </div>
+    <p class="foot__sol"><a href="index.html" data-warp>↺ return to sol</a></p>
+    <p class="foot__line">Benjamin Xianming Wu — <span class="dim">Carnegie Vanguard HS · Houston, TX · est. 2009</span></p>
+    <p class="foot__sub">Aggregated from the Second Brain vault · smooth scrolling by <a href="https://github.com/darkroomengineering/lenis" target="_blank" rel="noopener">Lenis</a> · design language inspired by <a href="https://www.igloo.inc/" target="_blank" rel="noopener">igloo.inc</a>, <a href="https://buttermax.net/" target="_blank" rel="noopener">buttermax.net</a> &amp; the GSAP-Awwwards milk-tea system · 1% better every week.</p>
+  </div>
+</footer>
+</main>
+
+<script src="vendor/lenis.min.js"></script>
+<script src="js/main.js"></script>
+<script type="module" src="js/scene.js"></script>
+</body>
+</html>

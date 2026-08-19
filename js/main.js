@@ -1,14 +1,35 @@
 /* ============================================================
-   BENJAMIN WU — buttermax × igloo.inc · main.js
+   BENJAMIN WU SYSTEM — shared UI for every page.
+   One page per planet. Clicking any [data-warp] link records
+   the current planet in sessionStorage, then hands the browser
+   a cross-document View Transition (CSS @view-transition) so
+   the old page morphs into the new one with no flash; older
+   browsers get a themed warp overlay instead. The new page's
+   3D scene then flies the camera from the previous planet.
    ============================================================ */
 (function () {
   "use strict";
 
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var finePointer = window.matchMedia("(pointer: fine)").matches;
+  var currentPlanet = document.body.dataset.planet || "sol";
+
+  function accentCSS() {
+    /* read from a body descendant so the body[data-planet] override wins */
+    var el = document.getElementById("cursorDot") || document.body;
+    return (getComputedStyle(el).getPropertyValue("--accent") || "").trim() || "#a26833";
+  }
+  function hexRgb(hex) {
+    hex = hex.replace("#", "");
+    if (hex.length === 3) hex = hex.split("").map(function (c) { return c + c; }).join("");
+    var n = parseInt(hex, 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+  var accentHex = accentCSS();
+  var accentRgb = hexRgb(accentHex);
 
   /* ------------------------------------------------------------
-     DEADLINES — from the "Updated Program List & Timelines"
+     DEADLINES — from the "Updated Program List & Timelines".
      Dates kept verbatim as provided; countdowns computed live.
      ------------------------------------------------------------ */
   var DEADLINES = [
@@ -17,7 +38,7 @@
       name: "Congressional App Challenge",
       type: "Competition",
       status: "countdown",
-      primary: "2026-10-26T16:00:00-04:00", // Oct 26, 2026 · 12:00 PM ET
+      primary: "2026-10-26T16:00:00-04:00",
       events: [
         ["Registration opens", "Annually in May"],
         ["Submission deadline", "Oct 26, 2026 · 12:00 PM ET"],
@@ -242,10 +263,9 @@
   }
 
   /* ------------------------------------------------------------
-     SCROLL TELEMETRY — feeds the 3D scene
+     SCROLL TELEMETRY — progress bar + feeds the 3D scene
      ------------------------------------------------------------ */
   window.__scrollVel = 0;
-  window.__scrollProg = 0;
   var lastY = 0, lastT = performance.now();
   function trackScroll(y) {
     var now = performance.now();
@@ -253,10 +273,48 @@
     var v = dt > 80 ? 0 : ((y - lastY) / Math.max(4, dt)) * 16.6;
     window.__scrollVel += (v - window.__scrollVel) * 0.18;
     lastY = y; lastT = now;
-    var doc = document.documentElement;
-    var max = doc.scrollHeight - window.innerHeight;
-    window.__scrollProg = max > 0 ? Math.max(0, Math.min(1, y / max)) : 0;
   }
+
+  /* ------------------------------------------------------------
+     NAVIGATION — warp between planets, no flash.
+     ------------------------------------------------------------ */
+  var vtSupported = typeof document.startViewTransition === "function";
+  var navFade = document.getElementById("navFade");
+
+  function closeMenu() {
+    var toggle = document.getElementById("navToggle");
+    var links = document.getElementById("navLinks");
+    if (toggle) toggle.setAttribute("aria-expanded", "false");
+    if (links) links.classList.remove("is-open");
+  }
+
+  document.addEventListener("click", function (e) {
+    var warpLink = e.target.closest ? e.target.closest('a[data-warp]') : null;
+    if (warpLink) {
+      var href = warpLink.getAttribute("href");
+      if (!href || href === "#" || href.indexOf(".html") === -1 && href.indexOf("/") === -1) return;
+      e.preventDefault();
+      closeMenu();
+      try { sessionStorage.setItem("bw-last-planet", currentPlanet); } catch (err) { /* ignore */ }
+      if (vtSupported) {
+        /* cross-document View Transition — browser morphs old → new, zero flash */
+        window.location.href = href;
+      } else {
+        /* fallback: themed warp overlay covers the swap */
+        if (navFade) navFade.classList.add("is-on");
+        setTimeout(function () { window.location.href = href; }, 260);
+      }
+      return;
+    }
+    var anchor = e.target.closest ? e.target.closest('a[data-scroll]') : null;
+    if (anchor) {
+      var target = document.querySelector(anchor.getAttribute("href"));
+      if (!target) return;
+      e.preventDefault();
+      scrollToY(target.getBoundingClientRect().top + (window.scrollY || 0));
+      closeMenu();
+    }
+  });
 
   /* ------------------------------------------------------------
      CURSOR + GLOW + COMET TRAIL (desktop only)
@@ -285,7 +343,6 @@
       gx += (mx - gx) * 0.055; gy += (my - gy) * 0.055;
       ring.style.transform = "translate(" + rx + "px," + ry + "px) translate(-50%,-50%)";
       glow.style.transform = "translate(" + gx + "px," + gy + "px) translate(-50%,-50%)";
-      // comet trail
       if (cctx) {
         cctx.clearRect(0, 0, comet.width, comet.height);
         cctx.globalCompositeOperation = "lighter";
@@ -294,7 +351,7 @@
           var a = (now - trail[i].t) / 240;
           if (a > 1) continue;
           var alpha = (1 - a) * 0.5;
-          cctx.strokeStyle = "rgba(162,104,51," + alpha + ")";
+          cctx.strokeStyle = "rgba(" + accentRgb[0] + "," + accentRgb[1] + "," + accentRgb[2] + "," + alpha + ")";
           cctx.lineWidth = 1 + (1 - a) * 2.6;
           cctx.beginPath();
           cctx.moveTo(trail[i - 1].x, trail[i - 1].y);
@@ -313,7 +370,6 @@
       if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head")) ring.classList.remove("is-big");
     });
 
-    /* 3D tilt on rows */
     var tiltEls = Array.prototype.slice.call(document.querySelectorAll(".row, .uni"));
     tiltEls.forEach(function (el) {
       el.addEventListener("mousemove", function (e) {
@@ -327,91 +383,58 @@
   }
 
   /* ------------------------------------------------------------
-     NAV — solid state, scroll spy, mobile menu, progress
+     NAV — solid state, mobile menu, progress bar, rail
      ------------------------------------------------------------ */
   var nav = document.getElementById("nav");
   var progressBar = document.getElementById("progressBar");
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav__links a[data-scroll]"));
-  var sections = navLinks.map(function (a) { return document.querySelector(a.getAttribute("href")); }).filter(Boolean);
-  var railNodes = Array.prototype.slice.call(document.querySelectorAll(".rail__node"));
   var navToggle = document.getElementById("navToggle");
-  var mobileLinks = document.getElementById("navLinks");
+  var navLinksEl = document.getElementById("navLinks");
+  var railNodes = Array.prototype.slice.call(document.querySelectorAll(".rail__node"));
 
-  navToggle.addEventListener("click", function () {
-    var open = navToggle.getAttribute("aria-expanded") === "true";
-    navToggle.setAttribute("aria-expanded", String(!open));
-    mobileLinks.classList.toggle("is-open", !open);
-  });
-
-  var lastSection = -1;
-  function getPlanetAccent(sec) {
-    if (!sec) return "#e3a458";
-    var p = sec.querySelector(".planet");
-    if (!p) return "#e3a458";
-    var v = getComputedStyle(p).getPropertyValue("--pc").trim();
-    return v || "#e3a458";
-  }
-  function onScroll(pos) {
-    var y = pos || window.scrollY || 0;
-    trackScroll(y);
-    nav.classList.toggle("is-solid", y > 24);
-    var doc = document.documentElement;
-    var max = doc.scrollHeight - window.innerHeight;
-    if (max > 0) progressBar.style.width = (y / max) * 100 + "%";
-
-    var current = -1;
-    for (var i = 0; i < sections.length; i++) {
-      if (sections[i].getBoundingClientRect().top <= 140) current = i;
-    }
-    navLinks.forEach(function (a, idx) { a.classList.toggle("is-active", idx === current); });
-    railNodes.forEach(function (node) {
-      var href = node.getAttribute("href");
-      var idx = -2;
-      if (href === "#hero") idx = -1;
-      else {
-        for (var j = 0; j < sections.length; j++) {
-          if (sections[j] && "#" + sections[j].id === href) { idx = j; break; }
-        }
-      }
-      node.classList.toggle("is-cur", idx === current);
-      node.classList.toggle("is-past", idx !== -2 && idx < current);
+  if (navToggle && navLinksEl) {
+    navToggle.addEventListener("click", function () {
+      var open = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", String(!open));
+      navLinksEl.classList.toggle("is-open", !open);
     });
-    if (current !== lastSection && sections[current]) {
-      window.__planetAccent = getPlanetAccent(sections[current]);
-      window.dispatchEvent(new CustomEvent("section-change", { detail: { index: current, id: sections[current].id } }));
-      lastSection = current;
+  }
+
+  /* mark the current planet on the rail + nav */
+  railNodes.forEach(function (node) {
+    if (node.getAttribute("data-planet") === currentPlanet) node.classList.add("is-cur");
+  });
+  var navLinksArr = Array.prototype.slice.call(document.querySelectorAll(".nav__links a"));
+  navLinksArr.forEach(function (a) {
+    var href = a.getAttribute("href") || "";
+    var mine = href.replace(".html", "").replace("/", "");
+    if (mine === currentPlanet || (currentPlanet === "sol" && mine === "index")) a.classList.add("is-active");
+  });
+
+  function onScroll() {
+    var y = window.scrollY || 0;
+    trackScroll(y);
+    if (nav) nav.classList.toggle("is-solid", y > 24);
+    if (progressBar) {
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      progressBar.style.width = (max > 0 ? y / max : 0) * 100 + "%";
     }
   }
-  if (lenis) {
-    lenis.on("scroll", function (e) { onScroll(e.scroll); });
-  } else {
-    window.addEventListener("scroll", function () { onScroll(); }, { passive: true });
-  }
-  onScroll(0);
+  if (lenis) lenis.on("scroll", function (e) { onScroll(); });
+  else window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 
-  /* warp flash on planet arrival */
+  /* arrival warp flash — fire once, right after paint */
   var warp = document.getElementById("warp");
-  var warpTimer = null;
-  window.addEventListener("section-change", function (e) {
-    if (!warp || reducedMotion) return;
-    warp.style.setProperty("--wc", getPlanetAccent(document.getElementById(e.detail.id)));
-    warp.classList.add("is-active");
-    clearTimeout(warpTimer);
-    warpTimer = setTimeout(function () { warp.classList.remove("is-active"); }, 700);
-  });
-
-  document.addEventListener("click", function (e) {
-    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-    if (!a) return;
-    var target = document.querySelector(a.getAttribute("href"));
-    if (!target) return;
-    e.preventDefault();
-    scrollToY(target.getBoundingClientRect().top + (window.scrollY || 0));
-    if (mobileLinks.classList.contains("is-open")) {
-      navToggle.setAttribute("aria-expanded", "false");
-      mobileLinks.classList.remove("is-open");
-    }
-  });
+  if (warp && !reducedMotion) {
+    warp.style.setProperty("--wc", accentHex);
+    setTimeout(function () {
+      warp.classList.add("is-active");
+      setTimeout(function () { warp.classList.remove("is-active"); }, 850);
+    }, 180);
+  }
+  /* clear the fallback overlay (it is transparent by default) */
+  if (navFade) navFade.classList.remove("is-on");
 
   /* ------------------------------------------------------------
      REVEAL ON SCROLL
@@ -432,13 +455,12 @@
   }
 
   /* ------------------------------------------------------------
-     HOUSTON CLOCK
+     HOUSTON CLOCK (home only)
      ------------------------------------------------------------ */
   var clock = document.getElementById("houstonClock");
   function tickClock() {
     try {
-      var now = new Date();
-      clock.textContent = now.toLocaleTimeString("en-US", {
+      clock.textContent = new Date().toLocaleTimeString("en-US", {
         timeZone: "America/Chicago", hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit",
       });
     } catch (e) { /* leave as-is */ }
@@ -446,7 +468,7 @@
   if (clock) { tickClock(); setInterval(tickClock, 1000); }
 
   /* ------------------------------------------------------------
-     SCHEDULE TOGGLE
+     SCHEDULE TOGGLE (schedule page)
      ------------------------------------------------------------ */
   var modeSchool = document.getElementById("modeSchool");
   var modeSummer = document.getElementById("modeSummer");
@@ -466,7 +488,7 @@
   }
 
   /* ------------------------------------------------------------
-     DEADLINES — accordion + live countdowns
+     DEADLINES — accordion + live countdowns (deadlines page)
      ------------------------------------------------------------ */
   function pad(n) { return String(n).padStart(2, "0"); }
 

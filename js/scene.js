@@ -1,11 +1,13 @@
 /* ============================================================
-   SCENE 3D — immersive WebGL layer behind the whole page.
-   Wireframe planet + rings + orbiting satellites + nebulae +
-   star shells. Camera flies through waypoints as you scroll,
-   stars stretch into hyperspace on fast scroll, a comet
-   streaks by, bloom pulses on section changes.
+   SCENE 3D — ONE CONTINUOUS SOLAR SYSTEM, ONE PAGE PER PLANET.
+   Every page boots the same WebGL world: a sun at the origin
+   and nine planets on live orbits. Each page is a planet; the
+   camera starts at the *previous* planet's framing (handed off
+   through sessionStorage by main.js) and flies to this one, so
+   navigating feels like traveling through a single system —
+   no loading screen, no flash, just a continuous journey.
    Loaded as a module after main.js; degrades silently if
-   WebGL / CDN is unavailable.
+   WebGL / the CDN is unavailable.
    ============================================================ */
 import * as THREE from "three";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
@@ -18,6 +20,7 @@ try {
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const coarse = window.matchMedia("(pointer: coarse)").matches;
+  const slug = document.body.dataset.planet || "sol";
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !coarse, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2));
@@ -25,18 +28,35 @@ try {
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xe9dfce);
-  scene.fog = new THREE.FogExp2(0xe9dfce, 0.028);
+  scene.fog = new THREE.FogExp2(0xe9dfce, 0.011);
 
-  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 300);
-  camera.position.set(0, 0, 6);
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 500);
+  camera.position.set(0, 3.4, 30);
+
+  /* ------------------------------------------------------------
+     PLANET CATALOGUE — colors from the milk-tea palette.
+     d = orbit radius · s = radius · cam = framing offset
+     ------------------------------------------------------------ */
+  const P = {
+    sol:              { n: "Sol",           c: 0xe3a458, s: 1.10, d: 0,    sp: 0,     tilt: 0,    ring: false, cam: [0, 3.4, 27] },
+    mission:          { n: "Mission",       c: 0xe3a458, s: 1.00, d: 4.6,  sp: 0.046, tilt: 0.16, ring: true,  cam: [0, 0.5, 5.0] },
+    studies:          { n: "Studies",       c: 0xa26833, s: 1.10, d: 5.6,  sp: 0.038, tilt: -0.10, ring: false, cam: [1.1, -0.4, 5.4] },
+    college:          { n: "College",       c: 0x7f3b2d, s: 1.30, d: 6.6,  sp: 0.031, tilt: 0.22, ring: true,  cam: [0, 1.7, 6.2] },
+    applications:     { n: "Applications",  c: 0x523122, s: 1.40, d: 7.6,  sp: 0.026, tilt: -0.16, ring: false, cam: [-1.2, 0.4, 6.6] },
+    extracurriculars: { n: "Extracurriculars", c: 0xc9a06b, s: 1.50, d: 8.6, sp: 0.022, tilt: 0.08, ring: false, cam: [0.6, -1.0, 7.2] },
+    schedule:         { n: "Schedule",      c: 0xb98a5a, s: 1.70, d: 9.6,  sp: 0.019, tilt: 0.26, ring: true,  cam: [0, 0.9, 8.0] },
+    meal:             { n: "Meal",          c: 0xd9b26a, s: 1.80, d: 10.6, sp: 0.017, tilt: -0.08, ring: false, cam: [1.3, 0.7, 8.6] },
+    training:         { n: "Training",      c: 0x8a6a4f, s: 1.90, d: 11.6, sp: 0.014, tilt: 0.12,  ring: false, cam: [-0.9, -0.7, 9.1] },
+    deadlines:        { n: "Deadlines",     c: 0xe8c89b, s: 2.10, d: 12.6, sp: 0.012, tilt: -0.20, ring: true,  cam: [0, -1.5, 10.0] },
+  };
 
   /* ---------- lights ---------- */
-  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-  const key = new THREE.PointLight(0xe3a458, 60, 70);
-  key.position.set(7, 5, 6);
-  scene.add(key);
-  const rim = new THREE.PointLight(0xe3d3bc, 55, 70);
-  rim.position.set(-7, -4, -5);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+  const sunLight = new THREE.PointLight(0xe3a458, 140, 260);
+  sunLight.position.set(0, 0, 0);
+  scene.add(sunLight);
+  const rim = new THREE.PointLight(0xe3d3bc, 60, 160);
+  rim.position.set(-18, -8, -24);
   scene.add(rim);
 
   /* ---------- texture helpers ---------- */
@@ -51,7 +71,7 @@ try {
     g.fillRect(0, 0, 128, 128);
     return new THREE.CanvasTexture(c);
   }
-  const starTex = radial("rgba(255,255,255,1)", "rgba(255,255,255,0)");
+  const glowTex = radial("rgba(255,255,255,1)", "rgba(255,255,255,0)");
 
   function nebulaTex(stops) {
     const c = document.createElement("canvas");
@@ -78,127 +98,164 @@ try {
     const geo = new THREE.BufferGeometry();
     geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     const mat = new THREE.PointsMaterial({
-      color: 0x523122, size, map: starTex, transparent: true, opacity: opacity * 0.45,
+      color: 0x523122, size, map: glowTex, transparent: true, opacity: opacity * 0.4,
       depthWrite: false, blending: THREE.NormalBlending, sizeAttenuation: true,
     });
     const pts = new THREE.Points(geo, mat);
     scene.add(pts);
     starLayers.push({ pts, mat, size });
-    return pts;
   }
-  starShell(coarse ? 350 : 950, 22, 80, 0.55, 0.85);
-  starShell(coarse ? 250 : 750, 9, 26, 0.28, 0.5);
-  starShell(coarse ? 120 : 360, 3.5, 12, 0.16, 0.35);
+  starShell(coarse ? 300 : 800, 40, 150, 0.5, 0.8);
+  starShell(coarse ? 200 : 600, 14, 44, 0.26, 0.5);
+  starShell(coarse ? 100 : 300, 5, 18, 0.15, 0.35);
 
   /* ---------- nebulae ---------- */
   const nebDefs = [
-    [[0, "rgba(227,211,188,0.0)"], [0.55, "rgba(227,211,188,0.8)"], [1, "rgba(227,211,188,0)"]],
-    [[0, "rgba(227,164,88,0.0)"], [0.5, "rgba(227,164,88,0.45)"], [1, "rgba(227,164,88,0)"]],
-    [[0, "rgba(162,104,51,0.0)"], [0.55, "rgba(162,104,51,0.4)"], [1, "rgba(162,104,51,0)"]],
-    [[0, "rgba(127,59,45,0.0)"], [0.55, "rgba(127,59,45,0.35)"], [1, "rgba(127,59,45,0)"]],
+    [[0, "rgba(227,211,188,0)"], [0.55, "rgba(227,211,188,0.7)"], [1, "rgba(227,211,188,0)"]],
+    [[0, "rgba(227,164,88,0)"], [0.5, "rgba(227,164,88,0.4)"], [1, "rgba(227,164,88,0)"]],
+    [[0, "rgba(162,104,51,0)"], [0.55, "rgba(162,104,51,0.35)"], [1, "rgba(162,104,51,0)"]],
+    [[0, "rgba(127,59,45,0)"], [0.55, "rgba(127,59,45,0.3)"], [1, "rgba(127,59,45,0)"]],
   ];
   const nebulas = [];
   nebDefs.forEach((stops, i) => {
     const s = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: nebulaTex(stops), transparent: true, opacity: 0.55,
+      map: nebulaTex(stops), transparent: true, opacity: 0.5,
       blending: THREE.NormalBlending, depthWrite: false,
     }));
     const a = (i / nebDefs.length) * Math.PI * 2 + 0.6;
-    s.position.set(Math.cos(a) * 18, (i % 2 ? 1 : -1) * 5, Math.sin(a) * 18 - 10);
-    s.scale.set(30, 30, 1);
+    s.position.set(Math.cos(a) * 46, (i % 2 ? 1 : -1) * 9, Math.sin(a) * 46 - 20);
+    s.scale.set(70, 70, 1);
     scene.add(s);
     nebulas.push(s);
   });
 
-  /* ---------- planet ---------- */
-  const planet = new THREE.Group();
-  const core = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(1.5, 32),
-    new THREE.MeshStandardMaterial({ color: 0x523122, roughness: 0.5, metalness: 0.2, emissive: 0x24150d })
-  );
-  const wire = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(1.64, 8),
-    new THREE.MeshBasicMaterial({ wireframe: true, color: 0xe3a458, transparent: true, opacity: 0.65 })
-  );
-  const atmo = new THREE.Sprite(new THREE.SpriteMaterial({
-    map: radial("rgba(227,164,88,0.7)", "rgba(227,164,88,0)"),
-    transparent: true, opacity: 0.26, blending: THREE.NormalBlending, depthWrite: false,
+  /* ---------- the sun ---------- */
+  const sun = new THREE.Group();
+  sun.add(new THREE.Mesh(
+    new THREE.IcosahedronGeometry(P.sol.s, 6),
+    new THREE.MeshBasicMaterial({ color: 0xe3a458 })
+  ));
+  sun.add(new THREE.Mesh(
+    new THREE.IcosahedronGeometry(P.sol.s * 1.32, 3),
+    new THREE.MeshBasicMaterial({ wireframe: true, color: 0xffe8c2, transparent: true, opacity: 0.4 })
+  ));
+  const corona = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: radial("rgba(255,214,120,0.9)", "rgba(255,214,120,0)"),
+    transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false,
   }));
-  atmo.scale.set(5.6, 5.6, 1);
-  planet.add(core, wire, atmo);
+  corona.scale.set(11, 11, 1);
+  sun.add(corona);
+  scene.add(sun);
 
-  const ring = new THREE.Mesh(
-    new THREE.RingGeometry(2.05, 2.55, 96),
-    new THREE.MeshBasicMaterial({ color: 0x523122, transparent: true, opacity: 0.4, side: THREE.DoubleSide, depthWrite: false })
-  );
-  ring.rotation.set(1.85, 0.35, 0);
-  planet.add(ring);
-  const ring2 = new THREE.Mesh(
-    new THREE.RingGeometry(2.78, 2.88, 96),
-    new THREE.MeshBasicMaterial({ color: 0xe3d3bc, transparent: true, opacity: 0.6, side: THREE.DoubleSide, depthWrite: false })
-  );
-  ring2.rotation.set(1.85, 0.35, 0.12);
-  planet.add(ring2);
-  scene.add(planet);
-
-  /* ---------- satellites ---------- */
+  /* ---------- planets ---------- */
+  const bodies = {};
   const sats = [];
-  for (let i = 0; i < 3; i++) {
+  Object.keys(P).forEach((k) => {
+    if (k === "sol") return;
+    const cfg = P[k];
     const g = new THREE.Group();
-    const satCol = [0xe3a458, 0xe3d3bc, 0x7f3b2d][i];
-    const m = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(0.11, 2),
-      new THREE.MeshStandardMaterial({ color: satCol, emissive: satCol, emissiveIntensity: 0.9 })
-    );
-    const r = 2.15 + i * 0.55;
-    g.add(m);
-    planet.add(g);
-    sats.push({ g, m, r, ph: (i / 3) * Math.PI * 2, speed: 0.4 + i * 0.25 });
-    const orb = new THREE.Mesh(
-      new THREE.RingGeometry(r - 0.008, r + 0.008, 72),
-      new THREE.MeshBasicMaterial({ color: 0xb09a7f, transparent: true, opacity: 0.45, side: THREE.DoubleSide, depthWrite: false })
-    );
-    orb.rotation.copy(ring.rotation);
-    planet.add(orb);
-  }
 
-  /* ---------- comet (velocity reactive) ---------- */
+    const core = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(cfg.s, 5),
+      new THREE.MeshStandardMaterial({
+        color: cfg.c, roughness: 0.55, metalness: 0.18,
+        emissive: new THREE.Color(cfg.c).multiplyScalar(0.08),
+      })
+    );
+    const wire = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(cfg.s * 1.1, 6),
+      new THREE.MeshBasicMaterial({ wireframe: true, color: cfg.c, transparent: true, opacity: 0.5 })
+    );
+    const atmo = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: radial("rgba(255,255,255,0.55)", "rgba(255,255,255,0)"),
+      transparent: true, opacity: 0.16, depthWrite: false,
+    }));
+    atmo.scale.set(cfg.s * 5.2, cfg.s * 5.2, 1);
+    g.add(core, wire, atmo);
+
+    if (cfg.ring) {
+      const r1 = new THREE.Mesh(
+        new THREE.RingGeometry(cfg.s * 1.38, cfg.s * 1.72, 80),
+        new THREE.MeshBasicMaterial({ color: 0x523122, transparent: true, opacity: 0.35, side: THREE.DoubleSide, depthWrite: false })
+      );
+      r1.rotation.set(1.72, 0.35, 0);
+      const r2 = new THREE.Mesh(
+        new THREE.RingGeometry(cfg.s * 1.85, cfg.s * 1.94, 80),
+        new THREE.MeshBasicMaterial({ color: cfg.c, transparent: true, opacity: 0.5, side: THREE.DoubleSide, depthWrite: false })
+      );
+      r2.rotation.set(1.72, 0.35, 0.15);
+      g.add(r1, r2);
+    }
+
+    for (let i = 0; i < 2; i++) {
+      const m = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(0.08, 2),
+        new THREE.MeshStandardMaterial({ color: cfg.c, emissive: cfg.c, emissiveIntensity: 0.85 })
+      );
+      g.add(m);
+      sats.push({ m, r: cfg.s * 1.15 + i * 0.5, ph: (i / 2) * Math.PI * 2 + k.length, sp: 0.5 + i * 0.35 });
+    }
+
+    /* orbit path — a tilted circle matching the planet's motion */
+    const path = new THREE.Mesh(
+      new THREE.RingGeometry(cfg.d - 0.04, cfg.d + 0.04, 128),
+      new THREE.MeshBasicMaterial({ color: 0xb09a7f, transparent: true, opacity: 0.3, side: THREE.DoubleSide, depthWrite: false })
+    );
+    path.rotation.x = cfg.tilt - Math.PI / 2;
+    scene.add(path);
+
+    scene.add(g);
+    bodies[k] = { cfg, g, phase: 1.2 * Math.PI + Math.random() * 0.3 };
+  });
+
+  /* ---------- comet (velocity / warp reactive) ---------- */
   const cometMat = new THREE.SpriteMaterial({
-    map: radial("rgba(255,255,255,1)", "rgba(255,255,255,0)"),
-    transparent: true, opacity: 0, blending: THREE.NormalBlending, depthWrite: false,
+    map: glowTex, transparent: true, opacity: 0, blending: THREE.NormalBlending, depthWrite: false,
   });
   const comet = new THREE.Sprite(cometMat);
-  comet.scale.set(1.2, 1.2, 1);
+  comet.scale.set(1.4, 1.4, 1);
   scene.add(comet);
   let cometA = Math.random() * Math.PI * 2;
 
   /* ---------- bloom ---------- */
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.45, 0.6, 0.3);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.34, 0.62, 0.32);
   composer.addPass(bloom);
 
-  /* ---------- camera flight path (section by section) ---------- */
-  const WAY = [
-    [0.00, [0, 0, 6.0]],      // hero — close-up planet
-    [0.10, [2.8, 0.9, 5.4]],  // mission
-    [0.22, [4.4, 1.5, 4.6]],  // studies
-    [0.34, [0, 2.7, 5.8]],    // college — high orbit
-    [0.46, [-4, 1.1, 4.4]],   // applications
-    [0.58, [2.9, -1.5, 5.0]], // extracurriculars
-    [0.70, [0, 0, 3.6]],      // schedule — dive in
-    [0.82, [-2.6, 1.9, 4.2]], // meal
-    [0.93, [0, -1.7, 5.4]],   // training
-    [1.00, [0, 0, 10.0]],     // deadlines/footer — pull out to hyperspace
-  ];
-  function camAt(p) {
-    p = Math.max(0, Math.min(1, p)) * (WAY.length - 1);
-    const i = Math.min(WAY.length - 2, Math.floor(p));
-    const t = p - i;
-    const s = t * t * (3 - 2 * t);
-    const a = WAY[i][1], b = WAY[i + 1][1];
-    return [a[0] + (b[0] - a[0]) * s, a[1] + (b[1] - a[1]) * s, a[2] + (b[2] - a[2]) * s];
+  /* ---------- framing: where the camera sits for a planet ---------- */
+  function planetPos(k, t) {
+    const cfg = P[k];
+    if (k === "sol") return new THREE.Vector3(0, 0, 0);
+    const a = bodies[k].phase + t * cfg.sp;
+    return new THREE.Vector3(
+      Math.cos(a) * cfg.d,
+      Math.sin(a) * cfg.d * Math.sin(cfg.tilt),
+      Math.sin(a) * cfg.d * Math.cos(cfg.tilt)
+    );
   }
+  function frameOf(k, t) {
+    const cfg = P[k];
+    if (k === "sol") return { pos: new THREE.Vector3(0, 3.4, 27), look: new THREE.Vector3(0, 0, 0) };
+    const pp = planetPos(k, t);
+    return {
+      pos: new THREE.Vector3(pp.x + cfg.cam[0], pp.y + cfg.cam[1], pp.z + cfg.cam[2]),
+      look: pp.clone(),
+    };
+  }
+
+  /* ---------- arrival flight: from the previous planet ---------- */
+  let simT = 0;
+  let last = null;
+  try { last = sessionStorage.getItem("bw-last-planet"); } catch (e) { /* ignore */ }
+  const toFrame = frameOf(slug, 0);
+  let fromFrame;
+  if (last && P[last] && last !== slug) fromFrame = frameOf(last, 0);
+  else fromFrame = { pos: toFrame.pos.clone().add(new THREE.Vector3(0, 0, 9)), look: toFrame.look.clone() };
+  const FLY = 2.6;
+  let arr = reduced ? 1 : 0;
+
+  function easeInOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
 
   /* ---------- input ---------- */
   let mx = 0, my = 0;
@@ -208,78 +265,89 @@ try {
       my = (e.clientY / window.innerHeight) * 2 - 1;
     }, { passive: true });
   }
-  window.addEventListener("section-change", () => {
-    bloomBoost = 1.7;
-    // tint the scene to the arriving planet's accent
-    const hex = window.__planetAccent;
-    if (hex) {
-      const c = new THREE.Color(hex);
-      wire.material.color.set(c);
-      ring2.material.color.set(c);
-      cometMat.color.set(c);
-      rim.color.set(c);
-    }
-  });
 
   /* ---------- main loop ---------- */
-  let bloomBoost = 0;
   const clock = new THREE.Clock();
+  let bloomBoost = 0;
+  let warp = reduced ? 0 : 1;
 
   function loop() {
     requestAnimationFrame(loop);
     if (document.hidden) return;
     const dt = Math.min(0.05, clock.getDelta());
-    const t = clock.elapsedTime;
+    simT += dt * (0.7 + (1 - arr) * 2.2); // world time speeds up during warp
 
-    const prog = window.__scrollProg || 0;
+    /* place planets on their orbits */
+    Object.keys(bodies).forEach((k) => {
+      bodies[k].g.position.copy(planetPos(k, simT));
+    });
+
+    /* arrival tween */
+    if (arr < 1) {
+      arr = Math.min(1, arr + dt / FLY);
+      const e = easeInOut(arr);
+      warp = 1 - e;
+      camera.position.lerpVectors(fromFrame.pos, toFrame.pos, e);
+      camera.lookAt(new THREE.Vector3().lerpVectors(fromFrame.look, toFrame.look, e));
+    } else {
+      warp = 0;
+    }
+
+    /* post-arrival: subtle idle drift + mouse parallax + scroll pull-back */
     const vel = window.__scrollVel || 0;
-    const speed = 1 + Math.min(4, Math.abs(vel) * 0.9);
+    if (arr >= 1) {
+      const t = simT;
+      const sc = window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const ox = Math.sin(t * 0.22) * 0.35 + mx * 0.55;
+      const oy = Math.cos(t * 0.18) * 0.28 + my * 0.42;
+      const oz = sc * 1.6 + Math.sin(t * 0.12) * 0.3;
+      camera.position.copy(toFrame.pos);
+      camera.position.x += ox;
+      camera.position.y += oy;
+      camera.position.z += oz;
+      camera.lookAt(toFrame.look);
+    }
 
-    // stars drift + hyperspace stretch
+    const speed = 1 + Math.min(4, Math.abs(vel) * 0.7);
+
+    /* stars drift + hyperspace stretch during warp */
     starLayers.forEach((s, i) => {
       s.pts.rotation.y += dt * 0.004 * (i + 1);
       s.pts.rotation.x += dt * 0.001 * (i % 2 ? 1 : -1);
-      s.mat.size = s.size * (1 + Math.min(3.2, Math.abs(vel) * 1.1));
+      s.mat.size = s.size * (1 + Math.min(3.4, warp * 3.2 + Math.abs(vel) * 1.1));
     });
 
-    // planet
-    planet.rotation.y += dt * 0.06 * speed;
-    wire.rotation.y -= dt * 0.02;
-    wire.rotation.z += dt * 0.012;
-    const planetPulse = 1 + Math.min(0.18, Math.abs(vel) * 0.05);
-    core.scale.setScalar(planetPulse);
-    wire.scale.setScalar(1 + (planetPulse - 1) * 0.7);
-
-    // satellites
+    /* planets spin + satellites */
+    Object.keys(bodies).forEach((k) => {
+      const b = bodies[k];
+      b.g.rotation.y += dt * 0.05 * speed;
+    });
     sats.forEach((s) => {
-      s.ph += dt * s.speed * speed;
-      s.g.position.set(Math.cos(s.ph) * s.r, 0, Math.sin(s.ph) * s.r);
-      s.g.lookAt(planet.position);
+      s.ph += dt * s.sp * speed;
+      s.m.position.set(Math.cos(s.ph) * s.r, 0, Math.sin(s.ph) * s.r);
     });
 
-    // comet — streaks harder as you scroll faster
-    cometA += dt * (0.12 + Math.min(1.6, Math.abs(vel) * 0.5));
-    const cr = 7 + Math.abs(vel) * 2;
-    comet.position.set(Math.cos(cometA) * cr, Math.sin(cometA * 1.3) * 1.2, Math.sin(cometA) * cr - 4);
-    cometMat.opacity = Math.min(0.95, 0.16 + Math.abs(vel) * 0.5);
-    const cs = 1 + Math.abs(vel) * 0.8;
+    /* sun breathes */
+    const sunPulse = 1 + Math.sin(simT * 0.8) * 0.05 + warp * 0.12;
+    sun.scale.setScalar(sunPulse);
+    corona.material.opacity = 0.5 + Math.sin(simT * 0.9) * 0.08 + warp * 0.3;
+
+    /* comet — streaks harder the faster you move */
+    cometA += dt * (0.1 + warp * 0.5 + Math.min(1.4, Math.abs(vel) * 0.4));
+    const cr = 9 + warp * 6 + Math.abs(vel) * 1.5;
+    comet.position.set(Math.cos(cometA) * cr, Math.sin(cometA * 1.3) * 1.4, Math.sin(cometA) * cr - 5);
+    cometMat.opacity = Math.min(0.95, warp * 0.85 + Math.abs(vel) * 0.5);
+    const cs = 1.1 + warp * 1.6 + Math.abs(vel) * 0.8;
     comet.scale.set(cs, cs, 1);
 
-    // nebulae breathe
+    /* nebulae breathe */
     nebulas.forEach((n, i) => {
-      n.material.opacity = 0.32 + Math.sin(t * 0.3 + i * 1.7) * 0.12;
+      n.material.opacity = 0.3 + Math.sin(simT * 0.3 + i * 1.7) * 0.11;
     });
 
-    // camera flies along the section path + mouse parallax
-    const cp = camAt(prog);
-    camera.position.x = cp[0] + mx * 0.7;
-    camera.position.y = cp[1] + my * 0.5;
-    camera.position.z = cp[2];
-    camera.lookAt(0, 0, 0);
-
-    // bloom surges on fast scroll + section changes
+    /* bloom surges on warp + fast scroll */
     bloomBoost = Math.max(0, bloomBoost - dt * 1.2);
-    bloom.strength = 0.4 + Math.min(0.8, Math.abs(vel) * 0.3) + bloomBoost;
+    bloom.strength = 0.32 + Math.min(0.7, Math.abs(vel) * 0.22) + warp * 0.85 + bloomBoost;
 
     composer.render();
   }
@@ -293,13 +361,15 @@ try {
   window.addEventListener("resize", onResize);
 
   if (reduced) {
-    window.__scrollProg = 0;
+    Object.keys(bodies).forEach((k) => { bodies[k].g.position.copy(planetPos(k, 0)); });
+    camera.position.copy(toFrame.pos);
+    camera.lookAt(toFrame.look);
     composer.render();
   } else {
     loop();
   }
 
-  window.__scene3d = { ok: true };
+  window.__scene3d = { ok: true, slug, arrival: arr };
 } catch (err) {
   console.warn("3D scene disabled:", err);
   window.__scene3d = { ok: false, err: String(err) };

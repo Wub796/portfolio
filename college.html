@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>03 · College Plan — BENJAMIN WU</title>
+<meta name="description" content="Operation Liftoff: 12-school aerospace target list with reach/target/safe breakdown, strategic pillars, and the 7-phase college timeline." />
+<meta name="theme-color" content="#e9dfce" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101010'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%237f3b2d' stroke-width='2.4'/%3E%3Ccircle cx='19.5' cy='12.5' r='2.6' fill='%237f3b2d'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"
+} }
+</script>
+</head>
+<body data-planet="college">
+
+<canvas id="scene3d" aria-hidden="true"></canvas>
+<canvas id="comet" aria-hidden="true"></canvas>
+
+<div class="cursor cursor--dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor cursor--ring" id="cursorRing" aria-hidden="true"></div>
+<div class="glow" id="glow" aria-hidden="true"></div>
+<div class="warp" id="warp" aria-hidden="true"></div>
+<div class="navFade" id="navFade" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="nav__brand" href="index.html" data-warp>BW<span class="nav__reg">®</span></a>
+  <nav class="nav__links" id="navLinks" aria-label="Sections">
+    <a href="index.html" data-warp>System</a>
+    <a href="mission.html" data-warp>Mission</a>
+    <a href="studies.html" data-warp>Studies</a>
+    <a href="college.html" data-warp>College</a>
+    <a href="applications.html" data-warp>Apps</a>
+    <a href="extracurriculars.html" data-warp>Extracurriculars</a>
+    <a href="schedule.html" data-warp>Schedule</a>
+    <a href="meal.html" data-warp>Meal</a>
+    <a href="training.html" data-warp>Training</a>
+    <a href="deadlines.html" data-warp>Deadlines</a>
+  </nav>
+  <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="progress" id="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+<nav class="rail" id="rail" aria-label="Orbit navigation">
+  <a class="rail__node" href="index.html" data-warp data-planet="sol"><i></i><b>SOL</b></a>
+  <a class="rail__node" href="mission.html" data-warp data-planet="mission"><i></i><b>01</b></a>
+  <a class="rail__node" href="studies.html" data-warp data-planet="studies"><i></i><b>02</b></a>
+  <a class="rail__node" href="college.html" data-warp data-planet="college"><i></i><b>03</b></a>
+  <a class="rail__node" href="applications.html" data-warp data-planet="applications"><i></i><b>04</b></a>
+  <a class="rail__node" href="extracurriculars.html" data-warp data-planet="extracurriculars"><i></i><b>05</b></a>
+  <a class="rail__node" href="schedule.html" data-warp data-planet="schedule"><i></i><b>06</b></a>
+  <a class="rail__node" href="meal.html" data-warp data-planet="meal"><i></i><b>07</b></a>
+  <a class="rail__node" href="training.html" data-warp data-planet="training"><i></i><b>08</b></a>
+  <a class="rail__node" href="deadlines.html" data-warp data-planet="deadlines"><i></i><b>09</b></a>
+</nav>
+
+<main class="page" id="top">
+
+<section class="sec sec--page" id="college">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p3)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">03</span></span>
+      <span class="sec__num">03</span>
+      <div><h2 class="sec__title">College Plan</h2><p class="sec__label">Operation Liftoff · 7 phases · today → January 2028 decisions</p></div>
+    </header>
+
+    <h3 class="mini-h reveal">Target list — aerospace strength</h3>
+    <div class="rows unis reveal">
+      <div class="row uni uni--reach"><span class="row__idx">R1</span><b class="row__name">Stanford</b><span class="row__mid">astronautics · AA</span><span class="tag cat">Reach</span><span class="row__val">3.68%</span></div>
+      <div class="row uni uni--reach"><span class="row__idx">R2</span><b class="row__name">MIT</b><span class="row__mid">AeroAstro</span><span class="tag cat">Reach</span><span class="row__val">4.6%</span></div>
+      <div class="row uni uni--reach"><span class="row__idx">R3</span><b class="row__name">UC Berkeley</b><span class="row__mid">M.E.T. · EECS</span><span class="tag cat">Reach</span><span class="row__val">11.4%</span></div>
+      <div class="row uni uni--reach"><span class="row__idx">R4</span><b class="row__name">Purdue</b><span class="row__mid">AAE</span><span class="tag cat">Reach</span><span class="row__val">11%</span></div>
+      <div class="row uni uni--target"><span class="row__idx">T1</span><b class="row__name">Georgia Tech</b><span class="row__mid">AE</span><span class="tag cat">Target</span><span class="row__val">13.8%</span></div>
+      <div class="row uni uni--target"><span class="row__idx">T2</span><b class="row__name">USC</b><span class="row__mid">AME · Viterbi</span><span class="tag cat">Target</span><span class="row__val">11.2%</span></div>
+      <div class="row uni uni--target"><span class="row__idx">T3</span><b class="row__name">Rice</b><span class="row__mid">MECH · Houston</span><span class="tag cat">Target</span><span class="row__val">8%</span></div>
+      <div class="row uni uni--target"><span class="row__idx">T4</span><b class="row__name">UT Austin</b><span class="row__mid">ASE · Cockrell</span><span class="tag cat">Target</span><span class="row__val">17%</span></div>
+      <div class="row uni uni--target"><span class="row__idx">T5</span><b class="row__name">CU Boulder</b><span class="row__mid">Aerospace</span><span class="tag cat">Target</span><span class="row__val">75%</span></div>
+      <div class="row uni uni--safe"><span class="row__idx">S1</span><b class="row__name">Embry-Riddle</b><span class="row__mid">AE</span><span class="tag cat">Safe</span><span class="row__val">66.6%</span></div>
+      <div class="row uni uni--safe"><span class="row__idx">S2</span><b class="row__name">Florida Tech</b><span class="row__mid">AE</span><span class="tag cat">Safe</span><span class="row__val">63%</span></div>
+      <div class="row uni uni--safe"><span class="row__idx">S3</span><b class="row__name">University of Houston</b><span class="row__mid">MECE · AE minor</span><span class="tag cat">Safe</span><span class="row__val">74%</span></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel reveal">
+        <h3 class="mini-h">Strategic pillars</h3>
+        <ul class="check">
+          <li><strong>Math ladder:</strong> Pre-Calc (Summer ’26) → AP Calc BC (11th) → Multivariable / Linear Algebra (12th)</li>
+          <li><strong>Physics upgrade:</strong> AP Physics 1 → AP Physics C Mechanics + E&amp;M (calculus-based)</li>
+          <li><strong>Research spike:</strong> isolation forests + PPO for spacecraft trajectory management under thruster degradation — manuscript targeting JEI</li>
+          <li><strong>PSAT / National Merit:</strong> October 2026 — can cover full tuition at match schools</li>
+          <li><strong>Sea Cadets as differentiator:</strong> leadership + discipline cited in Caltech supplemental strategy</li>
+          <li><strong>Proof-of-work:</strong> NASA SLI · Conrad · CAC · TARC · SEFH → ISEF</li>
+        </ul>
+      </div>
+      <div class="panel reveal">
+        <h3 class="mini-h">Application rounds — fall 2027</h3>
+        <table class="tbl tbl--compact">
+          <thead><tr><th>School</th><th>Round</th><th>Deadline</th></tr></thead>
+          <tbody>
+            <tr><td>Georgia Tech</td><td>EA</td><td>Oct 15</td></tr>
+            <tr><td>Caltech</td><td>EA</td><td>Nov 1</td></tr>
+            <tr><td>MIT</td><td>EA</td><td>Nov 1</td></tr>
+            <tr><td>Stanford</td><td>REA</td><td>Nov 1</td></tr>
+            <tr><td>UC Berkeley</td><td>M.E.T.</td><td>Nov 1–30</td></tr>
+            <tr><td>Rest of list</td><td>RD</td><td>Jan 1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3 class="mini-h reveal">Operation Liftoff — phase timeline</h3>
+    <ol class="phases reveal">
+      <li class="phase phase--live"><span class="phase__n">P1</span><div><b>Summer Sprint</b><span class="phase__d">Jun 16 – Aug 31, 2026</span><p>Ship GridEvac + CAC video · Texas HAS application · Arduino/C++ bootcamp · IU cybersecurity (Sea Cadets) · Conrad team formation</p></div></li>
+      <li class="phase"><span class="phase__n">P2</span><div><b>Fall Launch</b><span class="phase__d">Sep – Dec 2026</span><p>Junior year (7 APs) · MIT BWSI online prereqs · NASA SLI proposal · PSAT 10/14 · SEFH registration · JEI submission · HPR L1 cert</p></div></li>
+      <li class="phase"><span class="phase__n">P3</span><div><b>Winter Push</b><span class="phase__d">Jan – Feb 2027</span><p>Conrad semifinals · NASA SLI CDR · FAA Part 107 · SEFH competition · YYGS / RSI / SEES applications</p></div></li>
+      <li class="phase"><span class="phase__n">P4</span><div><b>Spring Validation</b><span class="phase__d">Mar – May 2027</span><p>NASA SEES app · BWSI residential app · SLI FRR + launch · AP exams (May) · ISEF (if qualified)</p></div></li>
+      <li class="phase"><span class="phase__n">P5</span><div><b>Summer of Credentialing</b><span class="phase__d">Jun – Aug 2027</span><p>NASA HAS at JSC · BWSI residential · college essay drafts · research wraps</p></div></li>
+      <li class="phase"><span class="phase__n">P6</span><div><b>Senior Apps</b><span class="phase__d">Sep – Nov 2027</span><p>Common App live · EA deadlines (GT 10/15 · MIT/Caltech/Stanford 11/1) · Berkeley M.E.T.</p></div></li>
+      <li class="phase"><span class="phase__n">P7</span><div><b>Decisions</b><span class="phase__d">2028</span><p>RD deadlines Jan 1 · decisions roll in · choose where the frontier begins</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot__giant" aria-hidden="true">BEN WU<sup>*</sup></div>
+  <div class="wrap foot__in">
+    <div class="foot__nav">
+      <a href="studies.html" data-warp class="fn__prev"><span class="fn__k">← previous body</span><span class="fn__t">Studies</span></a>
+      <a href="applications.html" data-warp class="fn__next"><span class="fn__k">next body →</span><span class="fn__t">Applications</span></a>
+    </div>
+    <p class="foot__sol"><a href="index.html" data-warp>↺ return to sol</a></p>
+    <p class="foot__line">Benjamin Xianming Wu — <span class="dim">Carnegie Vanguard HS · Houston, TX · est. 2009</span></p>
+    <p class="foot__sub">Aggregated from the Second Brain vault · smooth scrolling by <a href="https://github.com/darkroomengineering/lenis" target="_blank" rel="noopener">Lenis</a> · design language inspired by <a href="https://www.igloo.inc/" target="_blank" rel="noopener">igloo.inc</a>, <a href="https://buttermax.net/" target="_blank" rel="noopener">buttermax.net</a> &amp; the GSAP-Awwwards milk-tea system · 1% better every week.</p>
+  </div>
+</footer>
+</main>
+
+<script src="vendor/lenis.min.js"></script>
+<script src="js/main.js"></script>
+<script type="module" src="js/scene.js"></script>
+</body>
+</html>
