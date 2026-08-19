@@ -388,9 +388,13 @@
         var r = el.getBoundingClientRect();
         var px = (e.clientX - r.left) / r.width - 0.5;
         var py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transitionDuration = "0.12s";
         el.style.transform = "perspective(700px) rotateX(" + (-py * 7).toFixed(2) + "deg) rotateY(" + (px * 9).toFixed(2) + "deg) translateZ(0)";
       });
-      el.addEventListener("mouseleave", function () { el.style.transform = ""; });
+      el.addEventListener("mouseleave", function () {
+        el.style.transitionDuration = "";
+        el.style.transform = "";
+      });
     });
   }
 
@@ -445,8 +449,22 @@
       setTimeout(function () { warp.classList.remove("is-active"); }, 850);
     }, 180);
   }
-  /* clear the fallback overlay (it is transparent by default) */
-  if (navFade) navFade.classList.remove("is-on");
+  /* browsers without View Transitions: fade the warp overlay OUT on
+     arrival so the new page emerges from the dark instead of popping in */
+  if (navFade) {
+    if (!vtSupported) {
+      var arrived = false;
+      try { arrived = !!sessionStorage.getItem("bw-last-planet"); } catch (err) { /* ignore */ }
+      if (arrived) {
+        navFade.classList.add("is-on");
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { navFade.classList.remove("is-on"); });
+        });
+      }
+    } else {
+      navFade.classList.remove("is-on");
+    }
+  }
 
   /* ------------------------------------------------------------
      REVEAL — staggered cascade so content never just appears
@@ -645,4 +663,55 @@
       if (countEl) renderCountdown(st, countEl, t);
     }
   }, 1000);
+
+  /* ------------------------------------------------------------
+     CREATIVE TEXT — per-letter titles + cascading content blocks
+     ------------------------------------------------------------ */
+  function splitChars(el) {
+    if (!el || el.dataset.split) return;
+    el.dataset.split = "1";
+    var frag = document.createDocumentFragment();
+    var ci = 0;
+    Array.prototype.forEach.call(el.childNodes, function (node) {
+      if (node.nodeType === 3) {
+        node.textContent.split("").forEach(function (c) {
+          if (c === " ") { frag.appendChild(document.createTextNode(" ")); return; }
+          var s = document.createElement("span");
+          s.className = "ch";
+          s.style.transitionDelay = ci * 38 + "ms";
+          s.textContent = c;
+          frag.appendChild(s);
+          ci++;
+        });
+      } else {
+        frag.appendChild(node.cloneNode(true));
+      }
+    });
+    el.textContent = "";
+    el.appendChild(frag);
+  }
+
+  function ensureReveal(el) {
+    if (el.classList.contains("reveal")) return;
+    el.classList.add("reveal");
+    if (reducedMotion) el.classList.add("is-in");
+    else if (io) io.observe(el);
+  }
+
+  function cascadeChildren(container, base) {
+    if (!container || container.classList.contains("cascade")) return;
+    container.classList.add("cascade");
+    ensureReveal(container);
+    Array.prototype.forEach.call(container.children, function (child, idx) {
+      child.style.transitionDelay = Math.min(560, idx * 55 + (base || 0)) + "ms";
+    });
+  }
+
+  document.querySelectorAll(".hero__l1, .hero__l2, .sec__title").forEach(splitChars);
+
+  document.querySelectorAll(".kpis, .rows, .phases, .split, .rules, .stack").forEach(function (el) {
+    cascadeChildren(el, 0);
+  });
+  var dlGridEl = document.getElementById("dlGrid");
+  if (dlGridEl) cascadeChildren(dlGridEl, 160);
 })();

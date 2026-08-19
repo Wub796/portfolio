@@ -145,7 +145,7 @@ main#top{position:relative;z-index:1}
 
 /* section headers flip in 3D */
 .sec{perspective:1400px}
-.reveal.flip3d{transform:rotateX(-34deg) translateY(24px);transform-origin:top center}
+.reveal.flip3d{transform:rotateX(-28deg) translateY(26px);transform-origin:top center}
 .reveal.flip3d.is-in{transform:none}
 
 /* 3D tilt targets */
@@ -698,6 +698,20 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
 .reveal{opacity:.28;transform:translateY(20px);filter:blur(4px);transition:opacity .85s var(--ease),transform .85s var(--ease),filter .85s var(--ease)}
 .reveal.is-in{opacity:1;transform:none;filter:blur(0)}
 
+/* ---------- creative text entrances ---------- */
+/* per-letter rise + tilt inside titles */
+.ch{display:inline-block;opacity:0;transform:translateY(.6em) rotate(4deg);will-change:transform;transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.is-in .ch{opacity:1;transform:none}
+/* section titles tighten their tracking as they appear */
+.sec__head .sec__title{animation:trackIn 1.1s var(--ease) .1s both}
+@keyframes trackIn{from{letter-spacing:.18em}to{letter-spacing:-.01em}}
+/* section numbers wipe up from below */
+.sec__head .sec__num{animation:numReveal .9s var(--ease) .16s both}
+@keyframes numReveal{from{clip-path:inset(0 0 100% 0);transform:translateY(18px)}to{clip-path:inset(0 0 0 0);transform:none}}
+/* content blocks cascade item-by-item (delays set by js/main.js) */
+.cascade>*{opacity:0;transform:translateY(16px);filter:blur(2px);transition:opacity .7s var(--ease),transform .7s var(--ease),filter .7s var(--ease),background .3s var(--ease)}
+.cascade.is-in>*{opacity:1;transform:none;filter:blur(0)}
+
 /* ---------- responsive ---------- */
 @media (max-width:960px){
   .grid2{grid-template-columns:1fr}
@@ -778,10 +792,11 @@ body[data-planet="deadlines"]{--accent:var(--p9)}
 
 /* ---------- cross-document View Transitions — zero-flash warp ---------- */
 @view-transition{navigation:auto}
-::view-transition-old(root){animation:vtOld .75s cubic-bezier(.4,0,.2,1) both}
-::view-transition-new(root){animation:vtNew .75s cubic-bezier(.4,0,.2,1) both}
-@keyframes vtOld{to{transform:scale(1.035);opacity:0;filter:blur(6px)}}
-@keyframes vtNew{from{transform:scale(.972);opacity:0;filter:blur(6px)}}
+/* the new page rises like a curtain being lifted; the old one settles down */
+::view-transition-old(root){animation:vtOld .9s cubic-bezier(.65,0,.25,1) both}
+::view-transition-new(root){animation:vtNew .9s cubic-bezier(.65,0,.25,1) both}
+@keyframes vtOld{to{transform:translateY(-2.5%) scale(1.02);opacity:0;filter:blur(9px)}}
+@keyframes vtNew{from{transform:translateY(6%);clip-path:inset(12% 0 0 0);opacity:.5;filter:blur(9px)}}
 @media (prefers-reduced-motion:reduce){
   ::view-transition-old(root),::view-transition-new(root){animation-duration:.01ms}
 }
@@ -789,7 +804,7 @@ body[data-planet="deadlines"]{--accent:var(--p9)}
 /* fallback warp overlay for browsers without View Transitions */
 .navFade{
   position:fixed;inset:0;z-index:400;pointer-events:none;
-  background:#222123;opacity:0;transition:opacity .24s ease;
+  background:#222123;opacity:0;transition:opacity .5s ease;
   display:grid;place-items:center;
 }
 .navFade.is-on{opacity:1}
