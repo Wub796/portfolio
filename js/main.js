@@ -299,12 +299,40 @@
      ------------------------------------------------------------ */
   var vtSupported = typeof document.startViewTransition === "function";
   var navFade = document.getElementById("navFade");
+  var exitLock = false;
 
   function closeMenu() {
     var toggle = document.getElementById("navToggle");
     var links = document.getElementById("navLinks");
     if (toggle) toggle.setAttribute("aria-expanded", "false");
     if (links) links.classList.remove("is-open");
+  }
+
+  function doNavigate(href) {
+    if (vtSupported) {
+      /* cross-document View Transition — browser morphs old → new, zero flash */
+      window.location.href = href;
+    } else {
+      /* fallback: themed warp overlay covers the swap */
+      if (navFade) navFade.classList.add("is-on");
+      setTimeout(function () { window.location.href = href; }, 240);
+    }
+  }
+
+  /* anime.js exit — the page compresses upward and blurs out before we leave */
+  function exitChoreography(href) {
+    var mainEl = document.querySelector("main");
+    var ch = Array.prototype.slice.call(document.querySelectorAll(".sec__head .ch, .hero__name .ch"));
+    var done = false;
+    function go() { if (done) return; done = true; doNavigate(href); }
+    setTimeout(go, 700); /* safety — a stalled timeline must never hang navigation */
+    if (mainEl) {
+      anime.createTimeline({ onComplete: go })
+        .add(mainEl, { opacity: [1, 0], translateY: [0, -34], filter: ["blur(0px)", "blur(6px)"], duration: 380, easing: "easeInExpo" }, 0)
+        .add(ch, { opacity: 0, translateY: -56, rotate: -5, duration: 320, delay: anime.stagger(14), easing: "easeInExpo" }, 0);
+    } else {
+      go();
+    }
   }
 
   document.addEventListener("click", function (e) {
@@ -314,15 +342,11 @@
       if (!href || href === "#" || href.indexOf(".html") === -1 && href.indexOf("/") === -1) return;
       e.preventDefault();
       closeMenu();
+      if (exitLock) return;
+      exitLock = true;
       try { sessionStorage.setItem("bw-last-planet", currentPlanet); } catch (err) { /* ignore */ }
-      if (vtSupported) {
-        /* cross-document View Transition — browser morphs old → new, zero flash */
-        window.location.href = href;
-      } else {
-        /* fallback: themed warp overlay covers the swap */
-        if (navFade) navFade.classList.add("is-on");
-        setTimeout(function () { window.location.href = href; }, 260);
-      }
+      if (reducedMotion || !window.anime) doNavigate(href);
+      else exitChoreography(href);
       return;
     }
     var anchor = e.target.closest ? e.target.closest('a[data-scroll]') : null;
@@ -733,4 +757,38 @@
   });
   var dlGridEl = document.getElementById("dlGrid");
   if (dlGridEl) cascadeChildren(dlGridEl, 160);
+
+  /* ------------------------------------------------------------
+     ANIME — hero opening shot (home): the name letters drop in
+     with an elastic stagger, then the intro follows.
+     ------------------------------------------------------------ */
+  if (window.anime && !reducedMotion) {
+    var heroName = document.querySelector(".hero__name");
+    if (heroName) {
+      heroName.classList.remove("reveal");
+      var heroMeta = document.querySelector(".hero__meta");
+      var heroCh = document.querySelectorAll(".hero__name .ch");
+      if (heroCh.length) {
+        anime.set(heroCh, { opacity: 0, translateY: "0.95em", rotate: 6 });
+        if (heroMeta) { heroMeta.classList.remove("reveal"); anime.set(heroMeta, { opacity: 0, translateY: 16 }); }
+        anime.createTimeline({})
+          .add(".hero__l1 .ch", { opacity: [0, 1], translateY: ["0.95em", 0], rotate: [6, 0], duration: 950, delay: anime.stagger(42), easing: "easeOutExpo" }, 150)
+          .add(".hero__l2 .ch", { opacity: [0, 1], translateY: ["0.95em", 0], rotate: [6, 0], duration: 950, delay: anime.stagger(42), easing: "easeOutExpo" }, "-=700")
+          .add(".hero__meta", { opacity: [0, 1], translateY: [16, 0], duration: 750, easing: "easeOutExpo" }, "-=550");
+        /* safety net — if the timeline never ticks (rAF-stalled tab, older engine,
+           broken build), the name must never stay invisible */
+        setTimeout(function () {
+          var stuck = Array.prototype.some.call(heroCh, function (c) {
+            return parseFloat(getComputedStyle(c).opacity || "1") < 0.4;
+          });
+          if (stuck) {
+            heroName.classList.add("reveal");
+            Array.prototype.forEach.call(heroCh, function (c) { c.style.transition = "none"; });
+            anime.set(heroCh, { opacity: 1, translateY: 0, rotate: 0 });
+            if (heroMeta) { heroMeta.style.transition = "none"; anime.set(heroMeta, { opacity: 1, translateY: 0 }); }
+          }
+        }, 2600);
+      }
+    }
+  }
 })();

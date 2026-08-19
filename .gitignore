@@ -7,3 +7,6 @@
 # editor
 .vscode/
 .idea/
+
+# dependencies (animejs is vendored into vendor/)
+node_modules/
