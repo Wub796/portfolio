@@ -1,0 +1,9 @@
+# Freebuff tooling state
+.freebuff/
+
+# macOS junk
+.DS_Store
+
+# editor
+.vscode/
+.idea/

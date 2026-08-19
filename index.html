@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BENJAMIN WU — Astronautical Engineering</title>
+<meta name="description" content="Benjamin Xianming Wu — rising junior at Carnegie Vanguard High School (Houston ISD) targeting astronautical engineering. Studies, college plan, application process, extracurriculars, daily schedule, meal plan, training, and program deadlines." />
+<meta name="theme-color" content="#e9dfce" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101010'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ffd600' stroke-width='2.4'/%3E%3Ccircle cx='19.5' cy='12.5' r='2.6' fill='%23ffd600'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+
+<!-- WebGL space scene (fixed, behind everything) + comet-trail cursor canvas -->
+<canvas id="scene3d" aria-hidden="true"></canvas>
+<canvas id="comet" aria-hidden="true"></canvas>
+
+<!-- custom cursor + ambient glow + warp flash overlay -->
+<div class="cursor cursor--dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor cursor--ring" id="cursorRing" aria-hidden="true"></div>
+<div class="glow" id="glow" aria-hidden="true"></div>
+<div class="warp" id="warp" aria-hidden="true"></div>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#top" data-scroll>BW<span class="nav__reg">®</span></a>
+  <nav class="nav__links" id="navLinks" aria-label="Sections">
+    <a href="#system" data-scroll>System</a>
+    <a href="#mission" data-scroll>Mission</a>
+    <a href="#studies" data-scroll>Studies</a>
+    <a href="#college" data-scroll>College</a>
+    <a href="#applications" data-scroll>Apps</a>
+    <a href="#extracurriculars" data-scroll>Extracurriculars</a>
+    <a href="#schedule" data-scroll>Schedule</a>
+    <a href="#meal" data-scroll>Meal</a>
+    <a href="#training" data-scroll>Training</a>
+    <a href="#deadlines" data-scroll>Deadlines</a>
+  </nav>
+  <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="progress" id="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+<!-- orbit rail — where you are in the system -->
+<nav class="rail" id="rail" aria-label="Orbit navigation">
+  <a class="rail__node" href="#hero" data-scroll><i></i><b>SOL</b></a>
+  <a class="rail__node" href="#system" data-scroll><i></i><b>00 MAP</b></a>
+  <a class="rail__node" href="#mission" data-scroll><i></i><b>01</b></a>
+  <a class="rail__node" href="#studies" data-scroll><i></i><b>02</b></a>
+  <a class="rail__node" href="#college" data-scroll><i></i><b>03</b></a>
+  <a class="rail__node" href="#applications" data-scroll><i></i><b>04</b></a>
+  <a class="rail__node" href="#extracurriculars" data-scroll><i></i><b>05</b></a>
+  <a class="rail__node" href="#schedule" data-scroll><i></i><b>06</b></a>
+  <a class="rail__node" href="#meal" data-scroll><i></i><b>07</b></a>
+  <a class="rail__node" href="#training" data-scroll><i></i><b>08</b></a>
+  <a class="rail__node" href="#deadlines" data-scroll><i></i><b>09</b></a>
+</nav>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero__sun" aria-hidden="true"></div>
+  <div class="wrap hero__inner">
+    <p class="eyebrow reveal">Houston, TX — Carnegie Vanguard HS — Class of 2028</p>
+    <h1 class="hero__name reveal">
+      <span class="hero__l1">BENJAMIN</span>
+      <span class="hero__l2">WU<sup class="hero__ast">*</sup></span>
+    </h1>
+    <div class="hero__badge" aria-hidden="true">
+      <svg class="hero__badge-svg" viewBox="0 0 200 200">
+        <defs>
+          <path id="circPath" d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0" />
+        </defs>
+        <text class="hero__badge-text"><textPath href="#circPath">BENJAMIN WU ✦ MISSION CONTROL ✦ ASTRONAUTICAL ENGINEERING ✦</textPath></text>
+      </svg>
+      <span class="hero__badge-core"></span>
+    </div>
+    <div class="hero__meta reveal">
+      <p class="hero__sub">Rising junior engineering software, hardware, and a body that survives the g-forces. Targeting <strong>astronautical / aerospace engineering</strong> at a frontier university — then GNC, propulsion, or autonomous space systems at NASA, SpaceX, or JPL.</p>
+      <div class="hero__stats">
+        <span class="hero__stat"><b>4.6818</b> weighted GPA</span>
+        <span class="hero__stat"><b>2028</b> graduating class</span>
+        <span class="hero__stat"><b id="houstonClock">--:--:--</b> Houston clock</span>
+        <span class="hero__stat"><b>10 PM</b> daily shutdown</span>
+      </div>
+      <div class="hero__tags">
+        <span>AP CSP · AP Bio · AP World · AP HUG</span>
+        <span>Sea Cadets — USNSCC</span>
+        <span>Varsity Volleyball</span>
+        <span>NASA HUNCH · CAC · TARC</span>
+        <span>College Board National Recognition</span>
+      </div>
+      <a class="cta" href="#mission" data-scroll>
+        <span class="cta__large">Begin the Journey</span>
+        <span class="cta__small">scroll to explore the plan ↓</span>
+      </a>
+    </div>
+  </div>
+  <a class="hero__cue" href="#system" data-scroll aria-label="Scroll to the system map">( enter the system )</a>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>Astronautical Engineering</span><i>✦</i>
+    <span>4.6818 Weighted GPA</span><i>✦</i>
+    <span>Carnegie Vanguard HS</span><i>✦</i>
+    <span>Sea Cadets · USNSCC</span><i>✦</i>
+    <span>Varsity Volleyball</span><i>✦</i>
+    <span>GridEvac AI — CAC</span><i>✦</i>
+    <span>Trajectory Research</span><i>✦</i>
+    <span>10 PM Shutdown</span><i>✦</i>
+    <span>Deep Work Block</span><i>✦</i>
+    <span>Mission: The Frontier</span><i>✦</i>
+    <span>Astronautical Engineering</span><i>✦</i>
+    <span>4.6818 Weighted GPA</span><i>✦</i>
+    <span>Carnegie Vanguard HS</span><i>✦</i>
+    <span>Sea Cadets · USNSCC</span><i>✦</i>
+    <span>Varsity Volleyball</span><i>✦</i>
+    <span>GridEvac AI — CAC</span><i>✦</i>
+    <span>Trajectory Research</span><i>✦</i>
+    <span>10 PM Shutdown</span><i>✦</i>
+    <span>Deep Work Block</span><i>✦</i>
+    <span>Mission: The Frontier</span><i>✦</i>
+  </div>
+</div>
+
+<!-- ============ 00 THE SYSTEM (orbital map) ============ -->
+<section class="sec sys-sec" id="system">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p9)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">00</span></span>
+      <span class="sec__num">00</span>
+      <div><h2 class="sec__title">The System</h2><p class="sec__label">nine bodies in orbit — hover to pause · click a planet to fly there</p></div>
+    </header>
+  </div>
+  <div class="sys" aria-label="Site map as a solar system">
+    <div class="sys__sun"><b>BEN</b><span>★</span></div>
+    <a class="sys__planet" href="#mission" data-scroll style="--pc:var(--p1);--r:30%;--t:26s;--d:-4s"><span class="sys__ring"></span><span class="sys__orb"></span><span class="sys__label">01 Mission</span></a>
+    <a class="sys__planet" href="#studies" data-scroll style="--pc:var(--p2);--r:38%;--t:36s;--d:-12s"><span class="sys__ring"></span><span class="sys__orb"></span><span class="sys__label">02 Studies</span></a>
+    <a class="sys__planet" href="#college" data-scroll style="--pc:var(--p3);--r:46%;--t:48s;--d:-21s"><span class="sys__ring"></span><span class="sys__orb"></span><span class="sys__label">03 College</span></a>
+    <a class="sys__planet" href="#applications" data-scroll style="--pc:var(--p4);--r:54%;--t:62s;--d:-32s"><span class="sys__ring"></span><span class="sys__orb"></span><span class="sys__label">04 Apps</span></a>
+    <a class="sys__planet" href="#extracurriculars" data-scroll style="--pc:var(--p5);--r:62%;--t:78s;--d:-45s"><span class="sys__ring"></span><span class="sys__orb"></span><span class="sys__label">05 Extracurriculars</span></a>
+    <a class="sys__planet" href="#schedule" data-scroll style="--pc:var(--p6);--r:70%;--t:96s;--d:-60s"><span class="sys__ring"></span><span class="sys__orb"></span><span class="sys__label">06 Schedule</span></a>
+    <a class="sys__planet" href="#meal" data-scroll style="--pc:var(--p7);--r:78%;--t:118s;--d:-77s"><span class="sys__ring"></span><span class="sys__orb"></span><span class="sys__label">07 Meal</span></a>
+    <a class="sys__planet" href="#training" data-scroll style="--pc:var(--p8);--r:86%;--t:142s;--d:-96s"><span class="sys__ring"></span><span class="sys__orb"></span><span class="sys__label">08 Training</span></a>
+    <a class="sys__planet" href="#deadlines" data-scroll style="--pc:var(--p9);--r:94%;--t:170s;--d:-118s"><span class="sys__ring"></span><span class="sys__orb"></span><span class="sys__label">09 Deadlines</span></a>
+  </div>
+  <p class="sys__hint reveal">— scroll or fly —</p>
+</section>
+
+<!-- ============ 01 MISSION ============ -->
+<section class="sec" id="mission">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p1)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">01</span></span>
+      <span class="sec__num">01</span>
+      <h2 class="sec__title">Mission</h2>
+    </header>
+    <blockquote class="manifesto reveal">
+      “Study <em>astronautical engineering</em> at a top-tier university and work at the <em>frontier of space</em>. Everything I build — projects, research, skills, reps in the gym — compounds toward being the kind of applicant and future engineer who belongs there.”
+    </blockquote>
+    <div class="mission__cols">
+      <div class="mission__col reveal">
+        <h3 class="mini-h">Short-term · Summer 2026</h3>
+        <ul class="check">
+          <li class="done">GridEvac AI submitted — Congressional App Challenge</li>
+          <li class="done">Schollective deployed — Citizen Entrepreneurship Challenge</li>
+          <li>Sea Cadets rank push SA → PO1 · IU cybersecurity, Jul 27 – Aug 1</li>
+          <li>Technician Ham Radio license — target Aug 2026</li>
+          <li>1-Axis Reaction Wheel (CubeSat) prototype — target Aug 2026</li>
+        </ul>
+      </div>
+      <div class="mission__col reveal">
+        <h3 class="mini-h">Medium-term · 11th grade (2026–27)</h3>
+        <ul class="check">
+          <li>NASA Student Launch Initiative — team by early fall 2026</li>
+          <li>High-Power Rocketry L1 cert (NAR/Tripoli) — Oct 2026</li>
+          <li>SolidWorks CSWA — Nov 2026 · FAA Part 107 — Dec 2026</li>
+          <li>Maintain GPA &gt; 4.6 · score 5s on all junior APs</li>
+          <li>PSAT / National Merit — Oct 2026</li>
+        </ul>
+      </div>
+      <div class="mission__col reveal">
+        <h3 class="mini-h">Long-term · Career</h3>
+        <ul class="check">
+          <li>Admission to a top astronautical/aerospace program — MIT, Caltech, Stanford, Georgia Tech, Purdue, UC Berkeley</li>
+          <li>GNC, propulsion, or autonomous space systems — NASA, SpaceX, JPL, AFRL, or a frontier startup</li>
+          <li>Disciplined, curious, rigorous — builds things that actually fly</li>
+        </ul>
+      </div>
+    </div>
+    <p class="mission__note reveal">Anti-goals: mindless scrolling, low-yield optimization, and treating programs as check-boxes instead of deep skill-building environments.</p>
+  </div>
+</section>
+
+<!-- ============ 02 STUDIES ============ -->
+<section class="sec" id="studies">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p2)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">02</span></span>
+      <span class="sec__num">02</span>
+      <div><h2 class="sec__title">Studies</h2><p class="sec__label">Carnegie Vanguard HS · Houston ISD · transcript as of 01-13-2026</p></div>
+    </header>
+
+    <div class="kpis reveal">
+      <div class="kpi"><b>4.6818</b><span>Weighted GPA</span></div>
+      <div class="kpi"><b>DNR</b><span>Class Rank</span></div>
+      <div class="kpi"><b>12.0</b><span>State / Local Credits</span></div>
+      <div class="kpi"><b>STEM+</b><span>STEM &amp; Multi-Disciplinary Endorsements</span></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel reveal">
+        <h3 class="mini-h">Coursework — 9th &amp; 10th grade</h3>
+        <table class="tbl">
+          <thead><tr><th>Subject</th><th>Course</th><th>Grade</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="3">Math</td><td>Algebra 1 <span class="tag">pre-HS · 97</span></td><td>A</td></tr>
+            <tr><td>Geometry</td><td>96/94</td></tr>
+            <tr><td>Algebra 2</td><td>98</td></tr>
+            <tr><td rowspan="3">Science</td><td>Biology</td><td>94/94</td></tr>
+            <tr><td>AP Biology</td><td>93</td></tr>
+            <tr><td>Chemistry</td><td>92</td></tr>
+            <tr><td rowspan="2">Social Studies</td><td>AP Human Geography</td><td>90/93</td></tr>
+            <tr><td>AP World History</td><td>90</td></tr>
+            <tr><td>English</td><td>English 1 · English 2 <span class="tag">Honors</span></td><td>95/92 · 91/95</td></tr>
+            <tr><td>Tech</td><td>AP Computer Science Principles</td><td>94</td></tr>
+            <tr><td>Language</td><td>French 1</td><td>93/90</td></tr>
+            <tr><td>Arts</td><td>Art 1</td><td>98/99</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel reveal">
+        <h3 class="mini-h">State assessments &amp; milestones</h3>
+        <ul class="check">
+          <li class="done">Algebra I EOC — <em>waived</em> (05/2024)</li>
+          <li class="done">Biology EOC — <em>Masters</em> level (04/2025)</li>
+          <li class="done">English I EOC — <em>Meets</em> level (04/2025)</li>
+          <li>English II EOC — pending</li>
+          <li>U.S. History EOC — pending</li>
+          <li class="done">Speech requirement — completed 06/2025</li>
+          <li class="done">CPR / AED instruction — completed 06/2025</li>
+        </ul>
+        <h3 class="mini-h">Junior-year ladder (2026–27)</h3>
+        <ul class="check">
+          <li>7 AP courses · weighted GPA target &gt; 4.6</li>
+          <li><strong>AP Calculus BC</strong> — after pre-calc over Summer 2026 (97% of incoming aerospace freshmen finish calc before senior year)</li>
+          <li><strong>AP Physics C</strong> — calculus-based, the elite-engineering standard</li>
+          <li><strong>AP Research</strong> — AI × Aerospace spike (autonomous navigation / ML in propulsion)</li>
+          <li>PSAT / NMSQT — October 14, 2026</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 COLLEGE PLAN ============ -->
+<section class="sec" id="college">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p3)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">03</span></span>
+      <span class="sec__num">03</span>
+      <div><h2 class="sec__title">College Plan</h2><p class="sec__label">Operation Liftoff · 7 phases · today → January 2028 decisions</p></div>
+    </header>
+
+    <h3 class="mini-h reveal">Target list — aerospace strength</h3>
+    <div class="rows unis reveal">
+      <div class="row uni uni--reach"><span class="row__idx">R1</span><b class="row__name">Stanford</b><span class="row__mid">astronautics · AA</span><span class="tag cat">Reach</span><span class="row__val">3.68%</span></div>
+      <div class="row uni uni--reach"><span class="row__idx">R2</span><b class="row__name">MIT</b><span class="row__mid">AeroAstro</span><span class="tag cat">Reach</span><span class="row__val">4.6%</span></div>
+      <div class="row uni uni--reach"><span class="row__idx">R3</span><b class="row__name">UC Berkeley</b><span class="row__mid">M.E.T. · EECS</span><span class="tag cat">Reach</span><span class="row__val">11.4%</span></div>
+      <div class="row uni uni--reach"><span class="row__idx">R4</span><b class="row__name">Purdue</b><span class="row__mid">AAE</span><span class="tag cat">Reach</span><span class="row__val">11%</span></div>
+      <div class="row uni uni--target"><span class="row__idx">T1</span><b class="row__name">Georgia Tech</b><span class="row__mid">AE</span><span class="tag cat">Target</span><span class="row__val">13.8%</span></div>
+      <div class="row uni uni--target"><span class="row__idx">T2</span><b class="row__name">USC</b><span class="row__mid">AME · Viterbi</span><span class="tag cat">Target</span><span class="row__val">11.2%</span></div>
+      <div class="row uni uni--target"><span class="row__idx">T3</span><b class="row__name">Rice</b><span class="row__mid">MECH · Houston</span><span class="tag cat">Target</span><span class="row__val">8%</span></div>
+      <div class="row uni uni--target"><span class="row__idx">T4</span><b class="row__name">UT Austin</b><span class="row__mid">ASE · Cockrell</span><span class="tag cat">Target</span><span class="row__val">17%</span></div>
+      <div class="row uni uni--target"><span class="row__idx">T5</span><b class="row__name">CU Boulder</b><span class="row__mid">Aerospace</span><span class="tag cat">Target</span><span class="row__val">75%</span></div>
+      <div class="row uni uni--safe"><span class="row__idx">S1</span><b class="row__name">Embry-Riddle</b><span class="row__mid">AE</span><span class="tag cat">Safe</span><span class="row__val">66.6%</span></div>
+      <div class="row uni uni--safe"><span class="row__idx">S2</span><b class="row__name">Florida Tech</b><span class="row__mid">AE</span><span class="tag cat">Safe</span><span class="row__val">63%</span></div>
+      <div class="row uni uni--safe"><span class="row__idx">S3</span><b class="row__name">University of Houston</b><span class="row__mid">MECE · AE minor</span><span class="tag cat">Safe</span><span class="row__val">74%</span></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel reveal">
+        <h3 class="mini-h">Strategic pillars</h3>
+        <ul class="check">
+          <li><strong>Math ladder:</strong> Pre-Calc (Summer ’26) → AP Calc BC (11th) → Multivariable / Linear Algebra (12th)</li>
+          <li><strong>Physics upgrade:</strong> AP Physics 1 → AP Physics C Mechanics + E&amp;M (calculus-based)</li>
+          <li><strong>Research spike:</strong> isolation forests + PPO for spacecraft trajectory management under thruster degradation — manuscript targeting JEI</li>
+          <li><strong>PSAT / National Merit:</strong> October 2026 — can cover full tuition at match schools</li>
+          <li><strong>Sea Cadets as differentiator:</strong> leadership + discipline cited in Caltech supplemental strategy</li>
+          <li><strong>Proof-of-work:</strong> NASA SLI · Conrad · CAC · TARC · SEFH → ISEF</li>
+        </ul>
+      </div>
+      <div class="panel reveal">
+        <h3 class="mini-h">Application rounds — fall 2027</h3>
+        <table class="tbl tbl--compact">
+          <thead><tr><th>School</th><th>Round</th><th>Deadline</th></tr></thead>
+          <tbody>
+            <tr><td>Georgia Tech</td><td>EA</td><td>Oct 15</td></tr>
+            <tr><td>Caltech</td><td>EA</td><td>Nov 1</td></tr>
+            <tr><td>MIT</td><td>EA</td><td>Nov 1</td></tr>
+            <tr><td>Stanford</td><td>REA</td><td>Nov 1</td></tr>
+            <tr><td>UC Berkeley</td><td>M.E.T.</td><td>Nov 1–30</td></tr>
+            <tr><td>Rest of list</td><td>RD</td><td>Jan 1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3 class="mini-h reveal">Operation Liftoff — phase timeline</h3>
+    <ol class="phases reveal">
+      <li class="phase phase--live"><span class="phase__n">P1</span><div><b>Summer Sprint</b><span class="phase__d">Jun 16 – Aug 31, 2026</span><p>Ship GridEvac + CAC video · Texas HAS application · Arduino/C++ bootcamp · IU cybersecurity (Sea Cadets) · Conrad team formation</p></div></li>
+      <li class="phase"><span class="phase__n">P2</span><div><b>Fall Launch</b><span class="phase__d">Sep – Dec 2026</span><p>Junior year (7 APs) · MIT BWSI online prereqs · NASA SLI proposal · PSAT 10/14 · SEFH registration · JEI submission · HPR L1 cert</p></div></li>
+      <li class="phase"><span class="phase__n">P3</span><div><b>Winter Push</b><span class="phase__d">Jan – Feb 2027</span><p>Conrad semifinals · NASA SLI CDR · FAA Part 107 · SEFH competition · YYGS / RSI / SEES applications</p></div></li>
+      <li class="phase"><span class="phase__n">P4</span><div><b>Spring Validation</b><span class="phase__d">Mar – May 2027</span><p>NASA SEES app · BWSI residential app · SLI FRR + launch · AP exams (May) · ISEF (if qualified)</p></div></li>
+      <li class="phase"><span class="phase__n">P5</span><div><b>Summer of Credentialing</b><span class="phase__d">Jun – Aug 2027</span><p>NASA HAS at JSC · BWSI residential · college essay drafts · research wraps</p></div></li>
+      <li class="phase"><span class="phase__n">P6</span><div><b>Senior Apps</b><span class="phase__d">Sep – Nov 2027</span><p>Common App live · EA deadlines (GT 10/15 · MIT/Caltech/Stanford 11/1) · Berkeley M.E.T.</p></div></li>
+      <li class="phase"><span class="phase__n">P7</span><div><b>Decisions</b><span class="phase__d">2028</span><p>RD deadlines Jan 1 · decisions roll in · choose where the frontier begins</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 04 APPLICATIONS ============ -->
+<section class="sec" id="applications">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p4)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">04</span></span>
+      <span class="sec__num">04</span>
+      <div><h2 class="sec__title">Application Process</h2><p class="sec__label">Common App · Coalition · program packets</p></div>
+    </header>
+
+    <div class="rows steps reveal">
+      <div class="row step"><span class="row__idx">01</span><div class="row__body"><b class="row__name">Build the record</b><p>GPA &gt; 4.6 with upward trend · AP ladder · EOC mastery · National Recognition award (College Board, 06/2026) — the transcript admissions officers read first.</p></div><span class="row__val">→</span></div>
+      <div class="row step"><span class="row__idx">02</span><div class="row__body"><b class="row__name">Proof-of-work projects</b><p>Research paper, GridEvac AI, Orbital Watch, Flight Logger, reaction wheel — 2–3 flagship engineering projects to speak to in essays and interviews.</p></div><span class="row__val">→</span></div>
+      <div class="row step"><span class="row__idx">03</span><div class="row__body"><b class="row__name">Personal statement</b><p>Drafted 06/2026 for STC 2026 (Houston aerospace &amp; AI gateway, Sea Cadets leadership, deep-space logistics). Refined through summer 2027 toward the Common App essay.</p></div><span class="row__val">→</span></div>
+      <div class="row step"><span class="row__idx">04</span><div class="row__body"><b class="row__name">Recommendation letters</b><p>Counselor (Veronica Chapman) + teacher letters — BU RISE set the discipline: student forms by Feb 4, recommenders by Feb 11.</p></div><span class="row__val">→</span></div>
+      <div class="row step"><span class="row__idx">05</span><div class="row__body"><b class="row__name">Program packets</b><p>Transcripts, personal statements, activity lists, waivers, travel forms — pipeline proven on STC 2026 (submitted 05/20/2026), Tapia Camps, and IU Sea Cadets.</p></div><span class="row__val">→</span></div>
+      <div class="row step"><span class="row__idx">06</span><div class="row__body"><b class="row__name">Submit &amp; follow up</b><p>EA by Nov 1 · RD by Jan 1 · decisions 6–8 weeks after deadlines (BU RISE: late Mar / early Apr pattern).</p></div><span class="row__val">→</span></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel reveal">
+        <h3 class="mini-h">Current pipeline</h3>
+        <ul class="check">
+          <li class="done">CAC 2026 — GridEvac AI submitted (deadline Oct 26, 2026)</li>
+          <li class="done">STC 2026 packet — submitted May 20, 2026</li>
+          <li class="done">Tapia Camps 2026 — waiver &amp; forms complete</li>
+          <li class="done">IU + Sea Cadets cybersecurity — enrolled Jul 27 – Aug 1, 2026</li>
+          <li>Texas HAS — nomination letter to State Legislator + application (window opens Jul 1, 2026)</li>
+          <li>JEI manuscript — restructuring per journal format, target submission fall 2026</li>
+        </ul>
+      </div>
+      <div class="panel reveal">
+        <h3 class="mini-h">Required documents</h3>
+        <ul class="check">
+          <li>Official / unofficial transcripts (HISD · Carnegie Vanguard)</li>
+          <li>Personal statement + supplemental essays</li>
+          <li>Letter(s) of recommendation</li>
+          <li>EOC / assessment records</li>
+          <li>Certifications: driver education, CPR/AED, speech, NRP certificate</li>
+          <li>Activity résumé — Sea Cadets rank progression, volleyball, research, projects</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 EXTRACURRICULARS ============ -->
+<section class="sec" id="extracurriculars">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p5)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">05</span></span>
+      <span class="sec__num">05</span>
+      <div><h2 class="sec__title">Extracurriculars</h2><p class="sec__label">Leadership · research · engineering · athletics</p></div>
+    </header>
+
+    <div class="rows ecards reveal">
+      <div class="row ecard"><span class="row__idx">E1</span><div class="row__body"><b class="row__name">Sea Cadets · USNSCC</b><p>Federally chartered youth corps affiliated with the U.S. Navy. Rank coursework complete through Petty Officer First Class; IU + Sea Cadets STEM Immersion cybersecurity program Jul 27 – Aug 1, 2026 accelerates SA → PO1. Named differentiator in Caltech supplemental strategy.</p></div><span class="tag cat">Seaman Apprentice → PO1</span></div>
+      <div class="row ecard"><span class="row__idx">E2</span><div class="row__body"><b class="row__name">Volleyball</b><p>Competitive play with pre/post tournament analysis (match reviews, strategy breakdowns). 12-week vertical jump development program + plyometrics for explosive reach — training logged against real match performance.</p></div><span class="tag cat">Varsity · Vertical jump</span></div>
+      <div class="row ecard"><span class="row__idx">E3</span><div class="row__body"><b class="row__name">Spacecraft Trajectory Research</b><p>Original machine-learning framework for spacecraft trajectory management under thruster degradation — anomaly detection + reinforcement learning. Manuscript in progress (JEI target); the AI × Aerospace admissions spike.</p></div><span class="tag cat">Isolation Forests × PPO</span></div>
+      <div class="row ecard"><span class="row__idx">E4</span><div class="row__body"><b class="row__name">GridEvac AI</b><p>Next.js / FastAPI grid-evacuation platform with real-time Dijkstra routing and anomaly detection, visualized on a 3D CesiumJS map. Submitted with demo video — the CAC entry.</p></div><span class="tag cat">Congressional App Challenge</span></div>
+      <div class="row ecard"><span class="row__idx">E5</span><div class="row__body"><b class="row__name">Orbital Watch</b><p>Three.js + REST APIs tracking orbital telemetry and visualizing space debris (Skyfield + CesiumJS). Repurposed as the official interactive 3D visualization for the trajectory research.</p></div><span class="tag cat">3D orbital telemetry</span></div>
+      <div class="row ecard"><span class="row__idx">E6</span><div class="row__body"><b class="row__name">Schollective</b><p>Academic mentorship platform connecting students with professors — Next.js / Supabase, deployed on Vercel, voting phase completed.</p></div><span class="tag cat">Citizen Entrepreneurship Challenge</span></div>
+      <div class="row ecard"><span class="row__idx">E7</span><div class="row__body"><b class="row__name">Custom Avionics Flight Logger</b><p>Arduino Nano 33 BLE Sense + BMP280 + MPU-6050 logging flight telemetry at 50 Hz with onboard edge anomaly detection — the hardware spine of the rocketry program (NASA HUNCH / SLI / TARC).</p></div><span class="tag cat">TinyML · Rocket telemetry</span></div>
+      <div class="row ecard"><span class="row__idx">E8</span><div class="row__body"><b class="row__name">Hardware &amp; Automation</b><p>1-axis CubeSat reaction wheel control (target Aug 2026) · decentralized planetary rover navigation (Edge AI) · plus a desktop clap-listener automation that opens Spotify, Cursor, Claude Code, and more on a double clap.</p></div><span class="tag cat">Reaction wheel · Rover · Jarvis</span></div>
+      <div class="row ecard"><span class="row__idx">E9</span><div class="row__body"><b class="row__name">Honors &amp; Certifications</b><p>College Board National Recognition Program School Recognition Award (06/2026) · NHS · NAHS · Google AI Essentials · Digital Marketing certification · Texas driver education · FCC Technician Ham Radio (in progress) · SolidWorks CSWA (target) · FAA Part 107 (target).</p></div><span class="tag cat">National Recognition Program</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 SCHEDULE ============ -->
+<section class="sec" id="schedule">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p6)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">06</span></span>
+      <span class="sec__num">06</span>
+      <div><h2 class="sec__title">Daily Schedule</h2><p class="sec__label">Reconciled ideal week · 10:00 PM shutdown · deep work protected</p></div>
+    </header>
+
+    <div class="toggle reveal" role="tablist" aria-label="Schedule mode">
+      <button class="toggle__b is-on" id="modeSchool" role="tab" aria-selected="true">School Year</button>
+      <button class="toggle__b" id="modeSummer" role="tab" aria-selected="false">Summer</button>
+    </div>
+
+    <div class="schedule-wrap reveal" id="tableSchool">
+      <table class="sched">
+        <thead>
+          <tr><th>Time</th><th>Mon <small>Gym</small></th><th>Tue <small>Gym</small></th><th>Wed <small>Agility</small></th><th>Thu <small>Gym</small></th><th>Fri <small>Recovery</small></th><th>Sat <small>Functional</small></th><th>Sun <small>Mobility</small></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>06:30</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake (07:30)</td><td data-t="wake">Wake (07:30)</td></tr>
+          <tr><td>06:45</td><td data-t="study">Morning Review</td><td data-t="study">Morning Review</td><td data-t="cardio">Morning Walk</td><td data-t="study">Morning Review</td><td data-t="cardio">Morning Walk</td><td data-t="cardio">Morning Walk</td><td data-t="meal">Breakfast</td></tr>
+          <tr><td>07:45</td><td data-t="commute">Commute / Prep</td><td data-t="commute">Commute / Prep</td><td data-t="commute">Commute / Prep</td><td data-t="commute">Commute / Prep</td><td data-t="commute">Commute / Prep</td><td data-t="meal">Breakfast</td><td data-t="free">Personal Time</td></tr>
+          <tr><td>08:30</td><td data-t="school" colspan="5">School — Carnegie Vanguard HS</td><td data-t="gym">Full-Body Gym</td><td data-t="sport">Volleyball / Club</td></tr>
+          <tr><td>15:30</td><td data-t="gym">Lower Power</td><td data-t="gym">Upper Strength</td><td data-t="plyo">Plyo &amp; Agility</td><td data-t="gym">Lower Strength</td><td data-t="free">Personal Time</td><td data-t="posture">Height Unlock</td><td data-t="mobility">Mobility / Stretch</td></tr>
+          <tr><td>16:45</td><td data-t="posture">Height Unlock</td><td data-t="posture">Height Unlock</td><td data-t="posture">Height Unlock</td><td data-t="posture">Height Unlock</td><td data-t="commute">Commute / Prep</td><td data-t="meal">Lunch</td><td data-t="meal">Lunch</td></tr>
+          <tr><td>17:15</td><td data-t="deep" colspan="4">Power Block 1 — Deep Study / Project Build</td><td data-t="sport">Club Practice</td><td data-t="deep" colspan="2">Deep Code Block</td></tr>
+          <tr><td>19:15</td><td data-t="meal" colspan="4">Dinner &amp; Chill</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="free">Leisure / Family</td><td data-t="meal">Dinner &amp; Chill</td></tr>
+          <tr><td>19:45</td><td data-t="deep" colspan="5">Power Block 2</td><td data-t="free">Leisure / Family</td><td data-t="free">Wind Down</td></tr>
+          <tr><td>20:30</td><td data-t="deep">Power Block 2</td><td data-t="deep">Power Block 2</td><td data-t="lesson">Coding Lesson</td><td data-t="deep">Power Block 2</td><td data-t="deep">Power Block 2</td><td data-t="free">Leisure / Family</td><td data-t="free">Wind Down</td></tr>
+          <tr><td>21:30</td><td data-t="wind" colspan="7">Wind Down — blue-light block, screen off, pack bag</td></tr>
+          <tr><td>22:00</td><td data-t="sleep" colspan="7">⏻ Shutdown — 8.5–9.5h sleep, cool room, GH pulse optimization</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="schedule-wrap" id="tableSummer" hidden>
+      <table class="sched">
+        <thead>
+          <tr><th>Time</th><th>Mon <small>Gym</small></th><th>Tue <small>Gym</small></th><th>Wed <small>Agility</small></th><th>Thu <small>Gym</small></th><th>Fri <small>Recovery</small></th><th>Sat <small>Functional</small></th><th>Sun <small>Mobility</small></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>06:30</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake Up</td><td data-t="wake">Wake (07:30)</td><td data-t="wake">Wake (07:30)</td></tr>
+          <tr><td>06:45</td><td data-t="cardio" colspan="6">Morning Walk — 50–55 min brisk cardio (HDL ↑ · LDL ↓ · triglycerides ↓)</td><td data-t="meal">Breakfast</td></tr>
+          <tr><td>07:45</td><td data-t="meal" colspan="6">Breakfast — lipid-safe: oats, egg whites, berries</td><td data-t="cardio">Walk</td></tr>
+          <tr><td>08:30</td><td data-t="deep" colspan="5">Deep Code Block — 3h uninterrupted build (Orbital Watch / trajectory research)</td><td data-t="gym">Full-Body Gym</td><td data-t="free">Leisure / Rest</td></tr>
+          <tr><td>11:30</td><td data-t="posture" colspan="7">Height Unlock — dead hangs · wall slides · hip flexor stretches</td></tr>
+          <tr><td>11:45</td><td data-t="meal" colspan="7">Lunch — lean chicken, green salad, extra-virgin olive oil</td></tr>
+          <tr><td>12:30</td><td data-t="study" colspan="5">AP / SAT Study</td><td data-t="free">Personal Time</td><td data-t="study">Weekly Prep</td></tr>
+          <tr><td>15:30</td><td data-t="gym">Lower Power</td><td data-t="gym">Upper Strength</td><td data-t="plyo">Plyo &amp; Agility</td><td data-t="gym">Lower Strength</td><td data-t="free">Personal Time</td><td data-t="free">Personal Time</td><td data-t="mobility">Mobility / Stretch</td></tr>
+          <tr><td>17:00</td><td data-t="posture" colspan="5">Posture / Decompression</td><td data-t="free">Personal Time</td><td data-t="meal">Dinner</td></tr>
+          <tr><td>17:30</td><td data-t="deep" colspan="5">Project Builds — Flight Logger / Rover / reaction wheel</td><td data-t="free">Personal Time</td><td data-t="free">Wind Down</td></tr>
+          <tr><td>19:30</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="lesson">Coding Lesson</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="free">Wind Down</td></tr>
+          <tr><td>20:30</td><td data-t="study">Night Review</td><td data-t="study">Night Review</td><td data-t="meal">Dinner &amp; Chill</td><td data-t="study">Night Review</td><td data-t="study">Night Review</td><td data-t="free">Wind Down</td><td data-t="free">Wind Down</td></tr>
+          <tr><td>21:30</td><td data-t="wind" colspan="7">Wind Down</td></tr>
+          <tr><td>22:00</td><td data-t="sleep" colspan="7">⏻ Shutdown — strict 8:00 PM food cutoff (9:00 PM Wed)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="legend reveal">
+      <span class="lg"><i style="background:var(--c-deep)"></i>Deep Work</span>
+      <span class="lg"><i style="background:var(--c-study)"></i>Study / Review</span>
+      <span class="lg"><i style="background:var(--c-gym)"></i>Resistance</span>
+      <span class="lg"><i style="background:var(--c-plyo)"></i>Plyo / Agility</span>
+      <span class="lg"><i style="background:var(--c-cardio)"></i>Cardio</span>
+      <span class="lg"><i style="background:var(--c-posture)"></i>Height Unlock</span>
+      <span class="lg"><i style="background:var(--c-school)"></i>School</span>
+      <span class="lg"><i style="background:var(--c-meal)"></i>Nutrition</span>
+      <span class="lg"><i style="background:var(--c-sport)"></i>Sport / Club</span>
+      <span class="lg"><i style="background:var(--c-free)"></i>Free / Wind Down</span>
+    </div>
+
+    <div class="rules reveal">
+      <div class="rule"><b>10:00 PM Shutdown</b><p>8.5–9.5 hours of sleep in a cool room — 75% of daily GH release happens during deep sleep.</p></div>
+      <div class="rule"><b>2-hour pre-sleep fast</b><p>Strict no-food rule after 8:00 PM (9:00 PM on summer Wednesdays) to maximize the GH pulse.</p></div>
+      <div class="rule"><b>15-min daily Height Unlock</b><p>Dead hangs, cobra stretches, wall slides, hip flexor stretches, RKC planks — unlocks 0.5–1.5" of postural height.</p></div>
+      <div class="rule"><b>Morning cardio 3–4×/week</b><p>50-min brisk walks raise HDL and clear triglycerides (measured 95 mg/dL).</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 MEAL PLAN ============ -->
+<section class="sec" id="meal">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p7)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">07</span></span>
+      <span class="sec__num">07</span>
+      <div><h2 class="sec__title">Meal Plan</h2><p class="sec__label">Calorie-cycling · lipid-safe · 140–152g protein</p></div>
+    </header>
+
+    <div class="kpis reveal">
+      <div class="kpi"><b>2,500</b><span>kcal · workout days</span></div>
+      <div class="kpi"><b>2,200–2,300</b><span>kcal · rest days</span></div>
+      <div class="kpi"><b>140–152g</b><span>protein · 2.0–2.2 g/kg</span></div>
+      <div class="kpi"><b>≤ 55g</b><span>fat daily cap</span></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel reveal">
+        <h3 class="mini-h">Reconciled rules — lipid-panel optimized</h3>
+        <p class="note">Total Cholesterol 216 mg/dL · LDL 136 mg/dL → saturated fat and dietary cholesterol dialed down hard.</p>
+        <ul class="check">
+          <li class="off"><strong>Eliminated:</strong> red meat (beef), whole egg yolks</li>
+          <li><strong>Protein core:</strong> lean poultry, egg whites, fish — 140–152g/day</li>
+          <li><strong>LDL support:</strong> soluble fiber daily — oats, berries, leafy greens, walnuts</li>
+          <li><strong>Omega-3 / unsaturated:</strong> salmon, extra-virgin olive oil, avocado</li>
+          <li><strong>Fasting window:</strong> no food after 8:00 PM (2h before sleep) for GH optimization</li>
+        </ul>
+      </div>
+      <div class="panel reveal">
+        <h3 class="mini-h">Original 8-week plan — training days</h3>
+        <ul class="check">
+          <li><strong>~3,389 kcal:</strong> 303g protein · 183g carbs · 160g fat — 6 meals</li>
+          <li><strong>Pre-workout:</strong> 50g whey isolate + ¼ cup cream of rice + 1 tbsp almond butter</li>
+          <li><strong>Intra-workout:</strong> 90g cyclic dextrin carbs + 40g casein hydrolysate (1.5 L water)</li>
+          <li><strong>Off/pump days:</strong> 1,903–2,218 kcal · 260–267g protein · lean carbs</li>
+          <li><strong>Primary sources:</strong> grass-fed beef, tilapia, cod, chicken, whey isolate, casein, whole eggs</li>
+          <li><strong>Carb sources:</strong> cream of rice, sweet potato, Ezekiel toast, dark berries, yam</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel reveal">
+      <h3 class="mini-h">Bone-mineralization stack — late-growth support</h3>
+      <div class="stack">
+        <span class="stack__i"><b>1,300 mg</b>Calcium</span>
+        <span class="stack__i"><b>1,000–2,000 IU</b>Vitamin D3</span>
+        <span class="stack__i"><b>100 mcg</b>Vitamin K2 (MK-7)</span>
+        <span class="stack__i"><b>11 mg</b>Zinc</span>
+        <span class="stack__i"><b>410 mg</b>Magnesium</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 TRAINING ============ -->
+<section class="sec" id="training">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p8)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">08</span></span>
+      <span class="sec__num">08</span>
+      <div><h2 class="sec__title">Training Plan</h2><p class="sec__label">Growth-plate-safe split · vertical jump · lipid-clearing cardio</p></div>
+    </header>
+
+    <div class="split reveal">
+      <div class="split__day split__day--main"><b>MON</b><span>Lower Power</span></div>
+      <div class="split__day split__day--main"><b>TUE</b><span>Upper Strength</span></div>
+      <div class="split__day split__day--plyo"><b>WED</b><span>Plyo &amp; Agility</span></div>
+      <div class="split__day split__day--main"><b>THU</b><span>Lower Strength</span></div>
+      <div class="split__day split__day--rec"><b>FRI</b><span>Recovery · Club</span></div>
+      <div class="split__day split__day--fun"><b>SAT</b><span>Full-Body Functional</span></div>
+      <div class="split__day split__day--mob"><b>SUN</b><span>Mobility · Volleyball</span></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel reveal">
+        <h3 class="mini-h">Resistance — growth-plate safe</h3>
+        <ul class="check">
+          <li class="off"><strong>Removed:</strong> heavy barbell back squats &amp; deadlifts (epiphyseal plate protection)</li>
+          <li><strong>Replaced with:</strong> leg press, goblet/split squats, DB Romanian deadlifts</li>
+          <li>Double-progression model on a 4-day upper/lower split</li>
+          <li>Hypertrophy focus — muscle retention while cutting</li>
+          <li>High-protein snack immediately post-lift</li>
+        </ul>
+      </div>
+      <div class="panel reveal">
+        <h3 class="mini-h">Plyometrics &amp; conditioning</h3>
+        <ul class="check">
+          <li>12-week vertical jump program — volume escalates 6 → 7 days/week</li>
+          <li>Broad jumps · lateral bounds · sprint intervals · jump rope</li>
+          <li>50–55 min brisk morning walks, 3–4×/week (BCAA intra-cardio)</li>
+          <li>Cardio skipped on heavy lift days</li>
+          <li>Volleyball conditioning — lateral speed + explosive reach for matches</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel reveal">
+      <h3 class="mini-h">Daily 15-min Height Unlock sequence</h3>
+      <div class="stack">
+        <span class="stack__i">Passive Dead Hangs</span>
+        <span class="stack__i">Cobra Stretches</span>
+        <span class="stack__i">Wall Slides</span>
+        <span class="stack__i">Hip Flexor Stretches</span>
+        <span class="stack__i">RKC Planks</span>
+      </div>
+      <p class="note">Corrects anterior pelvic tilt, thoracic kyphosis, and rounded shoulders — recovering 0.5–1.5" of hidden height. Baseline: 5'8" · 152 lbs · BMI 23.1.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 DEADLINES ============ -->
+<section class="sec" id="deadlines">
+  <div class="wrap">
+    <header class="sec__head reveal flip3d">
+      <span class="planet" style="--pc:var(--p9)" aria-hidden="true"><span class="planet__ring"></span><span class="planet__orb"></span><span class="planet__num">09</span></span>
+      <span class="sec__num">09</span>
+      <div><h2 class="sec__title">Program Deadlines</h2><p class="sec__label">Summer programs · competitions · live countdowns (CT)</p></div>
+    </header>
+
+    <div id="dlGrid" class="dl">
+      <!-- populated by js/main.js from DEADLINES data -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="foot__giant" aria-hidden="true">BEN WU<sup>*</sup></div>
+  <div class="wrap foot__in">
+    <p class="foot__sol"><a href="#hero" data-scroll>↺ return to sol</a></p>
+    <p class="foot__line">Benjamin Xianming Wu — <span class="dim">Carnegie Vanguard HS · Houston, TX · est. 2009</span></p>
+    <p class="foot__sub">Aggregated from the Second Brain vault · smooth scrolling by <a href="https://github.com/darkroomengineering/lenis" target="_blank" rel="noopener">Lenis</a> · design language inspired by <a href="https://www.igloo.inc/" target="_blank" rel="noopener">igloo.inc</a> &amp; <a href="https://buttermax.net/" target="_blank" rel="noopener">buttermax.net</a> · 1% better every week.</p>
+  </div>
+</footer>
+</main>
+
+<script src="vendor/lenis.min.js"></script>
+<script src="js/main.js"></script>
+<script type="module" src="js/scene.js"></script>
+</body>
+</html>
