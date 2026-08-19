@@ -161,18 +161,23 @@ main#top{position:relative;z-index:1}
 }
 .hero__name{animation:glitch 5.5s steps(1,end) infinite}
 
-/* ---------- custom cursor ---------- */
-.cursor{
-  position:fixed;top:0;left:0;z-index:300;pointer-events:none;border-radius:50%;
-  transform:translate(-50%,-50%);will-change:transform;
+/* ---------- custom cursor — big liquid blob (buttermax style) ---------- */
+.cursor{display:none}
+.cursor-blob{
+  position:fixed;top:0;left:0;width:96px;height:96px;z-index:299;pointer-events:none;
+  border-radius:50%;transform:translate(-50%,-50%);will-change:transform;
+  opacity:.78;
+  background:
+    radial-gradient(circle at 34% 30%,rgba(255,255,255,.6) 0%,transparent 38%),
+    radial-gradient(circle at 50% 50%,rgba(162,104,51,.55) 0%,rgba(162,104,51,.16) 55%,transparent 74%);
+  background:
+    radial-gradient(circle at 34% 30%,rgba(255,255,255,.6) 0%,transparent 38%),
+    radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--accent) 62%,transparent) 0%,color-mix(in srgb,var(--accent) 18%,transparent) 55%,transparent 74%);
+  filter:blur(3px);
+  transition:width .35s var(--ease),height .35s var(--ease),opacity .3s;
 }
-.cursor--dot{width:8px;height:8px;background:var(--accent)}
-.cursor--ring{
-  width:38px;height:38px;border:1px solid var(--accent);
-  transition:width .25s var(--ease),height .25s var(--ease),opacity .3s;
-}
-.cursor--ring.is-big{width:64px;height:64px}
-@media (hover:none),(pointer:coarse){.cursor{display:none}}
+.cursor-blob.is-big{width:150px;height:150px;opacity:.95}
+@media (hover:none),(pointer:coarse){.cursor-blob{display:none}}
 .glow{
   position:fixed;top:0;left:0;width:560px;height:560px;z-index:0;pointer-events:none;
   border-radius:50%;opacity:.14;will-change:transform;
@@ -198,12 +203,16 @@ main#top{position:relative;z-index:1}
   border-radius:999px;border:2px solid rgba(255,255,255,.14);
   padding:.55rem 1.5rem;box-shadow:0 14px 44px rgba(20,20,20,.28);
 }
+.nav__brand,.nav__links a,.nav__toggle span{
+  transition:color .35s var(--ease),background .35s var(--ease),border-color .35s var(--ease),transform .3s var(--ease);
+}
 .nav__brand{
   font-family:var(--f-display);font-weight:700;font-size:1.15rem;letter-spacing:.02em;text-transform:uppercase;color:var(--text);
   font-feature-settings:'ss01' on;
 }
 .nav__reg{color:var(--accent)}
 .nav__links{display:flex;gap:1.35rem;flex-wrap:wrap}
+.nav.is-solid .nav__links{flex-wrap:nowrap;gap:.9rem}
 .nav__links a{
   font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
   padding:.15rem 0;position:relative;
@@ -696,8 +705,8 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
 .foot__sol a{color:var(--lime);border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:2px}
 .foot__sol a:hover{color:#fff;border-color:#fff}
 
-/* ---------- reveal — soft blur rise, staggered by js/main.js ---------- */
-.reveal{opacity:0;transform:translateY(26px);filter:blur(7px);transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease)}
+/* ---------- reveal — soft rise from a ghosted state (no blank flash) ---------- */
+.reveal{opacity:.28;transform:translateY(20px);filter:blur(4px);transition:opacity .85s var(--ease),transform .85s var(--ease),filter .85s var(--ease)}
 .reveal.is-in{opacity:1;transform:none;filter:blur(0)}
 
 /* ---------- responsive ---------- */
@@ -801,6 +810,14 @@ body[data-planet="deadlines"]{--accent:var(--p9)}
 }
 .navFade.is-on::after{opacity:1;animation:spin 2.4s linear infinite}
 
+/* short nav labels on medium screens — no weird second-line wrap */
+@media (min-width:761px) and (max-width:1220px){
+  .nav__links a[data-short]{font-size:0}
+  .nav__links a[data-short]::before{
+    content:attr(data-short);font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  }
+}
+
 /* ---------- prev / next planet footer nav ---------- */
 .foot__nav{
   display:flex;align-items:stretch;gap:.8rem;margin:0 0 1.8rem;
@@ -813,7 +830,7 @@ body[data-planet="deadlines"]{--accent:var(--p9)}
 }
 .foot__nav a:hover{background:rgba(255,255,255,.07);border-color:var(--lime)}
 .foot__nav .fn__k{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45)}
-.foot__nav .fn__t{font-family:var(--f-display);font-weight:400;font-size:clamp(1.15rem,2.2vw,1.6rem);text-transform:uppercase;letter-spacing:-.01em;color:#fff;transition:color .3s}
+.foot__nav .fn__t{font-family:var(--f-display);font-weight:400;font-size:clamp(1.15rem,2.2vw,1.6rem);text-transform:uppercase;letter-spacing:-.01em;color:#fff;transition:color .3s;white-space:nowrap}
 .foot__nav a:hover .fn__t{color:var(--lime)}
 .foot__nav .fn__next{text-align:right;align-items:flex-end}
 @media (max-width:560px){.foot__nav{flex-direction:column}}

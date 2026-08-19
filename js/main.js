@@ -317,10 +317,8 @@
   });
 
   /* ------------------------------------------------------------
-     CURSOR + GLOW + COMET TRAIL (desktop only)
+     CURSOR — big liquid blob (buttermax style) + afterimage trail
      ------------------------------------------------------------ */
-  var dot = document.getElementById("cursorDot");
-  var ring = document.getElementById("cursorRing");
   var glow = document.getElementById("glow");
   var comet = document.getElementById("comet");
   var cctx = comet ? comet.getContext("2d") : null;
@@ -329,35 +327,44 @@
   if (comet) sizeComet();
   window.addEventListener("resize", sizeComet);
 
-  if (finePointer && !reducedMotion && dot && ring && glow) {
+  if (finePointer && !reducedMotion && glow) {
     document.body.classList.add("has-cursor");
-    var mx = 0, my = 0, rx = 0, ry = 0, gx = 0, gy = 0;
+    var blob = document.getElementById("cursorBlob");
+    if (!blob) {
+      blob = document.createElement("div");
+      blob.id = "cursorBlob";
+      blob.className = "cursor-blob";
+      blob.setAttribute("aria-hidden", "true");
+      document.body.appendChild(blob);
+    }
+    var mx = -100, my = -100, bx = -100, by = -100, gx = -100, gy = -100, moved = false;
     window.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
-      dot.style.transform = "translate(" + mx + "px," + my + "px) translate(-50%,-50%)";
+      if (!moved) { moved = true; blob.style.opacity = ""; }
       if (cctx) trail.push({ x: mx, y: my, t: performance.now() });
-      if (trail.length > 26) trail.shift();
+      if (trail.length > 24) trail.shift();
     }, { passive: true });
+    blob.style.opacity = "0";
     function follow() {
-      rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
-      gx += (mx - gx) * 0.055; gy += (my - gy) * 0.055;
-      /* ring stretches along motion — the buttermax trailing feel */
-      var vx = mx - rx, vy = my - ry;
+      bx += (mx - bx) * 0.14; by += (my - by) * 0.14;
+      gx += (mx - gx) * 0.05; gy += (my - gy) * 0.05;
+      /* the blob elongates along motion — liquid trailing feel */
+      var vx = mx - bx, vy = my - by;
       var dist = Math.sqrt(vx * vx + vy * vy);
       var ang = Math.atan2(vy, vx);
-      var st = Math.min(0.42, dist * 0.004);
-      ring.style.transform = "translate(" + rx + "px," + ry + "px) translate(-50%,-50%) rotate(" + ang + "rad) scale(" + (1 + st) + "," + (1 - st * 0.55) + ")";
+      var st = Math.min(0.55, dist * 0.007);
+      blob.style.transform = "translate(" + bx + "px," + by + "px) translate(-50%,-50%) rotate(" + ang + "rad) scale(" + (1 + st) + "," + (1 - st * 0.5) + ")";
       glow.style.transform = "translate(" + gx + "px," + gy + "px) translate(-50%,-50%)";
       if (cctx) {
-        /* fading afterimage trail */
+        /* fading blob afterimages */
         cctx.clearRect(0, 0, comet.width, comet.height);
         cctx.globalCompositeOperation = "lighter";
         var now = performance.now();
         for (var i = 0; i < trail.length; i++) {
-          var a = (now - trail[i].t) / 340;
+          var a = (now - trail[i].t) / 360;
           if (a > 1) continue;
-          var alpha = (1 - a) * 0.42;
-          var r = 9 * (1 - a) + 1.6;
+          var alpha = (1 - a) * 0.3;
+          var r = 15 * (1 - a) + 3;
           cctx.fillStyle = "rgba(" + accentRgb[0] + "," + accentRgb[1] + "," + accentRgb[2] + "," + alpha + ")";
           cctx.beginPath();
           cctx.arc(trail[i].x, trail[i].y, r, 0, Math.PI * 2);
@@ -369,10 +376,10 @@
     }
     follow();
     document.addEventListener("mouseover", function (e) {
-      if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head")) ring.classList.add("is-big");
+      if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head")) blob.classList.add("is-big");
     });
     document.addEventListener("mouseout", function (e) {
-      if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head")) ring.classList.remove("is-big");
+      if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head")) blob.classList.remove("is-big");
     });
 
     var tiltEls = Array.prototype.slice.call(document.querySelectorAll(".row, .uni"));
@@ -450,7 +457,7 @@
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) {
-          en.target.style.transitionDelay = Math.min(620, revealCount * 80) + "ms";
+          en.target.style.transitionDelay = Math.min(420, revealCount * 60) + "ms";
           revealCount++;
           en.target.classList.add("is-in");
           io.unobserve(en.target);
