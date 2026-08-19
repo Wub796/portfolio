@@ -13,8 +13,8 @@
   --line:rgba(82,49,34,.16);
   --line-strong:rgba(82,49,34,.34);
   --text:#523122;
-  --muted:#8a6a4f;
-  --dim:#b09a7f;
+  --muted:#7a5d42;
+  --dim:#95775a;
   --accent:#a26833;
   --on-accent:#f5ecdd;
   --sky:#d9c9ad;
@@ -524,7 +524,7 @@ body[data-planet="deadlines"]{
   --bg:#222123; --bg2:#2c2b2f;
   --panel:rgba(255,255,255,.05); --panel2:#2c2b2f;
   --line:rgba(255,255,255,.12); --line-strong:rgba(255,255,255,.26);
-  --text:#f2e7d5; --muted:rgba(242,231,213,.66); --dim:rgba(242,231,213,.42);
+  --text:#f2e7d5; --muted:rgba(242,231,213,.72); --dim:rgba(242,231,213,.55);
   --accent:var(--p9); --on-accent:#222123;
 }
 body[data-planet="deadlines"] .sec__num{-webkit-text-stroke:1px rgba(255,255,255,.3)}
@@ -541,11 +541,11 @@ body[data-planet="deadlines"] .sched td:first-child{background:rgba(34,33,35,.95
   font-family:var(--f-display);
 }
 .dl-card__head:hover{background:rgba(255,255,255,.06)}
-.dl-card__idx{font-family:var(--f-mono);font-size:.72rem;font-weight:700;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.3)}
+.dl-card__idx{font-family:var(--f-mono);font-size:.72rem;font-weight:700;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.45)}
 .dl-card__t{display:flex;flex-direction:column;gap:.1rem;min-width:0}
 .dl-card__t b{font-weight:400;font-size:clamp(1rem,1.8vw,1.3rem);letter-spacing:-.01em;text-transform:uppercase;line-height:1.25;transition:color .3s}
 .dl-card__head:hover .dl-card__t b{color:var(--lime)}
-.dl-card__t i{font-family:var(--f-mono);font-style:normal;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.dl-card__t i{font-family:var(--f-mono);font-style:normal;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.58)}
 .dl-card__status{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
 .dl-card__status.s-open{color:var(--lime)}
 .dl-card__status.s-soon{background:var(--lime);color:var(--dark);padding:.2rem .55rem}
@@ -553,7 +553,7 @@ body[data-planet="deadlines"] .sched td:first-child{background:rgba(34,33,35,.95
 .dl-card__status.s-rolling{color:#fff}
 .dl-card__count{display:flex;align-items:baseline;gap:.45rem;white-space:nowrap}
 .dl-card__count .c-num{font-family:var(--f-mono);font-size:1.35rem;font-weight:700;color:var(--lime)}
-.dl-card__count .c-lbl{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.dl-card__count .c-lbl{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.64)}
 .dl-card__plus{font-size:1.3rem;color:rgba(255,255,255,.55);transition:transform .3s var(--ease),color .3s;text-align:center}
 .dl-card.is-open .dl-card__plus{transform:rotate(45deg);color:var(--lime)}
 .dl-card__body{
@@ -561,9 +561,9 @@ body[data-planet="deadlines"] .sched td:first-child{background:rgba(34,33,35,.95
   gap:1.5rem 2.5rem;
 }
 .dl-card__dates{display:flex;flex-direction:column;gap:.3rem}
-.dl-card__dates span{font-family:var(--f-mono);font-size:.72rem;color:rgba(255,255,255,.68)}
+.dl-card__dates span{font-family:var(--f-mono);font-size:.72rem;color:rgba(255,255,255,.8)}
 .dl-card__dates b{color:#fff;font-weight:500}
-.dl-card__note{font-size:.8rem;color:rgba(255,255,255,.5);margin:0;border-left:1px solid rgba(255,255,255,.16);padding-left:1.1rem}
+.dl-card__note{font-size:.8rem;color:rgba(255,255,255,.64);margin:0;border-left:1px solid rgba(255,255,255,.16);padding-left:1.1rem}
 
 /* ---------- footer — dark brutalist close (prashant portfolio style) ---------- */
 .foot{background:var(--dark);border-radius:2.4em;margin:0 var(--gutter) 3rem;padding:0 clamp(1.5rem,4vw,3.5rem) 3rem;position:relative;overflow:hidden;border:3px solid var(--text);box-shadow:12px 12px 0 var(--accent)}
@@ -575,8 +575,8 @@ body[data-planet="deadlines"] .sched td:first-child{background:rgba(34,33,35,.95
 .foot__giant sup{color:var(--lime);-webkit-text-stroke:0;font-size:.14em}
 .foot__in{border-top:1px solid rgba(255,255,255,.14);padding-top:1.8rem;display:flex;flex-direction:column;gap:.6rem}
 .foot__line{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;margin:0;color:#fff}
-.foot__line .dim{color:rgba(255,255,255,.45)}
-.foot__sub{color:rgba(255,255,255,.5);font-size:.8rem;margin:0}
+.foot__line .dim{color:rgba(255,255,255,.62)}
+.foot__sub{color:rgba(255,255,255,.62);font-size:.8rem;margin:0}
 .foot__sub a{color:rgba(255,255,255,.75)}
 .foot__sub a:hover{color:var(--lime)}
 

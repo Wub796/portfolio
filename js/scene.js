@@ -22,13 +22,20 @@ try {
   const coarse = window.matchMedia("(pointer: coarse)").matches;
   const slug = document.body.dataset.planet || "sol";
 
+  /* the scene must match the page theme — the dark deadlines planet
+     gets a dark sky so its light text never sits on cream */
+  const darkPage = slug === "deadlines";
+  const BG = darkPage ? 0x222123 : 0xe9dfce;
+  const STAR = darkPage ? 0xe8c89b : 0x523122;
+  const PATH = darkPage ? 0x3a352f : 0xb09a7f;
+
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !coarse, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xe9dfce);
-  scene.fog = new THREE.FogExp2(0xe9dfce, 0.011);
+  scene.background = new THREE.Color(BG);
+  scene.fog = new THREE.FogExp2(BG, 0.011);
 
   const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 500);
   camera.position.set(0, 3.4, 30);
@@ -98,7 +105,7 @@ try {
     const geo = new THREE.BufferGeometry();
     geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     const mat = new THREE.PointsMaterial({
-      color: 0x523122, size, map: glowTex, transparent: true, opacity: opacity * 0.4,
+      color: STAR, size, map: glowTex, transparent: true, opacity: opacity * (darkPage ? 0.5 : 0.4),
       depthWrite: false, blending: THREE.NormalBlending, sizeAttenuation: true,
     });
     const pts = new THREE.Points(geo, mat);
@@ -110,7 +117,12 @@ try {
   starShell(coarse ? 100 : 300, 5, 18, 0.15, 0.35);
 
   /* ---------- nebulae ---------- */
-  const nebDefs = [
+  const nebDefs = darkPage ? [
+    [[0, "rgba(232,200,155,0)"], [0.55, "rgba(232,200,155,0.14)"], [1, "rgba(232,200,155,0)"]],
+    [[0, "rgba(162,104,51,0)"], [0.5, "rgba(162,104,51,0.2)"], [1, "rgba(162,104,51,0)"]],
+    [[0, "rgba(82,49,34,0)"], [0.55, "rgba(82,49,34,0.28)"], [1, "rgba(82,49,34,0)"]],
+    [[0, "rgba(58,52,44,0)"], [0.55, "rgba(58,52,44,0.4)"], [1, "rgba(58,52,44,0)"]],
+  ] : [
     [[0, "rgba(227,211,188,0)"], [0.55, "rgba(227,211,188,0.7)"], [1, "rgba(227,211,188,0)"]],
     [[0, "rgba(227,164,88,0)"], [0.5, "rgba(227,164,88,0.4)"], [1, "rgba(227,164,88,0)"]],
     [[0, "rgba(162,104,51,0)"], [0.55, "rgba(162,104,51,0.35)"], [1, "rgba(162,104,51,0)"]],
@@ -159,7 +171,7 @@ try {
       new THREE.IcosahedronGeometry(cfg.s, 5),
       new THREE.MeshStandardMaterial({
         color: cfg.c, roughness: 0.55, metalness: 0.18,
-        emissive: new THREE.Color(cfg.c).multiplyScalar(0.08),
+        emissive: new THREE.Color(cfg.c).multiplyScalar(darkPage ? 0.32 : 0.08),
       })
     );
     const wire = new THREE.Mesh(
@@ -168,7 +180,7 @@ try {
     );
     const atmo = new THREE.Sprite(new THREE.SpriteMaterial({
       map: radial("rgba(255,255,255,0.55)", "rgba(255,255,255,0)"),
-      transparent: true, opacity: 0.16, depthWrite: false,
+      transparent: true, opacity: darkPage ? 0.24 : 0.16, depthWrite: false,
     }));
     atmo.scale.set(cfg.s * 5.2, cfg.s * 5.2, 1);
     g.add(core, wire, atmo);
@@ -176,7 +188,7 @@ try {
     if (cfg.ring) {
       const r1 = new THREE.Mesh(
         new THREE.RingGeometry(cfg.s * 1.38, cfg.s * 1.72, 80),
-        new THREE.MeshBasicMaterial({ color: 0x523122, transparent: true, opacity: 0.35, side: THREE.DoubleSide, depthWrite: false })
+        new THREE.MeshBasicMaterial({ color: darkPage ? 0x2b2a2d : 0x523122, transparent: true, opacity: 0.35, side: THREE.DoubleSide, depthWrite: false })
       );
       r1.rotation.set(1.72, 0.35, 0);
       const r2 = new THREE.Mesh(
@@ -199,7 +211,7 @@ try {
     /* orbit path — a tilted circle matching the planet's motion */
     const path = new THREE.Mesh(
       new THREE.RingGeometry(cfg.d - 0.04, cfg.d + 0.04, 128),
-      new THREE.MeshBasicMaterial({ color: 0xb09a7f, transparent: true, opacity: 0.3, side: THREE.DoubleSide, depthWrite: false })
+      new THREE.MeshBasicMaterial({ color: PATH, transparent: true, opacity: 0.3, side: THREE.DoubleSide, depthWrite: false })
     );
     path.rotation.x = cfg.tilt - Math.PI / 2;
     scene.add(path);
@@ -369,7 +381,7 @@ try {
     loop();
   }
 
-  window.__scene3d = { ok: true, slug, arrival: arr };
+  window.__scene3d = { ok: true, slug, arrival: arr, dark: darkPage };
 } catch (err) {
   console.warn("3D scene disabled:", err);
   window.__scene3d = { ok: false, err: String(err) };
