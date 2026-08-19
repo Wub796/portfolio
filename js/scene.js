@@ -162,7 +162,7 @@ try {
   /* ---------- planets ---------- */
   const bodies = {};
   const sats = [];
-  Object.keys(P).forEach((k) => {
+  Object.keys(P).forEach((k, i) => {
     if (k === "sol") return;
     const cfg = P[k];
     const g = new THREE.Group();
@@ -180,9 +180,9 @@ try {
     );
     const atmo = new THREE.Sprite(new THREE.SpriteMaterial({
       map: radial("rgba(255,255,255,0.55)", "rgba(255,255,255,0)"),
-      transparent: true, opacity: darkPage ? 0.24 : 0.16, depthWrite: false,
+      transparent: true, opacity: darkPage ? 0.2 : 0.13, depthWrite: false,
     }));
-    atmo.scale.set(cfg.s * 5.2, cfg.s * 5.2, 1);
+    atmo.scale.set(cfg.s * 3.6, cfg.s * 3.6, 1);
     g.add(core, wire, atmo);
 
     if (cfg.ring) {
@@ -217,7 +217,8 @@ try {
     scene.add(path);
 
     scene.add(g);
-    bodies[k] = { cfg, g, phase: 1.2 * Math.PI + Math.random() * 0.3 };
+    /* spread the planets around the orbit so they never bunch up */
+    bodies[k] = { cfg, g, phase: (i / 9) * Math.PI * 2 + (Math.random() - 0.5) * 0.4 };
   });
 
   /* ---------- comet (velocity / warp reactive) ---------- */
@@ -260,6 +261,7 @@ try {
   let simT = 0;
   let last = null;
   try { last = sessionStorage.getItem("bw-last-planet"); } catch (e) { /* ignore */ }
+  const fromSlug = last && P[last] && last !== slug ? last : null;
   const toFrame = frameOf(slug, 0);
   let fromFrame;
   if (last && P[last] && last !== slug) fromFrame = frameOf(last, 0);
@@ -289,10 +291,13 @@ try {
     const dt = Math.min(0.05, clock.getDelta());
     simT += dt * (0.7 + (1 - arr) * 2.2); // world time speeds up during warp
 
-    /* place planets on their orbits */
+    /* place planets on their orbits; on a section page only the current
+       planet (and the one we flew from, during arrival) stays visible */
     Object.keys(bodies).forEach((k) => {
       bodies[k].g.position.copy(planetPos(k, simT));
+      bodies[k].g.visible = slug === "sol" || k === slug || (arr < 1 && k === fromSlug);
     });
+    window.__sceneVis = Object.keys(bodies).filter((k) => bodies[k].g.visible);
 
     /* arrival tween */
     if (arr < 1) {
@@ -339,10 +344,12 @@ try {
       s.m.position.set(Math.cos(s.ph) * s.r, 0, Math.sin(s.ph) * s.r);
     });
 
-    /* sun breathes */
+    /* sun breathes; its corona fades out if the camera passes close to it */
     const sunPulse = 1 + Math.sin(simT * 0.8) * 0.05 + warp * 0.08;
     sun.scale.setScalar(sunPulse);
-    corona.material.opacity = 0.42 + Math.sin(simT * 0.9) * 0.06 + warp * 0.14;
+    const camDist = camera.position.length();
+    const coronaK = Math.max(0, Math.min(1, (camDist - 2.2) / 3));
+    corona.material.opacity = (0.42 + Math.sin(simT * 0.9) * 0.06 + warp * 0.14) * coronaK;
 
     /* comet — streaks harder the faster you move */
     cometA += dt * (0.1 + warp * 0.5 + Math.min(1.4, Math.abs(vel) * 0.4));
@@ -373,7 +380,11 @@ try {
   window.addEventListener("resize", onResize);
 
   if (reduced) {
-    Object.keys(bodies).forEach((k) => { bodies[k].g.position.copy(planetPos(k, 0)); });
+    Object.keys(bodies).forEach((k) => {
+      bodies[k].g.position.copy(planetPos(k, 0));
+      bodies[k].g.visible = slug === "sol" || k === slug || (arr < 1 && k === fromSlug);
+    });
+    window.__sceneVis = Object.keys(bodies).filter((k) => bodies[k].g.visible);
     camera.position.copy(toFrame.pos);
     camera.lookAt(toFrame.look);
     composer.render();
