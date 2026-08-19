@@ -192,15 +192,15 @@ main#top{position:relative;z-index:1}
   display:flex;align-items:center;justify-content:space-between;
   padding:1rem var(--gutter);
   border-bottom:1px solid transparent;
-  transition:background .35s var(--ease),backdrop-filter .35s,box-shadow .35s,
+  transition:background .35s var(--ease),box-shadow .35s,
     transform .45s var(--ease),left .45s var(--ease),right .45s var(--ease),
     top .45s var(--ease),padding .45s var(--ease),border-radius .45s var(--ease),
-    border-color .35s;
+    border-color .35s,border-width .45s var(--ease);
 }
 .nav.is-solid{
   left:50%;right:auto;transform:translateX(-50%);top:.9rem;
-  background:rgba(20,20,20,.92);backdrop-filter:blur(16px);
-  border-radius:999px;border:2px solid rgba(255,255,255,.14);
+  background:rgba(20,20,20,.96);
+  border-radius:999px;border:1px solid rgba(255,255,255,.14);
   padding:.55rem 1.5rem;box-shadow:0 14px 44px rgba(20,20,20,.28);
 }
 .nav__brand,.nav__links a,.nav__toggle span{
@@ -731,7 +731,7 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
 }
 @media (max-width:760px){
   .nav__links{
-    position:fixed;inset:0;background:rgba(20,20,20,.97);backdrop-filter:blur(16px);
+    position:fixed;inset:0;background:rgba(20,20,20,.97);
     flex-direction:column;align-items:center;justify-content:center;gap:1.7rem;
     opacity:0;transform:translateY(-10px);pointer-events:none;
     transition:opacity .35s var(--ease),transform .35s var(--ease);z-index:-1;
