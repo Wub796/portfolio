@@ -341,22 +341,27 @@
     function follow() {
       rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
       gx += (mx - gx) * 0.055; gy += (my - gy) * 0.055;
-      ring.style.transform = "translate(" + rx + "px," + ry + "px) translate(-50%,-50%)";
+      /* ring stretches along motion — the buttermax trailing feel */
+      var vx = mx - rx, vy = my - ry;
+      var dist = Math.sqrt(vx * vx + vy * vy);
+      var ang = Math.atan2(vy, vx);
+      var st = Math.min(0.42, dist * 0.004);
+      ring.style.transform = "translate(" + rx + "px," + ry + "px) translate(-50%,-50%) rotate(" + ang + "rad) scale(" + (1 + st) + "," + (1 - st * 0.55) + ")";
       glow.style.transform = "translate(" + gx + "px," + gy + "px) translate(-50%,-50%)";
       if (cctx) {
+        /* fading afterimage trail */
         cctx.clearRect(0, 0, comet.width, comet.height);
         cctx.globalCompositeOperation = "lighter";
         var now = performance.now();
-        for (var i = 1; i < trail.length; i++) {
-          var a = (now - trail[i].t) / 240;
+        for (var i = 0; i < trail.length; i++) {
+          var a = (now - trail[i].t) / 340;
           if (a > 1) continue;
-          var alpha = (1 - a) * 0.5;
-          cctx.strokeStyle = "rgba(" + accentRgb[0] + "," + accentRgb[1] + "," + accentRgb[2] + "," + alpha + ")";
-          cctx.lineWidth = 1 + (1 - a) * 2.6;
+          var alpha = (1 - a) * 0.42;
+          var r = 9 * (1 - a) + 1.6;
+          cctx.fillStyle = "rgba(" + accentRgb[0] + "," + accentRgb[1] + "," + accentRgb[2] + "," + alpha + ")";
           cctx.beginPath();
-          cctx.moveTo(trail[i - 1].x, trail[i - 1].y);
-          cctx.lineTo(trail[i].x, trail[i].y);
-          cctx.stroke();
+          cctx.arc(trail[i].x, trail[i].y, r, 0, Math.PI * 2);
+          cctx.fill();
         }
         cctx.globalCompositeOperation = "source-over";
       }
@@ -437,18 +442,21 @@
   if (navFade) navFade.classList.remove("is-on");
 
   /* ------------------------------------------------------------
-     REVEAL ON SCROLL
+     REVEAL — staggered cascade so content never just appears
      ------------------------------------------------------------ */
   var revealEls = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+  var revealCount = 0;
   if ("IntersectionObserver" in window && !reducedMotion) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) {
+          en.target.style.transitionDelay = Math.min(620, revealCount * 80) + "ms";
+          revealCount++;
           en.target.classList.add("is-in");
           io.unobserve(en.target);
         }
       });
-    }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+    }, { threshold: 0.08, rootMargin: "0px 0px -30px 0px" });
     revealEls.forEach(function (el) { io.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add("is-in"); });

@@ -145,7 +145,7 @@ main#top{position:relative;z-index:1}
 
 /* section headers flip in 3D */
 .sec{perspective:1400px}
-.reveal.flip3d{transform:rotateX(-72deg) translateY(46px);transform-origin:top center}
+.reveal.flip3d{transform:rotateX(-34deg) translateY(24px);transform-origin:top center}
 .reveal.flip3d.is-in{transform:none}
 
 /* 3D tilt targets */
@@ -187,7 +187,10 @@ main#top{position:relative;z-index:1}
   display:flex;align-items:center;justify-content:space-between;
   padding:1rem var(--gutter);
   border-bottom:1px solid transparent;
-  transition:background .3s var(--ease),backdrop-filter .3s,transform .35s var(--ease),box-shadow .3s;
+  transition:background .35s var(--ease),backdrop-filter .35s,box-shadow .35s,
+    transform .45s var(--ease),left .45s var(--ease),right .45s var(--ease),
+    top .45s var(--ease),padding .45s var(--ease),border-radius .45s var(--ease),
+    border-color .35s;
 }
 .nav.is-solid{
   left:50%;right:auto;transform:translateX(-50%);top:.9rem;
@@ -678,18 +681,14 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
 .rail__node.is-cur i{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px rgba(162,104,51,.25),0 0 10px rgba(162,104,51,.6)}
 .rail__node.is-past i{background:var(--text);border-color:var(--text)}
 
-/* ---------- warp flash between planets ---------- */
+/* ---------- warp arrival — soft radial bloom, no rays ---------- */
 .warp{
-  position:fixed;inset:0;z-index:296;pointer-events:none;opacity:0;transform:scale(.55);
-  background:radial-gradient(circle at 50% 50%,var(--wc,#e3a458) 0%,rgba(227,164,88,0) 55%);
-  transition:opacity .22s ease-out,transform .6s var(--ease);
+  position:fixed;inset:0;z-index:296;pointer-events:none;opacity:0;
+  background:radial-gradient(circle at 50% 50%,rgba(227,164,88,.55) 0%,transparent 64%);
+  background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--wc,#e3a458) 55%,transparent) 0%,transparent 64%);
+  transition:opacity .55s ease-out;
 }
-.warp::before{
-  content:'';position:absolute;inset:-30%;
-  background:repeating-conic-gradient(from 0deg at 50% 50%,transparent 0deg 3deg,rgba(255,255,255,.07) 3deg 5.5deg);
-  animation:warpSpin 1.4s linear infinite;
-}
-.warp.is-active{opacity:1;transform:scale(1.3);transition:opacity .08s linear,transform .6s var(--ease)}
+.warp.is-active{opacity:.85;transition:opacity .1s ease-out}
 @keyframes warpSpin{to{transform:rotate(360deg)}}
 
 /* footer — return to sol */
@@ -697,9 +696,9 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
 .foot__sol a{color:var(--lime);border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:2px}
 .foot__sol a:hover{color:#fff;border-color:#fff}
 
-/* ---------- reveal ---------- */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-.reveal.is-in{opacity:1;transform:none}
+/* ---------- reveal — soft blur rise, staggered by js/main.js ---------- */
+.reveal{opacity:0;transform:translateY(26px);filter:blur(7px);transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease)}
+.reveal.is-in{opacity:1;transform:none;filter:blur(0)}
 
 /* ---------- responsive ---------- */
 @media (max-width:960px){
@@ -722,9 +721,10 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
   .nav__links{
     position:fixed;inset:0;background:rgba(20,20,20,.97);backdrop-filter:blur(16px);
     flex-direction:column;align-items:center;justify-content:center;gap:1.7rem;
-    opacity:0;pointer-events:none;transition:opacity .3s var(--ease);z-index:-1;
+    opacity:0;transform:translateY(-10px);pointer-events:none;
+    transition:opacity .35s var(--ease),transform .35s var(--ease);z-index:-1;
   }
-  .nav__links.is-open{opacity:1;pointer-events:auto}
+  .nav__links.is-open{opacity:1;transform:none;pointer-events:auto}
   .nav__links a{font-size:.9rem}
   .nav__toggle{display:flex}
   .sec__head{flex-direction:column;align-items:flex-start;gap:.9rem}
@@ -734,7 +734,7 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-  .reveal{opacity:1;transform:none}
+  .reveal{opacity:1;transform:none;filter:none}
   .reveal.flip3d{transform:none}
   html{scroll-behavior:auto}
   .marquee__track{animation:none}
@@ -780,10 +780,10 @@ body[data-planet="deadlines"]{--accent:var(--p9)}
 
 /* ---------- cross-document View Transitions — zero-flash warp ---------- */
 @view-transition{navigation:auto}
-::view-transition-old(root){animation:vtOld .55s var(--ease) both}
-::view-transition-new(root){animation:vtNew .55s var(--ease) both}
-@keyframes vtOld{to{transform:scale(1.06);opacity:0;filter:blur(9px)}}
-@keyframes vtNew{from{transform:scale(.95);opacity:0;filter:blur(9px)}}
+::view-transition-old(root){animation:vtOld .75s cubic-bezier(.4,0,.2,1) both}
+::view-transition-new(root){animation:vtNew .75s cubic-bezier(.4,0,.2,1) both}
+@keyframes vtOld{to{transform:scale(1.035);opacity:0;filter:blur(6px)}}
+@keyframes vtNew{from{transform:scale(.972);opacity:0;filter:blur(6px)}}
 @media (prefers-reduced-motion:reduce){
   ::view-transition-old(root),::view-transition-new(root){animation-duration:.01ms}
 }

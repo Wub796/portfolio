@@ -328,9 +328,9 @@ try {
     });
 
     /* sun breathes */
-    const sunPulse = 1 + Math.sin(simT * 0.8) * 0.05 + warp * 0.12;
+    const sunPulse = 1 + Math.sin(simT * 0.8) * 0.05 + warp * 0.08;
     sun.scale.setScalar(sunPulse);
-    corona.material.opacity = 0.5 + Math.sin(simT * 0.9) * 0.08 + warp * 0.3;
+    corona.material.opacity = 0.42 + Math.sin(simT * 0.9) * 0.06 + warp * 0.14;
 
     /* comet — streaks harder the faster you move */
     cometA += dt * (0.1 + warp * 0.5 + Math.min(1.4, Math.abs(vel) * 0.4));
@@ -345,9 +345,9 @@ try {
       n.material.opacity = 0.3 + Math.sin(simT * 0.3 + i * 1.7) * 0.11;
     });
 
-    /* bloom surges on warp + fast scroll */
+    /* bloom surges on warp + fast scroll (kept soft) */
     bloomBoost = Math.max(0, bloomBoost - dt * 1.2);
-    bloom.strength = 0.32 + Math.min(0.7, Math.abs(vel) * 0.22) + warp * 0.85 + bloomBoost;
+    bloom.strength = 0.3 + Math.min(0.55, Math.abs(vel) * 0.18) + warp * 0.42 + bloomBoost;
 
     composer.render();
   }
