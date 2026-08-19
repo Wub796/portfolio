@@ -14,7 +14,8 @@ All content (studies, college plan, application process, extracurriculars, daily
 
 - **Plain HTML + CSS + JS** — no build step, no framework. 10 static pages.
 - **[Lenis](https://github.com/darkroomengineering/lenis)** (v1.3.26, vendored at `vendor/lenis.min.js`) — smooth scrolling per page.
-- **[Three.js](https://threejs.org/)** via CDN importmap (three@0.160.1 + UnrealBloomPass) — the shared solar system; degrades silently (no WebGL/CDN → clean static site; `prefers-reduced-motion` → single static frame).
+- **[Three.js](https://threejs.org/)** via CDN importmap (three@0.160.1 + UnrealBloomPass) — the shared solar system; the renderer is transparent so it floats inside the generative sky; degrades silently (no WebGL/CDN → clean static site; `prefers-reduced-motion` → single static frame).
+- **[Fluid](https://github.com/enonforetsam/fluid) (`fluid-bg`, vendored at `vendor/fluid-bg.iife.js`)** — a live generative WebGL sky behind the whole site, themed per planet: a calm tan-to-cream flow field on the light pages, a deep near-black-to-amber smoke field on the dark deadlines planet. Each planet gets its own seed so every page has its own composition; pauses when hidden and respects `prefers-reduced-motion`.
 - **Design language**: the "milk tea" palette of [Fullstack-Empire/GSAP-Awwwards-Website](https://github.com/Fullstack-Empire/GSAP-Awwwards-Website) (cream `#e9dfce`, browns `#523122`/`#a26833`/`#e3a458`/`#7f3b2d`, near-black `#222123`), **Antonio** display type, brutalist borders/shadows from [prashantkoirala465/web-development-portfolio](https://github.com/prashantkoirala465/web-development-portfolio), structure from [adrianhajdin/award-winning-website](https://github.com/adrianhajdin/award-winning-website), and igloo/buttermax motion.
 - Fonts (Antonio, Rader, Formula-Narrow, Supply-Mono, Zentry, General, Circular, Robert) vendored at `assets/fonts/` — no external font requests.
 
@@ -64,5 +65,5 @@ Or from the CLI: `npx vercel` (deploys the static folder as-is).
 ## Credits
 
 - [Lenis — darkroomengineering](https://github.com/darkroomengineering/lenis)
-- [GSAP-Awwwards-Website — Fullstack-Empire](https://github.com/Fullstack-Empire/GSAP-Awwwards-Website) · [award-winning-website — adrianhajdin](https://github.com/adrianhajdin/award-winning-website) · [web-development-portfolio — prashantkoirala465](https://github.com/prashantkoirala465/web-development-portfolio) · [shutterkif-oss.github.io](https://github.com/shutterkif-oss/shutterkif-oss.github.io) · [igloo.inc](https://www.igloo.inc/) · [buttermax.net](https://buttermax.net/)
+- [GSAP-Awwwards-Website — Fullstack-Empire](https://github.com/Fullstack-Empire/GSAP-Awwwards-Website) · [award-winning-website — adrianhajdin](https://github.com/adrianhajdin/award-winning-website) · [web-development-portfolio — prashantkoirala465](https://github.com/prashantkoirala465/web-development-portfolio) · [shutterkif-oss.github.io](https://github.com/shutterkif-oss/shutterkif-oss.github.io) · [fluid — enonforetsam](https://github.com/enonforetsam/fluid) · [igloo.inc](https://www.igloo.inc/) · [buttermax.net](https://buttermax.net/)
 - Content: Second Brain vault (Benjamin Wu)

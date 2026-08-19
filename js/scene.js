@@ -22,20 +22,21 @@ try {
   const coarse = window.matchMedia("(pointer: coarse)").matches;
   const slug = document.body.dataset.planet || "sol";
 
-  /* the scene must match the page theme — the dark deadlines planet
-     gets a dark sky so its light text never sits on cream */
+  /* the scene is transparent — the fluid sky (mounted by main.js)
+     provides the background, themed per page. Keep the dark-page
+     palette here for stars / planets so they read on the dark fluid. */
   const darkPage = slug === "deadlines";
-  const BG = darkPage ? 0x222123 : 0xe9dfce;
   const STAR = darkPage ? 0xe8c89b : 0x523122;
   const PATH = darkPage ? 0x3a352f : 0xb09a7f;
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !coarse, powerPreference: "high-performance" });
+  /* the renderer is transparent so the generative fluid sky (fluid-bg,
+     mounted by main.js) shows through and the system floats inside it */
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !coarse, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearAlpha(0);
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(BG);
-  scene.fog = new THREE.FogExp2(BG, 0.011);
 
   const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 500);
   camera.position.set(0, 3.4, 30);

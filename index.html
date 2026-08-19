@@ -18,6 +18,8 @@
 <body data-planet="sol">
 
 <!-- one continuous WebGL solar system + comet-trail cursor canvas -->
+<!-- generative fluid sky + WebGL solar system floating in it -->
+<div id="fluidLayer" aria-hidden="true"></div>
 <canvas id="scene3d" aria-hidden="true"></canvas>
 <canvas id="comet" aria-hidden="true"></canvas>
 
@@ -182,6 +184,7 @@
 </main>
 
 <script src="vendor/lenis.min.js"></script>
+<script src="vendor/fluid-bg.iife.js"></script>
 <script src="js/main.js"></script>
 <script type="module" src="js/scene.js"></script>
 </body>
