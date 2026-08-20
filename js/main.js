@@ -302,6 +302,19 @@
     window.location.href = href;
   }
 
+  function saveSceneState() {
+    try {
+      sessionStorage.setItem("bw-last-planet", currentPlanet);
+      if (window.__getSceneState) {
+        var st = window.__getSceneState();
+        sessionStorage.setItem("bw-last-cam-pos", JSON.stringify(st.pos));
+        sessionStorage.setItem("bw-last-cam-look", JSON.stringify(st.look));
+        sessionStorage.setItem("bw-last-sim-t", String(st.simT));
+      }
+    } catch (err) { /* ignore */ }
+  }
+  window.addEventListener("beforeunload", saveSceneState);
+
   document.addEventListener("click", function (e) {
     var warpLink = e.target.closest ? e.target.closest('a[data-warp]') : null;
     if (warpLink) {
@@ -311,7 +324,7 @@
       closeMenu();
       if (exitLock) return;
       exitLock = true;
-      try { sessionStorage.setItem("bw-last-planet", currentPlanet); } catch (err) { /* ignore */ }
+      saveSceneState();
       doNavigate(href);
       return;
     }

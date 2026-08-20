@@ -253,18 +253,53 @@ try {
     };
   }
 
-  /* ---------- arrival flight: from the previous planet ---------- */
+  /* ---------- snapshot & seamless state handoff ---------- */
   let simT = 0;
-  let last = null;
-  try { last = sessionStorage.getItem("bw-last-planet"); } catch (e) { /* ignore */ }
-  const fromSlug = last && P[last] && last !== slug ? last : null;
-  const toFrame = frameOf(slug, 0);
-  let fromFrame = fromSlug ? frameOf(last, 0) : toFrame;
-  const FLY = 1.6;
+  let lastPlanet = null;
+  let lastCamPos = null;
+  let lastCamLook = null;
+  try {
+    lastPlanet = sessionStorage.getItem("bw-last-planet");
+    const posStr = sessionStorage.getItem("bw-last-cam-pos");
+    const lookStr = sessionStorage.getItem("bw-last-cam-look");
+    const timeStr = sessionStorage.getItem("bw-last-sim-t");
+    if (posStr) lastCamPos = JSON.parse(posStr);
+    if (lookStr) lastCamLook = JSON.parse(lookStr);
+    if (timeStr) simT = parseFloat(timeStr) || 0;
+  } catch (e) { /* ignore */ }
+
+  const fromSlug = lastPlanet && P[lastPlanet] && lastPlanet !== slug ? lastPlanet : null;
+  const toFrame = frameOf(slug, simT);
+
+  let fromFrame;
+  if (lastCamPos && lastCamLook && fromSlug) {
+    fromFrame = {
+      pos: new THREE.Vector3(lastCamPos[0], lastCamPos[1], lastCamPos[2]),
+      look: new THREE.Vector3(lastCamLook[0], lastCamLook[1], lastCamLook[2]),
+    };
+  } else {
+    fromFrame = fromSlug ? frameOf(fromSlug, simT) : toFrame;
+  }
+
+  const FLY = 1.8;
   let arr = (reduced || !fromSlug) ? 1 : 0;
+  let curLook = fromSlug ? fromFrame.look.clone() : toFrame.look.clone();
 
   camera.position.copy(fromSlug ? fromFrame.pos : toFrame.pos);
-  camera.lookAt(fromSlug ? fromFrame.look : toFrame.look);
+  camera.lookAt(curLook);
+
+  /* Hold background state until everything has loaded on the new page */
+  let readyToFly = !fromSlug;
+  function initiateFlight() {
+    readyToFly = true;
+  }
+  if (!readyToFly) {
+    if (document.readyState === "complete") {
+      setTimeout(initiateFlight, 120);
+    } else {
+      window.addEventListener("load", function () { setTimeout(initiateFlight, 120); }, { once: true });
+    }
+  }
 
   /* quintic ease-in-out for silky cinematic spacecraft departure & arrival */
   function easeQuint(t) {
@@ -297,16 +332,22 @@ try {
     });
     window.__sceneVis = Object.keys(bodies).filter((k) => bodies[k].g.visible);
 
-    /* arrival tween: smooth orbital arc trajectory */
-    if (arr < 1) {
-      arr = Math.min(1, arr + dt / FLY);
-      const e = easeQuint(arr);
-      const arcHeight = Math.sin(e * Math.PI) * 2.2;
-      camera.position.lerpVectors(fromFrame.pos, toFrame.pos, e);
-      camera.position.y += arcHeight;
-      camera.position.z += arcHeight * 0.35;
-      const curLook = new THREE.Vector3().lerpVectors(fromFrame.look, toFrame.look, e);
-      camera.lookAt(curLook);
+    /* arrival tween: holds exact departure state until page is loaded, then arcs smoothly */
+    if (fromSlug && arr < 1) {
+      if (readyToFly) {
+        arr = Math.min(1, arr + dt / FLY);
+        const e = easeQuint(arr);
+        const arcHeight = Math.sin(e * Math.PI) * 2.4;
+        camera.position.lerpVectors(fromFrame.pos, toFrame.pos, e);
+        camera.position.y += arcHeight;
+        camera.position.z += arcHeight * 0.4;
+        curLook.lerpVectors(fromFrame.look, toFrame.look, e);
+        camera.lookAt(curLook);
+      } else {
+        camera.position.copy(fromFrame.pos);
+        curLook.copy(fromFrame.look);
+        camera.lookAt(curLook);
+      }
     }
 
     /* post-arrival: subtle idle drift + mouse parallax + scroll pull-back */
@@ -321,8 +362,19 @@ try {
       camera.position.x += ox;
       camera.position.y += oy;
       camera.position.z += oz;
-      camera.lookAt(toFrame.look);
+      curLook.copy(toFrame.look);
+      camera.lookAt(curLook);
     }
+
+    /* export live state for seamless handoff to next page */
+    window.__getSceneState = function () {
+      return {
+        planet: slug,
+        pos: [camera.position.x, camera.position.y, camera.position.z],
+        look: [curLook.x, curLook.y, curLook.z],
+        simT: simT,
+      };
+    };
 
     const speed = 1 + Math.min(4, Math.abs(vel) * 0.7);
 
