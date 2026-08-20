@@ -967,36 +967,23 @@ body[data-planet="deadlines"]{--accent:var(--p9)}
 .sec--page{padding-top:clamp(7rem,13vw,10rem);border-top:0}
 
 /* ---------- seamless cross-document View Transitions ---------- */
-body{transition:opacity .25s var(--ease),transform .25s var(--ease)}
-body.is-departing{opacity:.42;transform:scale(.996)}
-
 @view-transition{navigation:auto}
 ::view-transition-old(root),
 ::view-transition-new(root){
-  animation-duration:.38s;
-  animation-timing-function:cubic-bezier(0.16, 1, 0.3, 1);
+  animation-duration:.16s;
+  animation-timing-function:ease-out;
   animation-fill-mode:both;
 }
 ::view-transition-old(root){animation-name:vtFadeOut}
 ::view-transition-new(root){animation-name:vtFadeIn}
-@keyframes vtFadeOut{from{opacity:1}to{opacity:0.04}}
-@keyframes vtFadeIn{from{opacity:0.04}to{opacity:1}}
+@keyframes vtFadeOut{from{opacity:1}to{opacity:0.8}}
+@keyframes vtFadeIn{from{opacity:0.8}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){
   ::view-transition-old(root),::view-transition-new(root){animation-duration:.01ms}
 }
 
-/* fallback warp overlay for browsers without View Transitions */
-.navFade{
-  position:fixed;inset:0;z-index:400;pointer-events:none;
-  background:#222123;opacity:0;transition:opacity .5s ease;
-  display:grid;place-items:center;
-}
-.navFade.is-on{opacity:1}
-.navFade::after{
-  content:'⏣';font-family:var(--f-display);font-size:2.6rem;color:var(--lime);
-  opacity:0;transition:opacity .2s .1s;
-}
-.navFade.is-on::after{opacity:1;animation:spin 2.4s linear infinite}
+/* disable any legacy loading screens / overlays */
+.navFade{display:none!important}
 
 /* short nav labels on medium screens — no weird second-line wrap */
 @media (min-width:761px) and (max-width:1220px){

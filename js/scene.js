@@ -281,25 +281,13 @@ try {
     fromFrame = fromSlug ? frameOf(fromSlug, simT) : toFrame;
   }
 
-  const FLY = 2.4;
+  const FLY = 1.6;
   let arr = (reduced || !fromSlug) ? 1 : 0;
   let curLook = fromSlug ? fromFrame.look.clone() : toFrame.look.clone();
 
   camera.position.copy(fromSlug ? fromFrame.pos : toFrame.pos);
   camera.lookAt(curLook);
-
-  /* Hold background state until everything has loaded and settled on the new page */
-  let readyToFly = !fromSlug;
-  function initiateFlight() {
-    readyToFly = true;
-  }
-  if (!readyToFly) {
-    if (document.readyState === "complete") {
-      setTimeout(initiateFlight, 280);
-    } else {
-      window.addEventListener("load", function () { setTimeout(initiateFlight, 280); }, { once: true });
-    }
-  }
+  let readyToFly = true;
 
   /* quintic ease-in-out for silky cinematic spacecraft departure & arrival */
   function easeQuint(t) {

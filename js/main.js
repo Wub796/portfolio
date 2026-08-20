@@ -299,7 +299,7 @@
   }
 
   /* ------------------------------------------------------------
-     PAGE PREFETCHING & SEAMLESS WARP NAVIGATION
+     PAGE PREFETCHING & INSTANT SEAMLESS NAVIGATION
      ------------------------------------------------------------ */
   var prefetched = new Set();
   function prefetch(url) {
@@ -311,13 +311,15 @@
     document.head.appendChild(l);
   }
 
-  document.addEventListener("mouseover", function (e) {
+  function handlePrefetchTrigger(e) {
     var warpLink = e.target.closest && e.target.closest("a[data-warp]");
     if (warpLink) {
       var href = warpLink.getAttribute("href");
       if (href) prefetch(href);
     }
-  }, { passive: true });
+  }
+  document.addEventListener("mouseover", handlePrefetchTrigger, { passive: true });
+  document.addEventListener("pointerdown", handlePrefetchTrigger, { passive: true });
 
   function doNavigate(href) {
     window.location.href = href;
@@ -346,10 +348,7 @@
       if (exitLock) return;
       exitLock = true;
       saveSceneState();
-      document.body.classList.add("is-departing");
-      setTimeout(function () {
-        doNavigate(href);
-      }, 160);
+      doNavigate(href);
       return;
     }
     var anchor = e.target.closest ? e.target.closest('a[data-scroll]') : null;
@@ -676,25 +675,10 @@
   else window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  /* warp flash disabled — clean, instant page load */
+  /* warp overlay disabled — clean, instant page transition */
   var warp = document.getElementById("warp");
   if (warp) warp.style.display = "none";
-  /* browsers without View Transitions: fade the warp overlay OUT on
-     arrival so the new page emerges from the dark instead of popping in */
-  if (navFade) {
-    if (!vtSupported) {
-      var arrived = false;
-      try { arrived = !!sessionStorage.getItem("bw-last-planet"); } catch (err) { /* ignore */ }
-      if (arrived) {
-        navFade.classList.add("is-on");
-        requestAnimationFrame(function () {
-          requestAnimationFrame(function () { navFade.classList.remove("is-on"); });
-        });
-      }
-    } else {
-      navFade.classList.remove("is-on");
-    }
-  }
+  if (navFade) navFade.style.display = "none";
 
   /* ------------------------------------------------------------
      REVEAL — staggered cascade so content never just appears
