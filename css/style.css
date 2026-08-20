@@ -732,39 +732,92 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
   position:absolute;top:50%;left:50%;width:var(--r);height:var(--r);z-index:1;
   transform:translate(-50%,-50%);
   pointer-events:none;
+  transition:opacity .3s var(--ease),filter .3s var(--ease);
   animation:orbit var(--t) linear infinite;animation-delay:var(--d);
 }
 .sys__ring{
   position:absolute;inset:0;border-radius:50%;
-  border:1px dashed rgba(82,49,34,.28);
+  border:1px dashed rgba(82,49,34,.24);
   pointer-events:none;
   transition:border-color .3s,border-style .3s,opacity .3s;
 }
 .sys__orb{
-  position:absolute;top:0;left:50%;width:clamp(10px,2vw,22px);height:clamp(10px,2vw,22px);border-radius:50%;
+  position:absolute;top:0;left:50%;width:clamp(12px,2.2vw,24px);height:clamp(12px,2.2vw,24px);border-radius:50%;
   transform:translate(-50%,-50%);
-  background:radial-gradient(circle at 32% 30%,rgba(255,255,255,.55) 0%,transparent 45%),var(--pc,#a26833);
+  background:radial-gradient(circle at 32% 30%,rgba(255,255,255,.65) 0%,transparent 45%),var(--pc,#a26833);
   box-shadow:0 0 14px color-mix(in srgb,var(--pc,#a26833) 60%,transparent);
   pointer-events:auto;cursor:pointer;
   transition:transform .3s var(--ease),box-shadow .3s var(--ease);
 }
 .sys__orb::before{
-  content:'';position:absolute;inset:-18px;border-radius:50%;
+  content:'';position:absolute;inset:-20px;border-radius:50%;
 }
 .sys__label{
-  position:absolute;top:0;left:50%;transform:translate(-50%,-70%);white-space:nowrap;
-  font-family:var(--f-mono);font-size:clamp(.5rem,.9vw,.62rem);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-  pointer-events:auto;cursor:pointer;padding:3px 8px;border-radius:4px;
-  animation:orbit-rev var(--t) linear infinite;animation-delay:var(--d);transition:color .3s,transform .3s var(--ease),background .3s;
+  position:absolute;left:50%;white-space:nowrap;
+  font-family:var(--f-mono);font-size:clamp(.52rem,.95vw,.66rem);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  pointer-events:auto;cursor:pointer;padding:4px 9px;border-radius:6px;
+  animation-duration:var(--t);animation-timing-function:linear;animation-iteration-count:infinite;animation-delay:var(--d);
+  transition:color .3s,transform .3s var(--ease),background .3s,box-shadow .3s;
 }
-.sys__planet:hover{z-index:10}
-.sys__planet:hover .sys__orb{transform:translate(-50%,-50%) scale(1.85);box-shadow:0 0 24px var(--pc,#a26833)}
-.sys__planet:hover .sys__label{color:var(--text);font-weight:700;background:rgba(255,255,255,.85);box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.sys__planet:hover .sys__ring{border-color:var(--pc,#a26833);border-style:solid;opacity:.85}
-.sys__planet:hover,.sys__planet:hover .sys__label{animation-play-state:paused}
+
+/* Stagger label vertical placement: odd planets above orbit, even planets below orbit to prevent collisions */
+.sys__planet:nth-child(odd) .sys__label{
+  top:0;transform:translate(-50%,-82%);
+  animation-name:orbit-rev-above;
+}
+.sys__planet:nth-child(even) .sys__label{
+  top:0;transform:translate(-50%,70%);
+  animation-name:orbit-rev-below;
+}
+
+/* When hovering any planet, dim all other planets so selection is crystal clear */
+.sys:has(.sys__planet:hover) .sys__planet:not(:hover){
+  opacity:.25;filter:blur(.5px);
+}
+.sys__planet:hover{z-index:100;opacity:1!important;filter:none!important}
+.sys__planet:hover .sys__orb{transform:translate(-50%,-50%) scale(2.1);box-shadow:0 0 28px var(--pc,#a26833),0 0 8px #fff}
+.sys__planet:hover .sys__label{
+  color:var(--dark);font-weight:700;background:rgba(255,255,255,.96);
+  box-shadow:0 4px 18px rgba(0,0,0,.14),0 0 0 1.5px var(--pc,#a26833);z-index:102;
+}
+.sys__planet:hover .sys__ring,
+.sys__planet.is-dock-active .sys__ring{border-color:var(--pc,#a26833);border-style:solid;opacity:1;border-width:1.5px}
+.sys__planet:hover,.sys__planet:hover .sys__label,
+.sys__planet.is-dock-active,.sys__planet.is-dock-active .sys__label{animation-play-state:paused}
+
+.sys__planet.is-dock-active{z-index:100;opacity:1!important;filter:none!important}
+.sys__planet.is-dock-active .sys__orb{transform:translate(-50%,-50%) scale(2.1);box-shadow:0 0 28px var(--pc,#a26833),0 0 8px #fff}
+.sys__planet.is-dock-active .sys__label{
+  color:var(--dark);font-weight:700;background:rgba(255,255,255,.96);
+  box-shadow:0 4px 18px rgba(0,0,0,.14),0 0 0 1.5px var(--pc,#a26833);z-index:102;
+}
+
 @keyframes orbit{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes orbit-rev{from{transform:translate(-50%,-70%) rotate(360deg)}to{transform:translate(-50%,-70%) rotate(0deg)}}
+@keyframes orbit-rev-above{from{transform:translate(-50%,-82%) rotate(360deg)}to{transform:translate(-50%,-82%) rotate(0deg)}}
+@keyframes orbit-rev-below{from{transform:translate(-50%,70%) rotate(360deg)}to{transform:translate(-50%,70%) rotate(0deg)}}
+
 .sys__hint{text-align:center;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:1.2rem}
+
+/* Direct planet dock selector */
+.sys__dock{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;
+  max-width:860px;margin:1.4rem auto 0;padding:0 1rem;
+}
+.sys__dock-btn{
+  display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .85rem;
+  background:rgba(255,255,255,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid var(--line-strong);border-radius:999px;
+  font-family:var(--f-mono);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text);text-decoration:none;transition:all .25s var(--ease);
+}
+.sys__dock-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--pc,var(--accent));
+  box-shadow:0 0 6px var(--pc,var(--accent));flex-shrink:0;
+}
+.sys__dock-btn:hover{
+  background:#fff;border-color:var(--pc,var(--accent));color:var(--dark);
+  transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.1);
+}
 
 /* ---------- anime orchestra: motion-path comet + ambient dust ---------- */
 .sys__orbitpath{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}

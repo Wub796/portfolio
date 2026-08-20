@@ -694,6 +694,20 @@
   if (clock) { tickClock(); setInterval(tickClock, 1000); }
 
   /* ------------------------------------------------------------
+     SOLAR SYSTEM DOCK SYNC (home only)
+     ------------------------------------------------------------ */
+  var dockBtns = document.querySelectorAll(".sys__dock-btn");
+  var sysPlanets = document.querySelectorAll(".sys__planet");
+  dockBtns.forEach(function (btn, i) {
+    btn.addEventListener("mouseenter", function () {
+      if (sysPlanets[i]) sysPlanets[i].classList.add("is-dock-active");
+    });
+    btn.addEventListener("mouseleave", function () {
+      if (sysPlanets[i]) sysPlanets[i].classList.remove("is-dock-active");
+    });
+  });
+
+  /* ------------------------------------------------------------
      SCHEDULE TOGGLE (schedule page)
      ------------------------------------------------------------ */
   var modeSchool = document.getElementById("modeSchool");
