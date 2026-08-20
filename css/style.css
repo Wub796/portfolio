@@ -734,24 +734,36 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
 .sys__planet{
   position:absolute;top:50%;left:50%;width:var(--r);height:var(--r);z-index:1;
   transform:translate(-50%,-50%);
+  pointer-events:none;
   animation:orbit var(--t) linear infinite;animation-delay:var(--d);
 }
-.sys__ring{position:absolute;inset:0;border-radius:50%;border:1px dashed rgba(82,49,34,.28)}
+.sys__ring{
+  position:absolute;inset:0;border-radius:50%;
+  border:1px dashed rgba(82,49,34,.28);
+  pointer-events:none;
+  transition:border-color .3s,border-style .3s,opacity .3s;
+}
 .sys__orb{
   position:absolute;top:0;left:50%;width:clamp(10px,2vw,22px);height:clamp(10px,2vw,22px);border-radius:50%;
   transform:translate(-50%,-50%);
   background:radial-gradient(circle at 32% 30%,rgba(255,255,255,.55) 0%,transparent 45%),var(--pc,#a26833);
   box-shadow:0 0 14px color-mix(in srgb,var(--pc,#a26833) 60%,transparent);
-  transition:transform .3s var(--ease);
+  pointer-events:auto;cursor:pointer;
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+}
+.sys__orb::before{
+  content:'';position:absolute;inset:-18px;border-radius:50%;
 }
 .sys__label{
   position:absolute;top:0;left:50%;transform:translate(-50%,-70%);white-space:nowrap;
   font-family:var(--f-mono);font-size:clamp(.5rem,.9vw,.62rem);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-  animation:orbit-rev var(--t) linear infinite;animation-delay:var(--d);transition:color .3s;
+  pointer-events:auto;cursor:pointer;padding:3px 8px;border-radius:4px;
+  animation:orbit-rev var(--t) linear infinite;animation-delay:var(--d);transition:color .3s,transform .3s var(--ease),background .3s;
 }
-.sys__planet:hover{z-index:3}
-.sys__planet:hover .sys__orb{transform:translate(-50%,-50%) scale(1.8)}
-.sys__planet:hover .sys__label{color:var(--text)}
+.sys__planet:hover{z-index:10}
+.sys__planet:hover .sys__orb{transform:translate(-50%,-50%) scale(1.85);box-shadow:0 0 24px var(--pc,#a26833)}
+.sys__planet:hover .sys__label{color:var(--text);font-weight:700;background:rgba(255,255,255,.85);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.sys__planet:hover .sys__ring{border-color:var(--pc,#a26833);border-style:solid;opacity:.85}
 .sys__planet:hover,.sys__planet:hover .sys__label{animation-play-state:paused}
 @keyframes orbit{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
 @keyframes orbit-rev{from{transform:translate(-50%,-70%) rotate(360deg)}to{transform:translate(-50%,-70%) rotate(0deg)}}
