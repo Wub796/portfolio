@@ -160,6 +160,14 @@ try {
   sun.add(corona);
   scene.add(sun);
 
+  /* ---------- shared geometries & materials for instant init ---------- */
+  const sharedPlanetGeo = new THREE.IcosahedronGeometry(1, 3);
+  const sharedWireGeo = new THREE.IcosahedronGeometry(1.1, 2);
+  const sharedSatGeo = new THREE.IcosahedronGeometry(0.08, 1);
+  const sharedRingGeo1 = new THREE.RingGeometry(1.38, 1.72, 48);
+  const sharedRingGeo2 = new THREE.RingGeometry(1.85, 1.94, 48);
+  const atmoTex = radial("rgba(255,255,255,0.55)", "rgba(255,255,255,0)");
+
   /* ---------- planets ---------- */
   const bodies = {};
   const sats = [];
@@ -169,56 +177,61 @@ try {
     const g = new THREE.Group();
 
     const core = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(cfg.s, 5),
+      sharedPlanetGeo,
       new THREE.MeshStandardMaterial({
         color: cfg.c, roughness: 0.55, metalness: 0.18,
         emissive: new THREE.Color(cfg.c).multiplyScalar(darkPage ? 0.32 : 0.08),
       })
     );
+    core.scale.setScalar(cfg.s);
+
     const wire = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(cfg.s * 1.1, 6),
-      new THREE.MeshBasicMaterial({ wireframe: true, color: cfg.c, transparent: true, opacity: 0.5 })
+      sharedWireGeo,
+      new THREE.MeshBasicMaterial({ wireframe: true, color: cfg.c, transparent: true, opacity: 0.45 })
     );
+    wire.scale.setScalar(cfg.s);
+
     const atmo = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: radial("rgba(255,255,255,0.55)", "rgba(255,255,255,0)"),
-      transparent: true, opacity: darkPage ? 0.2 : 0.13, depthWrite: false,
+      map: atmoTex, transparent: true, opacity: darkPage ? 0.2 : 0.13, depthWrite: false,
     }));
     atmo.scale.set(cfg.s * 3.6, cfg.s * 3.6, 1);
     g.add(core, wire, atmo);
 
     if (cfg.ring) {
       const r1 = new THREE.Mesh(
-        new THREE.RingGeometry(cfg.s * 1.38, cfg.s * 1.72, 80),
+        sharedRingGeo1,
         new THREE.MeshBasicMaterial({ color: darkPage ? 0x2b2a2d : 0x523122, transparent: true, opacity: 0.35, side: THREE.DoubleSide, depthWrite: false })
       );
+      r1.scale.setScalar(cfg.s);
       r1.rotation.set(1.72, 0.35, 0);
+
       const r2 = new THREE.Mesh(
-        new THREE.RingGeometry(cfg.s * 1.85, cfg.s * 1.94, 80),
+        sharedRingGeo2,
         new THREE.MeshBasicMaterial({ color: cfg.c, transparent: true, opacity: 0.5, side: THREE.DoubleSide, depthWrite: false })
       );
+      r2.scale.setScalar(cfg.s);
       r2.rotation.set(1.72, 0.35, 0.15);
       g.add(r1, r2);
     }
 
-    for (let i = 0; i < 2; i++) {
+    for (let j = 0; j < 2; j++) {
       const m = new THREE.Mesh(
-        new THREE.IcosahedronGeometry(0.08, 2),
+        sharedSatGeo,
         new THREE.MeshStandardMaterial({ color: cfg.c, emissive: cfg.c, emissiveIntensity: 0.85 })
       );
       g.add(m);
-      sats.push({ m, r: cfg.s * 1.15 + i * 0.5, ph: (i / 2) * Math.PI * 2 + k.length, sp: 0.5 + i * 0.35 });
+      sats.push({ m, r: cfg.s * 1.15 + j * 0.5, ph: (j / 2) * Math.PI * 2 + k.length, sp: 0.5 + j * 0.35 });
     }
 
     /* orbit path — a tilted circle matching the planet's motion */
     const path = new THREE.Mesh(
-      new THREE.RingGeometry(cfg.d - 0.04, cfg.d + 0.04, 128),
+      new THREE.RingGeometry(cfg.d - 0.04, cfg.d + 0.04, 64),
       new THREE.MeshBasicMaterial({ color: PATH, transparent: true, opacity: 0.3, side: THREE.DoubleSide, depthWrite: false })
     );
     path.rotation.x = cfg.tilt - Math.PI / 2;
     scene.add(path);
 
     scene.add(g);
-    /* spread the planets around the orbit so they never bunch up */
     bodies[k] = { cfg, g, phase: (i / 9) * Math.PI * 2 + (Math.random() - 0.5) * 0.4 };
   });
 
@@ -359,16 +372,15 @@ try {
   }
   window.addEventListener("resize", onResize);
 
-  if (reduced) {
-    Object.keys(bodies).forEach((k) => {
-      bodies[k].g.position.copy(planetPos(k, 0));
-      bodies[k].g.visible = slug === "sol" || k === slug || (arr < 1 && k === fromSlug);
-    });
-    window.__sceneVis = Object.keys(bodies).filter((k) => bodies[k].g.visible);
-    camera.position.copy(toFrame.pos);
-    camera.lookAt(toFrame.look);
-    composer.render();
-  } else {
+  /* instant frame 0 render so canvas paints with zero delay */
+  Object.keys(bodies).forEach((k) => {
+    bodies[k].g.position.copy(planetPos(k, 0));
+    bodies[k].g.visible = slug === "sol" || k === slug || (arr < 1 && k === fromSlug);
+  });
+  window.__sceneVis = Object.keys(bodies).filter((k) => bodies[k].g.visible);
+  composer.render();
+
+  if (!reduced) {
     loop();
   }
 
