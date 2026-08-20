@@ -134,7 +134,14 @@ body:not([data-planet="sol"]) #scene3d{
   filter:none!important;
   opacity:1!important;
 }
-main#top{position:relative;z-index:2}
+main#top{
+  position:relative;z-index:2;
+  transition:opacity .35s var(--ease),transform .35s var(--ease);
+}
+main#top.is-swapping{
+  opacity:0.02;
+  transform:translateY(8px);
+}
 
 /* glass panels — frosted white over the 3D scene */
 .panel{background:rgba(255,255,255,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.6);box-shadow:0 8px 32px rgba(82,49,34,.05)}

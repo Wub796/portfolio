@@ -321,35 +321,103 @@
   document.addEventListener("mouseover", handlePrefetchTrigger, { passive: true });
   document.addEventListener("pointerdown", handlePrefetchTrigger, { passive: true });
 
-  function doNavigate(href) {
-    window.location.href = href;
+  /* ------------------------------------------------------------
+     SEAMLESS SPA ROUTER & CLIENT-SIDE PAGE TRANSITION
+     Continuous Three.js background flight + zero flash DOM swap
+     ------------------------------------------------------------ */
+  function hrefToSlug(href) {
+    if (!href) return "sol";
+    var clean = href.split("?")[0].split("#")[0].split("/").pop();
+    if (!clean || clean === "index.html" || clean === "") return "sol";
+    return clean.replace(".html", "");
   }
 
-  function saveSceneState() {
-    try {
-      sessionStorage.setItem("bw-last-planet", currentPlanet);
-      if (window.__getSceneState) {
-        var st = window.__getSceneState();
-        sessionStorage.setItem("bw-last-cam-pos", JSON.stringify(st.pos));
-        sessionStorage.setItem("bw-last-cam-look", JSON.stringify(st.look));
-        sessionStorage.setItem("bw-last-sim-t", String(st.simT));
-      }
-    } catch (err) { /* ignore */ }
+  function updateNavActive(slug) {
+    var links = document.querySelectorAll(".nav__links a");
+    links.forEach(function (a) {
+      var aSlug = hrefToSlug(a.getAttribute("href"));
+      a.classList.toggle("is-active", aSlug === slug);
+    });
+    var rails = document.querySelectorAll(".rail__node");
+    rails.forEach(function (r) {
+      var rSlug = r.dataset.planet || hrefToSlug(r.getAttribute("href"));
+      r.classList.toggle("is-active", rSlug === slug);
+    });
   }
-  window.addEventListener("beforeunload", saveSceneState);
+
+  var isNavigatingSpa = false;
+  function navigateSpa(href, pushState) {
+    if (!href) return;
+    var targetSlug = hrefToSlug(href);
+    closeMenu();
+
+    if (targetSlug === currentPlanet) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    if (isNavigatingSpa) return;
+    isNavigatingSpa = true;
+
+    /* 1. Immediately launch smooth slowed-down 3D background flight */
+    if (window.__flyToPlanet) {
+      window.__flyToPlanet(targetSlug);
+    }
+
+    /* 2. Softly fade out old main content */
+    var mainEl = document.getElementById("top");
+    if (mainEl) mainEl.classList.add("is-swapping");
+
+    /* 3. Fetch destination HTML in the background with zero lag */
+    fetch(href)
+      .then(function (res) {
+        if (!res.ok) throw new Error("fetch failed");
+        return res.text();
+      })
+      .then(function (html) {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, "text/html");
+        var newMain = doc.getElementById("top");
+        if (!newMain) {
+          window.location.href = href;
+          return;
+        }
+
+        setTimeout(function () {
+          if (mainEl) {
+            mainEl.innerHTML = newMain.innerHTML;
+          }
+          document.title = doc.title;
+          document.body.dataset.planet = targetSlug;
+          currentPlanet = targetSlug;
+          window.scrollTo(0, 0);
+          updateNavActive(targetSlug);
+          initPageFeatures();
+
+          requestAnimationFrame(function () {
+            if (mainEl) mainEl.classList.remove("is-swapping");
+            isNavigatingSpa = false;
+          });
+
+          if (pushState !== false) {
+            history.pushState({ slug: targetSlug, href: href }, doc.title, href);
+          }
+        }, 260);
+      })
+      .catch(function () {
+        window.location.href = href;
+      });
+  }
 
   document.addEventListener("click", function (e) {
-    var warpLink = e.target.closest ? e.target.closest('a[data-warp]') : null;
-    if (warpLink) {
-      var href = warpLink.getAttribute("href");
-      if (!href || href === "#" || href.indexOf(".html") === -1 && href.indexOf("/") === -1) return;
-      e.preventDefault();
-      closeMenu();
-      if (exitLock) return;
-      exitLock = true;
-      saveSceneState();
-      doNavigate(href);
-      return;
+    var link = e.target.closest && e.target.closest("a[data-warp], .nav__links a, .rail__node, .foot__nav a, .foot__sol a, .sys__planet, .sys__dock-btn");
+    if (link) {
+      var href = link.getAttribute("href");
+      if (href && href !== "#" && (href.indexOf(".html") !== -1 || href === "index.html" || href === "/")) {
+        e.preventDefault();
+        navigateSpa(href, true);
+        return;
+      }
     }
     var anchor = e.target.closest ? e.target.closest('a[data-scroll]') : null;
     if (anchor) {
@@ -359,6 +427,11 @@
       scrollToY(target.getBoundingClientRect().top + (window.scrollY || 0));
       closeMenu();
     }
+  });
+
+  window.addEventListener("popstate", function (e) {
+    var path = window.location.pathname.split("/").pop() || "index.html";
+    navigateSpa(path, false);
   });
 
   /* ------------------------------------------------------------
@@ -681,102 +754,102 @@
   if (navFade) navFade.style.display = "none";
 
   /* ------------------------------------------------------------
-     REVEAL — staggered cascade so content never just appears
+     PAGE COMPONENT INITIALIZERS (called on load & SPA swaps)
      ------------------------------------------------------------ */
-  var revealEls = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
-  var revealCount = 0;
-  if ("IntersectionObserver" in window && !reducedMotion) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          en.target.style.transitionDelay = Math.min(420, revealCount * 60) + "ms";
-          revealCount++;
-          en.target.classList.add("is-in");
-          io.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: "0px 0px -30px 0px" });
-    revealEls.forEach(function (el) { io.observe(el); });
-  } else {
-    revealEls.forEach(function (el) { el.classList.add("is-in"); });
+  var revealIo = null;
+  function initReveals() {
+    var revealEls = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+    var revealCount = 0;
+    if (revealIo) { revealIo.disconnect(); revealIo = null; }
+    if ("IntersectionObserver" in window && !reducedMotion) {
+      revealIo = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) {
+            en.target.style.transitionDelay = Math.min(420, revealCount * 60) + "ms";
+            revealCount++;
+            en.target.classList.add("is-in");
+            revealIo.unobserve(en.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: "0px 0px -30px 0px" });
+      revealEls.forEach(function (el) { revealIo.observe(el); });
+    } else {
+      revealEls.forEach(function (el) { el.classList.add("is-in"); });
+    }
   }
 
-  /* ------------------------------------------------------------
-     BACKGROUND SCENE BLUR (Landing Page only)
-     Gently softens 3D scene when scrolling past Hero & System Map
-     ------------------------------------------------------------ */
-  var sceneCanvas = document.getElementById("scene3d");
-  if (sceneCanvas && currentPlanet === "sol" && "IntersectionObserver" in window && !reducedMotion) {
-    var blurSections = Array.prototype.slice.call(
-      document.querySelectorAll(".sec:not(#hero):not(.sys-sec), #teaser, .kpis")
-    );
-    var activeBlurMap = new Map();
-    var blurObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        activeBlurMap.set(en.target, en.isIntersecting);
-      });
-      var hasVisibleSection = false;
-      activeBlurMap.forEach(function (isVisible) {
-        if (isVisible) hasVisibleSection = true;
-      });
-      sceneCanvas.classList.toggle("is-blurred", hasVisibleSection);
-    }, { threshold: 0.1, rootMargin: "-8% 0px -15% 0px" });
+  var currentBlurObserver = null;
+  function initBackgroundBlur() {
+    var sceneCanvas = document.getElementById("scene3d");
+    if (currentBlurObserver) { currentBlurObserver.disconnect(); currentBlurObserver = null; }
+    if (sceneCanvas && currentPlanet === "sol" && "IntersectionObserver" in window && !reducedMotion) {
+      var blurSections = Array.prototype.slice.call(
+        document.querySelectorAll(".sec:not(#hero):not(.sys-sec), #teaser, .kpis")
+      );
+      var activeBlurMap = new Map();
+      currentBlurObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          activeBlurMap.set(en.target, en.isIntersecting);
+        });
+        var hasVisibleSection = false;
+        activeBlurMap.forEach(function (isVisible) {
+          if (isVisible) hasVisibleSection = true;
+        });
+        sceneCanvas.classList.toggle("is-blurred", hasVisibleSection);
+      }, { threshold: 0.1, rootMargin: "-8% 0px -15% 0px" });
+      blurSections.forEach(function (sec) { currentBlurObserver.observe(sec); });
+    } else if (sceneCanvas) {
+      sceneCanvas.classList.remove("is-blurred");
+    }
+  }
 
-    blurSections.forEach(function (sec) {
-      blurObserver.observe(sec);
+  var clockTimer = null;
+  function initHoustonClock() {
+    var clock = document.getElementById("houstonClock");
+    if (clockTimer) { clearInterval(clockTimer); clockTimer = null; }
+    if (!clock) return;
+    function tickClock() {
+      try {
+        clock.textContent = new Date().toLocaleTimeString("en-US", {
+          timeZone: "America/Chicago", hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit",
+        });
+      } catch (e) { /* leave as-is */ }
+    }
+    tickClock();
+    clockTimer = setInterval(tickClock, 1000);
+  }
+
+  function initDockSync() {
+    var dockBtns = document.querySelectorAll(".sys__dock-btn");
+    var sysPlanets = document.querySelectorAll(".sys__planet");
+    dockBtns.forEach(function (btn, i) {
+      btn.addEventListener("mouseenter", function () {
+        if (sysPlanets[i]) sysPlanets[i].classList.add("is-dock-active");
+      });
+      btn.addEventListener("mouseleave", function () {
+        if (sysPlanets[i]) sysPlanets[i].classList.remove("is-dock-active");
+      });
     });
   }
 
-  /* ------------------------------------------------------------
-     HOUSTON CLOCK (home only)
-     ------------------------------------------------------------ */
-  var clock = document.getElementById("houstonClock");
-  function tickClock() {
-    try {
-      clock.textContent = new Date().toLocaleTimeString("en-US", {
-        timeZone: "America/Chicago", hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit",
-      });
-    } catch (e) { /* leave as-is */ }
-  }
-  if (clock) { tickClock(); setInterval(tickClock, 1000); }
-
-  /* ------------------------------------------------------------
-     SOLAR SYSTEM DOCK SYNC (home only)
-     ------------------------------------------------------------ */
-  var dockBtns = document.querySelectorAll(".sys__dock-btn");
-  var sysPlanets = document.querySelectorAll(".sys__planet");
-  dockBtns.forEach(function (btn, i) {
-    btn.addEventListener("mouseenter", function () {
-      if (sysPlanets[i]) sysPlanets[i].classList.add("is-dock-active");
-    });
-    btn.addEventListener("mouseleave", function () {
-      if (sysPlanets[i]) sysPlanets[i].classList.remove("is-dock-active");
-    });
-  });
-
-  /* ------------------------------------------------------------
-     SCHEDULE TOGGLE (schedule page)
-     ------------------------------------------------------------ */
-  var modeSchool = document.getElementById("modeSchool");
-  var modeSummer = document.getElementById("modeSummer");
-  var tableSchool = document.getElementById("tableSchool");
-  var tableSummer = document.getElementById("tableSummer");
-  function setMode(summer) {
-    modeSchool.classList.toggle("is-on", !summer);
-    modeSummer.classList.toggle("is-on", summer);
-    modeSchool.setAttribute("aria-selected", String(!summer));
-    modeSummer.setAttribute("aria-selected", String(summer));
-    tableSchool.hidden = summer;
-    tableSummer.hidden = !summer;
-  }
-  if (modeSchool && modeSummer) {
+  function initScheduleToggle() {
+    var modeSchool = document.getElementById("modeSchool");
+    var modeSummer = document.getElementById("modeSummer");
+    var tableSchool = document.getElementById("tableSchool");
+    var tableSummer = document.getElementById("tableSummer");
+    if (!modeSchool || !modeSummer || !tableSchool || !tableSummer) return;
+    function setMode(summer) {
+      modeSchool.classList.toggle("is-on", !summer);
+      modeSummer.classList.toggle("is-on", summer);
+      modeSchool.setAttribute("aria-selected", String(!summer));
+      modeSummer.setAttribute("aria-selected", String(summer));
+      tableSchool.hidden = summer;
+      tableSummer.hidden = !summer;
+    }
     modeSchool.addEventListener("click", function () { setMode(false); });
     modeSummer.addEventListener("click", function () { setMode(true); });
   }
 
-  /* ------------------------------------------------------------
-     DEADLINES — accordion + live countdowns (deadlines page)
-     ------------------------------------------------------------ */
   function pad(n) { return String(n).padStart(2, "0"); }
 
   function renderCountdown(statusEl, countEl, target) {
@@ -807,8 +880,12 @@
     }
   }
 
-  var grid = document.getElementById("dlGrid");
-  if (grid) {
+  var dlTimer = null;
+  function initDeadlines() {
+    var grid = document.getElementById("dlGrid");
+    if (dlTimer) { clearInterval(dlTimer); dlTimer = null; }
+    if (!grid) return;
+    grid.innerHTML = "";
     DEADLINES.forEach(function (p, i) {
       var card = document.createElement("article");
       card.className = "dl-card";
@@ -905,18 +982,28 @@
       card.appendChild(body);
       grid.appendChild(card);
     });
+
+    dlTimer = setInterval(function () {
+      var els = grid.querySelectorAll(".dl-card__status[data-target]");
+      for (var i = 0; i < els.length; i++) {
+        var st = els[i];
+        var targetTime = Number(st.dataset.target);
+        var card = st.closest(".dl-card");
+        var countEl = card ? card.querySelector(".dl-card__count") : null;
+        if (countEl) renderCountdown(st, countEl, targetTime);
+      }
+    }, 1000);
   }
 
-  setInterval(function () {
-    var els = document.querySelectorAll(".dl-card__status[data-target]");
-    for (var i = 0; i < els.length; i++) {
-      var st = els[i];
-      var t = Number(st.dataset.target);
-      var card = st.closest(".dl-card");
-      var countEl = card ? card.querySelector(".dl-card__count") : null;
-      if (countEl) renderCountdown(st, countEl, t);
-    }
-  }, 1000);
+  function initPageFeatures() {
+    initReveals();
+    initBackgroundBlur();
+    initHoustonClock();
+    initDockSync();
+    initScheduleToggle();
+    initDeadlines();
+  }
+  initPageFeatures();
 
   /* ------------------------------------------------------------
      ANIME ORCHESTRA — the rest of anime.js v4, wired in everywhere.

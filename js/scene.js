@@ -268,8 +268,9 @@ try {
     if (timeStr) simT = parseFloat(timeStr) || 0;
   } catch (e) { /* ignore */ }
 
-  const fromSlug = lastPlanet && P[lastPlanet] && lastPlanet !== slug ? lastPlanet : null;
-  const toFrame = frameOf(slug, simT);
+  let currentSlug = slug;
+  let fromSlug = lastPlanet && P[lastPlanet] && lastPlanet !== currentSlug ? lastPlanet : null;
+  let toFrame = frameOf(currentSlug, simT);
 
   let fromFrame;
   if (lastCamPos && lastCamLook && fromSlug) {
@@ -281,13 +282,27 @@ try {
     fromFrame = fromSlug ? frameOf(fromSlug, simT) : toFrame;
   }
 
-  const FLY = 1.6;
+  let FLY = 2.8;
   let arr = (reduced || !fromSlug) ? 1 : 0;
   let curLook = fromSlug ? fromFrame.look.clone() : toFrame.look.clone();
 
   camera.position.copy(fromSlug ? fromFrame.pos : toFrame.pos);
   camera.lookAt(curLook);
-  let readyToFly = true;
+
+  /* dynamic continuous flight for seamless SPA transition */
+  window.__flyToPlanet = function (targetSlug) {
+    if (!P[targetSlug]) return;
+    if (targetSlug === currentSlug) return;
+    fromSlug = currentSlug;
+    currentSlug = targetSlug;
+    fromFrame = {
+      pos: camera.position.clone(),
+      look: curLook.clone(),
+    };
+    toFrame = frameOf(currentSlug, simT);
+    arr = 0;
+    FLY = 2.8;
+  };
 
   /* quintic ease-in-out for silky cinematic spacecraft departure & arrival */
   function easeQuint(t) {
@@ -316,26 +331,20 @@ try {
        planet (and the one we flew from, during arrival) stays visible */
     Object.keys(bodies).forEach((k) => {
       bodies[k].g.position.copy(planetPos(k, simT));
-      bodies[k].g.visible = slug === "sol" || k === slug || (arr < 1 && k === fromSlug);
+      bodies[k].g.visible = currentSlug === "sol" || k === currentSlug || (arr < 1 && k === fromSlug);
     });
     window.__sceneVis = Object.keys(bodies).filter((k) => bodies[k].g.visible);
 
-    /* arrival tween: holds exact departure state until page is loaded, then arcs smoothly */
+    /* arrival tween: smooth slowed-down orbital arc trajectory */
     if (fromSlug && arr < 1) {
-      if (readyToFly) {
-        arr = Math.min(1, arr + dt / FLY);
-        const e = easeQuint(arr);
-        const arcHeight = Math.sin(e * Math.PI) * 2.4;
-        camera.position.lerpVectors(fromFrame.pos, toFrame.pos, e);
-        camera.position.y += arcHeight;
-        camera.position.z += arcHeight * 0.4;
-        curLook.lerpVectors(fromFrame.look, toFrame.look, e);
-        camera.lookAt(curLook);
-      } else {
-        camera.position.copy(fromFrame.pos);
-        curLook.copy(fromFrame.look);
-        camera.lookAt(curLook);
-      }
+      arr = Math.min(1, arr + dt / FLY);
+      const e = easeQuint(arr);
+      const arcHeight = Math.sin(e * Math.PI) * 3.4;
+      camera.position.lerpVectors(fromFrame.pos, toFrame.pos, e);
+      camera.position.y += arcHeight;
+      camera.position.z += arcHeight * 0.4;
+      curLook.lerpVectors(fromFrame.look, toFrame.look, e);
+      camera.lookAt(curLook);
     }
 
     /* post-arrival: subtle idle drift + mouse parallax + scroll pull-back */
