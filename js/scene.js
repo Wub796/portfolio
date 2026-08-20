@@ -222,19 +222,10 @@ try {
     bodies[k] = { cfg, g, phase: (i / 9) * Math.PI * 2 + (Math.random() - 0.5) * 0.4 };
   });
 
-  /* ---------- comet (velocity / warp reactive) ---------- */
-  const cometMat = new THREE.SpriteMaterial({
-    map: glowTex, transparent: true, opacity: 0, blending: THREE.NormalBlending, depthWrite: false,
-  });
-  const comet = new THREE.Sprite(cometMat);
-  comet.scale.set(1.4, 1.4, 1);
-  scene.add(comet);
-  let cometA = Math.random() * Math.PI * 2;
-
   /* ---------- bloom ---------- */
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.34, 0.62, 0.32);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.2, 0.5, 0.4);
   composer.addPass(bloom);
 
   /* ---------- framing: where the camera sits for a planet ---------- */
@@ -264,11 +255,13 @@ try {
   try { last = sessionStorage.getItem("bw-last-planet"); } catch (e) { /* ignore */ }
   const fromSlug = last && P[last] && last !== slug ? last : null;
   const toFrame = frameOf(slug, 0);
-  let fromFrame;
-  if (last && P[last] && last !== slug) fromFrame = frameOf(last, 0);
-  else fromFrame = { pos: toFrame.pos.clone().add(new THREE.Vector3(0, 0, 9)), look: toFrame.look.clone() };
-  const FLY = 2.6;
-  let arr = reduced ? 1 : 0;
+  let fromFrame = fromSlug ? frameOf(last, 0) : toFrame;
+  const FLY = 1.4;
+  let arr = (reduced || !fromSlug) ? 1 : 0;
+  let warp = 0;
+
+  camera.position.copy(fromSlug ? fromFrame.pos : toFrame.pos);
+  camera.lookAt(fromSlug ? fromFrame.look : toFrame.look);
 
   function easeInOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
 
@@ -283,14 +276,12 @@ try {
 
   /* ---------- main loop ---------- */
   const clock = new THREE.Clock();
-  let bloomBoost = 0;
-  let warp = reduced ? 0 : 1;
 
   function loop() {
     requestAnimationFrame(loop);
     if (document.hidden) return;
     const dt = Math.min(0.05, clock.getDelta());
-    simT += dt * (0.7 + (1 - arr) * 2.2); // world time speeds up during warp
+    simT += dt * 0.7;
 
     /* place planets on their orbits; on a section page only the current
        planet (and the one we flew from, during arrival) stays visible */
@@ -304,11 +295,8 @@ try {
     if (arr < 1) {
       arr = Math.min(1, arr + dt / FLY);
       const e = easeInOut(arr);
-      warp = 1 - e;
       camera.position.lerpVectors(fromFrame.pos, toFrame.pos, e);
       camera.lookAt(new THREE.Vector3().lerpVectors(fromFrame.look, toFrame.look, e));
-    } else {
-      warp = 0;
     }
 
     /* post-arrival: subtle idle drift + mouse parallax + scroll pull-back */
@@ -328,11 +316,11 @@ try {
 
     const speed = 1 + Math.min(4, Math.abs(vel) * 0.7);
 
-    /* stars drift + hyperspace stretch during warp */
+    /* stars drift */
     starLayers.forEach((s, i) => {
       s.pts.rotation.y += dt * 0.004 * (i + 1);
       s.pts.rotation.x += dt * 0.001 * (i % 2 ? 1 : -1);
-      s.mat.size = s.size * (1 + Math.min(3.4, warp * 3.2 + Math.abs(vel) * 1.1));
+      s.mat.size = s.size * (1 + Math.min(1.5, Math.abs(vel) * 0.5));
     });
 
     /* planets spin + satellites */
@@ -345,29 +333,20 @@ try {
       s.m.position.set(Math.cos(s.ph) * s.r, 0, Math.sin(s.ph) * s.r);
     });
 
-    /* sun breathes; its corona fades out if the camera passes close to it */
-    const sunPulse = 1 + Math.sin(simT * 0.8) * 0.05 + warp * 0.08;
+    /* sun breathes */
+    const sunPulse = 1 + Math.sin(simT * 0.8) * 0.04;
     sun.scale.setScalar(sunPulse);
     const camDist = camera.position.length();
     const coronaK = Math.max(0, Math.min(1, (camDist - 2.2) / 3));
-    corona.material.opacity = (0.42 + Math.sin(simT * 0.9) * 0.06 + warp * 0.14) * coronaK;
-
-    /* comet — streaks harder the faster you move */
-    cometA += dt * (0.1 + warp * 0.5 + Math.min(1.4, Math.abs(vel) * 0.4));
-    const cr = 9 + warp * 6 + Math.abs(vel) * 1.5;
-    comet.position.set(Math.cos(cometA) * cr, Math.sin(cometA * 1.3) * 1.4, Math.sin(cometA) * cr - 5);
-    cometMat.opacity = Math.min(0.95, warp * 0.85 + Math.abs(vel) * 0.5);
-    const cs = 1.1 + warp * 1.6 + Math.abs(vel) * 0.8;
-    comet.scale.set(cs, cs, 1);
+    corona.material.opacity = (0.38 + Math.sin(simT * 0.9) * 0.05) * coronaK;
 
     /* nebulae breathe */
     nebulas.forEach((n, i) => {
-      n.material.opacity = 0.3 + Math.sin(simT * 0.3 + i * 1.7) * 0.11;
+      n.material.opacity = 0.18 + Math.sin(simT * 0.3 + i * 1.7) * 0.06;
     });
 
-    /* bloom surges on warp + fast scroll (kept soft) */
-    bloomBoost = Math.max(0, bloomBoost - dt * 1.2);
-    bloom.strength = 0.3 + Math.min(0.55, Math.abs(vel) * 0.18) + warp * 0.42 + bloomBoost;
+    /* bloom stays gentle and clean */
+    bloom.strength = 0.18 + Math.min(0.2, Math.abs(vel) * 0.08);
 
     composer.render();
   }

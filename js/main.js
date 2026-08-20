@@ -524,15 +524,9 @@
   else window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  /* arrival warp flash — fire once, right after paint */
+  /* warp flash disabled — clean, instant page load */
   var warp = document.getElementById("warp");
-  if (warp && !reducedMotion) {
-    warp.style.setProperty("--wc", accentHex);
-    setTimeout(function () {
-      warp.classList.add("is-active");
-      setTimeout(function () { warp.classList.remove("is-active"); }, 850);
-    }, 180);
-  }
+  if (warp) warp.style.display = "none";
   /* browsers without View Transitions: fade the warp overlay OUT on
      arrival so the new page emerges from the dark instead of popping in */
   if (navFade) {
@@ -1033,37 +1027,6 @@
           easing: "linear",
         });
       } catch (err) { /* comet stays parked */ }
-    }
-
-    /* ---- 6. AMBIENT DUST ---- */
-    var heroEl = document.getElementById("hero");
-    if (heroEl && anime.createSeededRandom) {
-      var dustSeed = anime.createSeededRandom((FLUID_SEEDS[currentPlanet] || 1) * 7);
-      var dustFrag = document.createDocumentFragment();
-      var di;
-      for (di = 0; di < 12; di++) {
-        var mote = document.createElement("i");
-        mote.className = "hero__dust";
-        var size = 3 + dustSeed() * 5;
-        mote.style.width = size + "px";
-        mote.style.height = size + "px";
-        mote.style.left = (6 + dustSeed() * 86) + "%";
-        mote.style.top = (16 + dustSeed() * 62) + "%";
-        mote.style.opacity = (0.22 + dustSeed() * 0.5).toFixed(2);
-        dustFrag.appendChild(mote);
-        try {
-          anime.animate(mote, {
-            translateY: [0, -(18 + dustSeed() * 36)],
-            translateX: [0, (dustSeed() - 0.5) * 40],
-            duration: 3400 + dustSeed() * 3800,
-            delay: dustSeed() * 3200,
-            direction: "alternate",
-            loop: true,
-            easing: "sineInOut",
-          });
-        } catch (err) { /* mote stays put */ }
-      }
-      heroEl.appendChild(dustFrag);
     }
   }
 })();
