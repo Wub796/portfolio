@@ -681,13 +681,13 @@
   }
 
   /* ------------------------------------------------------------
-     BACKGROUND SCENE BLUR ON CONTENT SECTIONS
-     Gently softens and diffuses 3D background when reading dense content
+     BACKGROUND SCENE BLUR (Landing Page only)
+     Gently softens 3D scene when scrolling past Hero & System Map
      ------------------------------------------------------------ */
   var sceneCanvas = document.getElementById("scene3d");
-  if (sceneCanvas && "IntersectionObserver" in window && !reducedMotion) {
+  if (sceneCanvas && currentPlanet === "sol" && "IntersectionObserver" in window && !reducedMotion) {
     var blurSections = Array.prototype.slice.call(
-      document.querySelectorAll(".sec:not(#hero):not(.sys-sec), .schedule-wrap, .dl, .rows, .mission__cols, .split, .rules, .tbl")
+      document.querySelectorAll(".sec:not(#hero):not(.sys-sec), #teaser, .kpis")
     );
     var activeBlurMap = new Map();
     var blurObserver = new IntersectionObserver(function (entries) {
