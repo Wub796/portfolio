@@ -66,14 +66,14 @@
 @font-face{font-family:'Antonio';src:url('../assets/fonts/antonio/Antonio-700.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
 
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{background:var(--bg);color-scheme:light;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
 .lenis.lenis-stopped{overflow:hidden}
 
 body{
   margin:0;
-  background:transparent;
+  background:var(--bg);
   color:var(--text);
   font-family:var(--f-body);
   font-size:16px;
@@ -146,9 +146,9 @@ main#top{position:relative;z-index:2}
 .uni--target .cat{color:var(--red-brown);border-color:rgba(127,59,45,.5)}
 .uni--safe .cat{color:var(--olive);border-color:rgba(82,49,34,.5)}
 
-/* section headers flip in 3D */
-.sec{perspective:1400px}
-.reveal.flip3d{transform:rotateX(-28deg) translateY(26px);transform-origin:top center}
+/* section headers */
+.sec{perspective:none}
+.reveal.flip3d{transform:none}
 .reveal.flip3d.is-in{transform:none}
 
 /* 3D tilt targets */
@@ -164,23 +164,46 @@ main#top{position:relative;z-index:2}
 }
 .hero__name{animation:glitch 5.5s steps(1,end) infinite}
 
-/* ---------- custom cursor — big liquid blob (buttermax style) ---------- */
-.cursor{display:none}
-.cursor-blob{
-  position:fixed;top:0;left:0;width:96px;height:96px;z-index:299;pointer-events:none;
-  border-radius:50%;transform:translate(-50%,-50%);will-change:transform;
-  opacity:.78;
-  background:
-    radial-gradient(circle at 34% 30%,rgba(255,255,255,.6) 0%,transparent 38%),
-    radial-gradient(circle at 50% 50%,rgba(162,104,51,.55) 0%,rgba(162,104,51,.16) 55%,transparent 74%);
-  background:
-    radial-gradient(circle at 34% 30%,rgba(255,255,255,.6) 0%,transparent 38%),
-    radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--accent) 62%,transparent) 0%,color-mix(in srgb,var(--accent) 18%,transparent) 55%,transparent 74%);
-  filter:blur(3px);
-  transition:width .35s var(--ease),height .35s var(--ease),opacity .3s;
+/* ---------- custom cursor — frosted glass halo + precision dot + silky trail ---------- */
+.cursor{
+  position:fixed;top:0;left:0;pointer-events:none;border-radius:50%;
+  transform:translate(-50%,-50%);will-change:transform;z-index:301;
 }
-.cursor-blob.is-big{width:150px;height:150px;opacity:.95}
-@media (hover:none),(pointer:coarse){.cursor-blob,.cursor-trail{display:none}}
+.cursor--dot{
+  width:6px;height:6px;background:var(--accent);
+  border-radius:50%;
+  box-shadow:0 0 0 1.5px var(--bg), 0 0 8px color-mix(in srgb,var(--accent) 75%,transparent);
+  transition:transform .22s var(--ease),opacity .22s;
+}
+.cursor--dot.is-hidden{opacity:0;transform:translate(-50%,-50%) scale(0)}
+
+.cursor-blob{
+  position:fixed;top:0;left:0;width:42px;height:42px;z-index:300;pointer-events:none;
+  border-radius:50%;transform:translate(-50%,-50%);will-change:transform;
+  border:1.5px solid color-mix(in srgb,var(--accent) 65%,transparent);
+  background:
+    radial-gradient(circle at 35% 30%,rgba(255,255,255,.5) 0%,transparent 40%),
+    radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--accent) 30%,transparent) 0%,color-mix(in srgb,var(--accent) 8%,transparent) 60%,transparent 80%);
+  box-shadow:0 0 16px color-mix(in srgb,var(--accent) 25%,transparent);
+  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+  transition:width .28s var(--ease),height .28s var(--ease),border-color .28s,box-shadow .28s;
+}
+.cursor-blob.is-big{
+  width:80px;height:80px;
+  border-color:var(--accent);
+  background:
+    radial-gradient(circle at 35% 30%,rgba(255,255,255,.65) 0%,transparent 45%),
+    radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--accent) 35%,transparent) 0%,color-mix(in srgb,var(--accent) 12%,transparent) 62%,transparent 82%);
+  box-shadow:0 0 24px color-mix(in srgb,var(--accent) 45%,transparent);
+}
+.cursor-blob.is-down{
+  transform:translate(-50%,-50%) scale(.84);
+}
+.cursor-trail{
+  position:fixed;top:0;left:0;pointer-events:none;border-radius:50%;
+  transform:translate(-50%,-50%);will-change:transform;z-index:299;
+}
+@media (hover:none),(pointer:coarse){.cursor,.cursor-blob,.cursor-trail{display:none}}
 .glow{
   position:fixed;top:0;left:0;width:560px;height:560px;z-index:0;pointer-events:none;
   border-radius:50%;opacity:.14;will-change:transform;
@@ -702,22 +725,14 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
 .foot__sol a{color:var(--lime);border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:2px}
 .foot__sol a:hover{color:#fff;border-color:#fff}
 
-/* ---------- reveal — clean entrance ---------- */
-.reveal{opacity:0;transform:translateY(14px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+/* ---------- reveal & clean entrances ---------- */
+.reveal{opacity:1;transform:none}
 .reveal.is-in{opacity:1;transform:none}
 
-/* ---------- creative text entrances ---------- */
-/* per-letter rise + tilt inside titles */
-.ch{display:inline-block;opacity:0;transform:translateY(.5em) rotate(2deg);will-change:transform;transition:opacity .55s var(--ease),transform .55s var(--ease)}
-.reveal.is-in .ch{opacity:1;transform:none}
-/* section titles tighten their tracking as they appear */
-.sec__head .sec__title{animation:trackIn .8s var(--ease) .1s both}
-@keyframes trackIn{from{letter-spacing:.12em}to{letter-spacing:-.01em}}
-/* section numbers wipe up from below */
-.sec__head .sec__num{animation:numReveal .7s var(--ease) .12s both}
-@keyframes numReveal{from{clip-path:inset(0 0 100% 0);transform:translateY(14px)}to{clip-path:inset(0 0 0 0);transform:none}}
-/* content blocks cascade item-by-item (delays set by js/main.js) */
-.cascade>*{opacity:0;transform:translateY(12px);transition:opacity .55s var(--ease),transform .55s var(--ease),background .3s var(--ease)}
+.ch{display:inline}
+.sec__head .sec__title{letter-spacing:-.01em}
+.sec__head .sec__num{transform:none}
+.cascade>*{opacity:1;transform:none}
 .cascade.is-in>*{opacity:1;transform:none}
 
 /* ---------- responsive ---------- */

@@ -309,30 +309,7 @@
   }
 
   function doNavigate(href) {
-    if (vtSupported) {
-      /* cross-document View Transition — browser morphs old → new, zero flash */
-      window.location.href = href;
-    } else {
-      /* fallback: themed warp overlay covers the swap */
-      if (navFade) navFade.classList.add("is-on");
-      setTimeout(function () { window.location.href = href; }, 240);
-    }
-  }
-
-  /* anime.js exit — the page compresses upward and blurs out before we leave */
-  function exitChoreography(href) {
-    var mainEl = document.querySelector("main");
-    var ch = Array.prototype.slice.call(document.querySelectorAll(".sec__head .ch, .hero__name .ch"));
-    var done = false;
-    function go() { if (done) return; done = true; doNavigate(href); }
-    setTimeout(go, 700); /* safety — a stalled timeline must never hang navigation */
-    if (mainEl) {
-      anime.createTimeline({ onComplete: go })
-        .add(mainEl, { opacity: [1, 0], translateY: [0, -34], filter: ["blur(0px)", "blur(6px)"], duration: 380, easing: "easeInExpo" }, 0)
-        .add(ch, { opacity: 0, translateY: -56, rotate: -5, duration: 320, delay: anime.stagger(14), easing: "easeInExpo" }, 0);
-    } else {
-      go();
-    }
+    window.location.href = href;
   }
 
   document.addEventListener("click", function (e) {
@@ -345,8 +322,7 @@
       if (exitLock) return;
       exitLock = true;
       try { sessionStorage.setItem("bw-last-planet", currentPlanet); } catch (err) { /* ignore */ }
-      if (reducedMotion || !window.anime) doNavigate(href);
-      else exitChoreography(href);
+      doNavigate(href);
       return;
     }
     var anchor = e.target.closest ? e.target.closest('a[data-scroll]') : null;
@@ -360,23 +336,16 @@
   });
 
   /* ------------------------------------------------------------
-     CURSOR — liquid blob + DOM trail dots (anime.js v4 powered)
-
-     Replaces the old canvas afterimage with lightweight DOM nodes.
-     Each trail dot lerps toward the previous one, creating a
-     clean snake-like tail that fades in size and opacity.
-     The main blob uses anime.utils.damp for spring-damped motion
-     and squash-stretches along its velocity vector.
+     CURSOR — precision dot + liquid blob + organic 8-node fluid tail
      ------------------------------------------------------------ */
   var glow = document.getElementById("glow");
-  /* hide the legacy comet canvas — no longer used for trail */
   var comet = document.getElementById("comet");
   if (comet) comet.style.display = "none";
 
   if (finePointer && !reducedMotion && glow) {
     document.body.classList.add("has-cursor");
 
-    /* ---- create or find the main blob ---- */
+    var dotEl = document.getElementById("cursorDot");
     var blob = document.getElementById("cursorBlob");
     if (!blob) {
       blob = document.createElement("div");
@@ -386,69 +355,86 @@
       document.body.appendChild(blob);
     }
 
-    /* ---- build DOM trail dots ---- */
-    var TRAIL_N = 5;
+    /* ---- build 6 refined fluid trail nodes ---- */
+    var TRAIL_N = 6;
     var trailDots = [];
+    var trailFrag = document.createDocumentFragment();
     for (var ti = 0; ti < TRAIL_N; ti++) {
       var dot = document.createElement("div");
       dot.className = "cursor-trail";
       dot.setAttribute("aria-hidden", "true");
-      /* each successive dot is smaller and more transparent */
-      var s = 1 - (ti + 1) / (TRAIL_N + 1);
-      dot.style.cssText = "position:fixed;top:0;left:0;pointer-events:none;border-radius:50%;z-index:298;" +
-        "width:" + (28 * s) + "px;height:" + (28 * s) + "px;opacity:" + (0.35 * s * s) + ";" +
-        "background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.5) 0%,rgba(" + accentRgb.join(",") + ",.45) 50%,transparent 78%);" +
-        "filter:blur(" + (1.5 + ti * 0.6) + "px);will-change:transform;transform:translate(-100px,-100px)";
-      document.body.appendChild(dot);
+      var s = 1 - (ti + 1) / (TRAIL_N + 1.2);
+      var size = Math.round(26 * s);
+      var op = (0.42 * Math.pow(s, 1.4)).toFixed(3);
+      dot.style.cssText = "position:fixed;top:0;left:0;pointer-events:none;border-radius:50%;z-index:" + (298 - ti) + ";" +
+        "width:" + size + "px;height:" + size + "px;opacity:" + op + ";" +
+        "background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.55) 0%,rgba(" + accentRgb.join(",") + ",.45) 50%,transparent 78%);" +
+        "box-shadow:0 0 10px rgba(" + accentRgb.join(",") + ",.2);" +
+        "filter:blur(" + (0.8 + ti * 0.4).toFixed(1) + "px);will-change:transform;transform:translate(-100px,-100px)";
+      trailFrag.appendChild(dot);
       trailDots.push({ el: dot, x: -100, y: -100 });
     }
+    document.body.appendChild(trailFrag);
 
     /* ---- state ---- */
-    var mx = -100, my = -100, bx = -100, by = -100, gx = -100, gy = -100;
+    var mx = -100, my = -100, dx = -100, dy = -100, bx = -100, by = -100, gx = -100, gy = -100;
     var moved = false, followT = 0;
 
     window.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
-      if (!moved) { moved = true; blob.style.opacity = ""; }
+      if (!moved) {
+        moved = true;
+        blob.style.opacity = "";
+        if (dotEl) dotEl.style.opacity = "";
+      }
     }, { passive: true });
     blob.style.opacity = "0";
+    if (dotEl) dotEl.style.opacity = "0";
 
     /* ---- animation loop ---- */
     function follow() {
       var now = performance.now();
-      var dt = Math.min(50, now - (followT || now));
+      var dt = Math.min(45, now - (followT || now));
       followT = now;
 
-      /* damp the blob toward the mouse */
+      /* precision dot tracks tightly */
       if (window.anime && anime.utils && anime.utils.damp) {
-        bx = anime.utils.damp(bx, mx, 14, dt); by = anime.utils.damp(by, my, 14, dt);
+        dx = anime.utils.damp(dx, mx, 36, dt); dy = anime.utils.damp(dy, my, 36, dt);
+        bx = anime.utils.damp(bx, mx, 18, dt); by = anime.utils.damp(by, my, 18, dt);
         gx = anime.utils.damp(gx, mx, 5, dt);  gy = anime.utils.damp(gy, my, 5, dt);
       } else {
-        bx += (mx - bx) * 0.15; by += (my - by) * 0.15;
+        dx += (mx - dx) * 0.45; dy += (my - dy) * 0.45;
+        bx += (mx - bx) * 0.2;  by += (my - by) * 0.2;
         gx += (mx - gx) * 0.05; gy += (my - gy) * 0.05;
       }
+
+      if (dotEl) dotEl.style.transform = "translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px) translate(-50%,-50%)";
 
       /* squash-stretch along velocity */
       var vx = mx - bx, vy = my - by;
       var dist = Math.sqrt(vx * vx + vy * vy);
       var ang = Math.atan2(vy, vx);
-      var st = Math.min(0.45, dist * 0.006);
-      blob.style.transform = "translate(" + bx + "px," + by + "px) translate(-50%,-50%) rotate(" + ang + "rad) scale(" + (1 + st) + "," + (1 - st * 0.45) + ")";
-      glow.style.transform = "translate(" + gx + "px," + gy + "px) translate(-50%,-50%)";
+      var st = Math.min(0.4, dist * 0.006);
+      blob.style.transform = "translate(" + bx.toFixed(1) + "px," + by.toFixed(1) + "px) translate(-50%,-50%) rotate(" + ang.toFixed(3) + "rad) scale(" + (1 + st).toFixed(3) + "," + (1 - st * 0.4).toFixed(3) + ")";
+      glow.style.transform = "translate(" + gx.toFixed(1) + "px," + gy.toFixed(1) + "px) translate(-50%,-50%)";
 
-      /* trail dots follow in a chain — each lerps toward the previous */
+      /* trail dots follow in a smooth chained stream */
       var prevX = bx, prevY = by;
       for (var i = 0; i < TRAIL_N; i++) {
         var d = trailDots[i];
-        var ease = 0.18 - i * 0.022;          /* each node is slightly lazier */
+        var dampRate = Math.max(6, 20 - i * 2);
         if (window.anime && anime.utils && anime.utils.damp) {
-          d.x = anime.utils.damp(d.x, prevX, 10 - i * 1.3, dt);
-          d.y = anime.utils.damp(d.y, prevY, 10 - i * 1.3, dt);
+          d.x = anime.utils.damp(d.x, prevX, dampRate, dt);
+          d.y = anime.utils.damp(d.y, prevY, dampRate, dt);
         } else {
+          var ease = 0.25 - i * 0.025;
           d.x += (prevX - d.x) * ease;
           d.y += (prevY - d.y) * ease;
         }
-        d.el.style.transform = "translate(" + d.x + "px," + d.y + "px) translate(-50%,-50%)";
+
+        var curDist = Math.sqrt(Math.pow(d.x - prevX, 2) + Math.pow(d.y - prevY, 2));
+        var nodeScale = (0.8 + Math.min(0.4, curDist * 0.02)).toFixed(2);
+        d.el.style.transform = "translate(" + d.x.toFixed(1) + "px," + d.y.toFixed(1) + "px) translate(-50%,-50%) scale(" + nodeScale + ")";
         prevX = d.x;
         prevY = d.y;
       }
@@ -459,10 +445,22 @@
 
     /* ---- interactive states ---- */
     document.addEventListener("mouseover", function (e) {
-      if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head")) blob.classList.add("is-big");
+      if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head, .cta, .row, .uni")) {
+        blob.classList.add("is-big");
+        if (dotEl) dotEl.classList.add("is-hidden");
+      }
     });
     document.addEventListener("mouseout", function (e) {
-      if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head")) blob.classList.remove("is-big");
+      if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head, .cta, .row, .uni")) {
+        blob.classList.remove("is-big");
+        if (dotEl) dotEl.classList.remove("is-hidden");
+      }
+    });
+    document.addEventListener("mousedown", function () {
+      blob.classList.add("is-down");
+    });
+    document.addEventListener("mouseup", function () {
+      blob.classList.remove("is-down");
     });
 
     /* ---- 3D tilt on cards ---- */
@@ -742,90 +740,6 @@
     }
   }, 1000);
 
-  /* ------------------------------------------------------------
-     CREATIVE TEXT — per-letter titles + cascading content blocks
-     ------------------------------------------------------------ */
-  function splitChars(el) {
-    if (!el || el.dataset.split) return;
-    el.dataset.split = "1";
-    var frag = document.createDocumentFragment();
-    var ci = 0;
-    Array.prototype.forEach.call(el.childNodes, function (node) {
-      if (node.nodeType === 3) {
-        node.textContent.split("").forEach(function (c) {
-          if (c === " ") { frag.appendChild(document.createTextNode(" ")); return; }
-          var s = document.createElement("span");
-          s.className = "ch";
-          s.style.transitionDelay = ci * 38 + "ms";
-          s.textContent = c;
-          frag.appendChild(s);
-          ci++;
-        });
-      } else {
-        frag.appendChild(node.cloneNode(true));
-      }
-    });
-    el.textContent = "";
-    el.appendChild(frag);
-  }
-
-  function ensureReveal(el) {
-    if (el.classList.contains("reveal")) return;
-    el.classList.add("reveal");
-    if (reducedMotion) el.classList.add("is-in");
-    else if (io) io.observe(el);
-  }
-
-  function cascadeChildren(container, base) {
-    if (!container || container.classList.contains("cascade")) return;
-    container.classList.add("cascade");
-    ensureReveal(container);
-    Array.prototype.forEach.call(container.children, function (child, idx) {
-      child.style.transitionDelay = Math.min(560, idx * 55 + (base || 0)) + "ms";
-    });
-  }
-
-  document.querySelectorAll(".hero__l1, .hero__l2, .sec__title").forEach(splitChars);
-
-  document.querySelectorAll(".kpis, .rows, .phases, .split, .rules, .stack").forEach(function (el) {
-    cascadeChildren(el, 0);
-  });
-  var dlGridEl = document.getElementById("dlGrid");
-  if (dlGridEl) cascadeChildren(dlGridEl, 160);
-
-  /* ------------------------------------------------------------
-     ANIME — hero opening shot (home): the name letters drop in
-     with an elastic stagger, then the intro follows.
-     ------------------------------------------------------------ */
-  if (window.anime && !reducedMotion) {
-    var heroName = document.querySelector(".hero__name");
-    if (heroName) {
-      heroName.classList.remove("reveal");
-      var heroMeta = document.querySelector(".hero__meta");
-      var heroCh = document.querySelectorAll(".hero__name .ch");
-      if (heroCh.length) {
-        anime.set(heroCh, { opacity: 0, translateY: "0.95em", rotate: 6 });
-        if (heroMeta) { heroMeta.classList.remove("reveal"); anime.set(heroMeta, { opacity: 0, translateY: 16 }); }
-        anime.createTimeline({})
-          .add(".hero__l1 .ch", { opacity: [0, 1], translateY: ["0.95em", 0], rotate: [6, 0], duration: 950, delay: anime.stagger(42), easing: "easeOutExpo" }, 150)
-          .add(".hero__l2 .ch", { opacity: [0, 1], translateY: ["0.95em", 0], rotate: [6, 0], duration: 950, delay: anime.stagger(42), easing: "easeOutExpo" }, "-=700")
-          .add(".hero__meta", { opacity: [0, 1], translateY: [16, 0], duration: 750, easing: "easeOutExpo" }, "-=550");
-        /* safety net — if the timeline never ticks (rAF-stalled tab, older engine,
-           broken build), the name must never stay invisible */
-        setTimeout(function () {
-          var stuck = Array.prototype.some.call(heroCh, function (c) {
-            return parseFloat(getComputedStyle(c).opacity || "1") < 0.4;
-          });
-          if (stuck) {
-            heroName.classList.add("reveal");
-            Array.prototype.forEach.call(heroCh, function (c) { c.style.transition = "none"; });
-            anime.set(heroCh, { opacity: 1, translateY: 0, rotate: 0 });
-            if (heroMeta) { heroMeta.style.transition = "none"; anime.set(heroMeta, { opacity: 1, translateY: 0 }); }
-          }
-        }, 2600);
-      }
-    }
-  }
   /* ------------------------------------------------------------
      ANIME ORCHESTRA — the rest of anime.js v4, wired in everywhere.
 
