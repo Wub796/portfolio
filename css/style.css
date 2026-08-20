@@ -595,8 +595,8 @@ ul.check li strong{color:var(--text);font-weight:600}
 .rule b{display:block;font-size:.9rem;margin-bottom:.4rem;color:var(--accent);text-transform:uppercase;letter-spacing:.02em}
 .rule p{margin:0;color:var(--muted);font-size:.83rem}
 
-/* ---------- meal — milk-tea gradient section ---------- */
-#meal{background:radial-gradient(circle at 50% 18%,#efe6d6,#d8c7a8)}
+/* ---------- meal section ---------- */
+#meal{background:transparent}
 
 /* ---------- stack ---------- */
 .stack{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.4rem}
