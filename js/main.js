@@ -336,60 +336,84 @@
   });
 
   /* ------------------------------------------------------------
-     CURSOR — precision dot + liquid blob + organic 8-node fluid tail
+     EXPERIMENTAL ASTRO-NAV RETICLE, GYRO GIMBAL & TELEMETRY HUD
      ------------------------------------------------------------ */
   var glow = document.getElementById("glow");
-  var comet = document.getElementById("comet");
-  if (comet) comet.style.display = "none";
+  var cometCanvas = document.getElementById("comet");
+  var cctx = cometCanvas ? cometCanvas.getContext("2d") : null;
 
   if (finePointer && !reducedMotion && glow) {
     document.body.classList.add("has-cursor");
 
+    /* ---- 1. PRECISION POINTER DOT ---- */
     var dotEl = document.getElementById("cursorDot");
-    var blob = document.getElementById("cursorBlob");
-    if (!blob) {
-      blob = document.createElement("div");
-      blob.id = "cursorBlob";
-      blob.className = "cursor-blob";
-      blob.setAttribute("aria-hidden", "true");
-      document.body.appendChild(blob);
+    if (!dotEl) {
+      dotEl = document.createElement("div");
+      dotEl.id = "cursorDot";
+      dotEl.className = "cursor--dot";
+      dotEl.setAttribute("aria-hidden", "true");
+      document.body.appendChild(dotEl);
     }
 
-    /* ---- build 6 refined fluid trail nodes ---- */
-    var TRAIL_N = 6;
-    var trailDots = [];
-    var trailFrag = document.createDocumentFragment();
-    for (var ti = 0; ti < TRAIL_N; ti++) {
-      var dot = document.createElement("div");
-      dot.className = "cursor-trail";
-      dot.setAttribute("aria-hidden", "true");
-      var s = 1 - (ti + 1) / (TRAIL_N + 1.2);
-      var size = Math.round(26 * s);
-      var op = (0.42 * Math.pow(s, 1.4)).toFixed(3);
-      dot.style.cssText = "position:fixed;top:0;left:0;pointer-events:none;border-radius:50%;z-index:" + (298 - ti) + ";" +
-        "width:" + size + "px;height:" + size + "px;opacity:" + op + ";" +
-        "background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.55) 0%,rgba(" + accentRgb.join(",") + ",.45) 50%,transparent 78%);" +
-        "box-shadow:0 0 10px rgba(" + accentRgb.join(",") + ",.2);" +
-        "filter:blur(" + (0.8 + ti * 0.4).toFixed(1) + "px);will-change:transform;transform:translate(-100px,-100px)";
-      trailFrag.appendChild(dot);
-      trailDots.push({ el: dot, x: -100, y: -100 });
+    /* ---- 2. ASTRO-NAV GYRO RETICLE ---- */
+    var reticle = document.getElementById("cursorReticle");
+    if (!reticle) {
+      reticle = document.createElement("div");
+      reticle.id = "cursorReticle";
+      reticle.className = "cursor-reticle";
+      reticle.setAttribute("aria-hidden", "true");
+      reticle.innerHTML = '<div class="cursor-reticle__ring"></div>' +
+                          '<div class="cursor-reticle__cross"></div>' +
+                          '<div class="cursor-reticle__brackets"></div>';
+      document.body.appendChild(reticle);
     }
-    document.body.appendChild(trailFrag);
+
+    /* ---- 3. LIVE TELEMETRY HUD BADGE ---- */
+    var hudEl = document.getElementById("cursorHud");
+    if (!hudEl) {
+      hudEl = document.createElement("div");
+      hudEl.id = "cursorHud";
+      hudEl.className = "cursor-hud";
+      hudEl.setAttribute("aria-hidden", "true");
+      hudEl.innerHTML = '<b>[ORBIT]</b> 0 km/h · ' + currentPlanet.toUpperCase();
+      document.body.appendChild(hudEl);
+    }
+
+    /* ---- 4. CONSTELLATION ION WAKE CANVAS ---- */
+    var dpr = window.devicePixelRatio || 1;
+    var cw = 0, ch = 0;
+    function resizeCanvas() {
+      if (!cometCanvas) return;
+      cw = window.innerWidth;
+      ch = window.innerHeight;
+      cometCanvas.width = cw * dpr;
+      cometCanvas.height = ch * dpr;
+      if (cctx) cctx.scale(dpr, dpr);
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    var particles = [];
+    var shockwaves = [];
+    var MAX_PARTICLES = 40;
 
     /* ---- state ---- */
-    var mx = -100, my = -100, dx = -100, dy = -100, bx = -100, by = -100, gx = -100, gy = -100;
-    var moved = false, followT = 0;
+    var mx = -100, my = -100, dx = -100, dy = -100, rx = -100, ry = -100, gx = -100, gy = -100, hx = -100, hy = -100;
+    var moved = false, followT = 0, lastSpawnT = 0, lastHudT = 0;
+    var currentLockLabel = null;
 
     window.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
       if (!moved) {
         moved = true;
-        blob.style.opacity = "";
-        if (dotEl) dotEl.style.opacity = "";
+        dotEl.style.opacity = "";
+        reticle.style.opacity = "";
+        hudEl.style.opacity = "";
       }
     }, { passive: true });
-    blob.style.opacity = "0";
-    if (dotEl) dotEl.style.opacity = "0";
+    dotEl.style.opacity = "0";
+    reticle.style.opacity = "0";
+    hudEl.style.opacity = "0";
 
     /* ---- animation loop ---- */
     function follow() {
@@ -397,71 +421,176 @@
       var dt = Math.min(45, now - (followT || now));
       followT = now;
 
-      /* precision dot tracks tightly */
+      /* Precision dot follows mouse instantly with silky high-speed damp */
       if (window.anime && anime.utils && anime.utils.damp) {
-        dx = anime.utils.damp(dx, mx, 36, dt); dy = anime.utils.damp(dy, my, 36, dt);
-        bx = anime.utils.damp(bx, mx, 18, dt); by = anime.utils.damp(by, my, 18, dt);
+        dx = anime.utils.damp(dx, mx, 40, dt); dy = anime.utils.damp(dy, my, 40, dt);
+        rx = anime.utils.damp(rx, mx, 16, dt); ry = anime.utils.damp(ry, my, 16, dt);
+        hx = anime.utils.damp(hx, mx, 9, dt);  hy = anime.utils.damp(hy, my, 9, dt);
         gx = anime.utils.damp(gx, mx, 5, dt);  gy = anime.utils.damp(gy, my, 5, dt);
       } else {
         dx += (mx - dx) * 0.45; dy += (my - dy) * 0.45;
-        bx += (mx - bx) * 0.2;  by += (my - by) * 0.2;
+        rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+        hx += (mx - hx) * 0.1;  hy += (my - hy) * 0.1;
         gx += (mx - gx) * 0.05; gy += (my - gy) * 0.05;
       }
 
-      if (dotEl) dotEl.style.transform = "translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px) translate(-50%,-50%)";
+      dotEl.style.transform = "translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px) translate(-50%,-50%)";
 
-      /* squash-stretch along velocity */
-      var vx = mx - bx, vy = my - by;
+      /* Velocity & attitude angle */
+      var vx = mx - rx, vy = my - ry;
       var dist = Math.sqrt(vx * vx + vy * vy);
       var ang = Math.atan2(vy, vx);
-      var st = Math.min(0.4, dist * 0.006);
-      blob.style.transform = "translate(" + bx.toFixed(1) + "px," + by.toFixed(1) + "px) translate(-50%,-50%) rotate(" + ang.toFixed(3) + "rad) scale(" + (1 + st).toFixed(3) + "," + (1 - st * 0.4).toFixed(3) + ")";
+      var speedKmh = Math.round(dist * 24);
+
+      /* Reticle attitude tilt & velocity stretch */
+      var st = Math.min(0.35, dist * 0.005);
+      reticle.style.transform = "translate(" + rx.toFixed(1) + "px," + ry.toFixed(1) + "px) translate(-50%,-50%) rotate(" + ang.toFixed(3) + "rad) scale(" + (1 + st).toFixed(3) + "," + (1 - st * 0.35).toFixed(3) + ")";
+
+      /* Telemetry HUD position & dynamic readout */
+      hudEl.style.transform = "translate(" + (hx + 24).toFixed(1) + "px," + (hy + 18).toFixed(1) + "px)";
+      if (now - lastHudT > 80) {
+        lastHudT = now;
+        if (currentLockLabel) {
+          hudEl.innerHTML = '<b>[LOCK // ' + currentLockLabel + ']</b>';
+        } else if (dist > 3) {
+          hudEl.innerHTML = '<b>[VEL]</b> ' + speedKmh + ' km/h · ' + Math.round(ang * 180 / Math.PI) + '°';
+        } else {
+          hudEl.innerHTML = '<b>[ORBIT]</b> 0 km/h · ' + currentPlanet.toUpperCase();
+        }
+      }
+
       glow.style.transform = "translate(" + gx.toFixed(1) + "px," + gy.toFixed(1) + "px) translate(-50%,-50%)";
 
-      /* trail dots follow in a smooth chained stream */
-      var prevX = bx, prevY = by;
-      for (var i = 0; i < TRAIL_N; i++) {
-        var d = trailDots[i];
-        var dampRate = Math.max(6, 20 - i * 2);
-        if (window.anime && anime.utils && anime.utils.damp) {
-          d.x = anime.utils.damp(d.x, prevX, dampRate, dt);
-          d.y = anime.utils.damp(d.y, prevY, dampRate, dt);
-        } else {
-          var ease = 0.25 - i * 0.025;
-          d.x += (prevX - d.x) * ease;
-          d.y += (prevY - d.y) * ease;
+      /* ---- 5. CONSTELLATION ION WAKE PHYSICS ON CANVAS ---- */
+      if (cctx && cw > 0 && ch > 0) {
+        cctx.clearRect(0, 0, cw, ch);
+
+        /* Spawn ion wake sparks during movement */
+        if (dist > 1.5 && now - lastSpawnT > 28 && particles.length < MAX_PARTICLES) {
+          lastSpawnT = now;
+          particles.push({
+            x: mx + (Math.random() - 0.5) * 6,
+            y: my + (Math.random() - 0.5) * 6,
+            vx: -vx * 0.12 + (Math.random() - 0.5) * 0.8,
+            vy: -vy * 0.12 + (Math.random() - 0.5) * 0.8,
+            life: 1.0,
+            decay: 0.032 + Math.random() * 0.02,
+            size: 2.2 + Math.random() * 2.2,
+          });
         }
 
-        var curDist = Math.sqrt(Math.pow(d.x - prevX, 2) + Math.pow(d.y - prevY, 2));
-        var nodeScale = (0.8 + Math.min(0.4, curDist * 0.02)).toFixed(2);
-        d.el.style.transform = "translate(" + d.x.toFixed(1) + "px," + d.y.toFixed(1) + "px) translate(-50%,-50%) scale(" + nodeScale + ")";
-        prevX = d.x;
-        prevY = d.y;
+        /* Update & render particles + constellation vector lines */
+        var activePts = [];
+        for (var pi = particles.length - 1; pi >= 0; pi--) {
+          var p = particles[pi];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= p.decay;
+          if (p.life <= 0) {
+            particles.splice(pi, 1);
+            continue;
+          }
+          activePts.push(p);
+
+          /* Draw glowing stellar ember */
+          var alpha = Math.max(0, p.life);
+          cctx.fillStyle = "rgba(" + accentRgb.join(",") + "," + (0.55 * alpha).toFixed(3) + ")";
+          cctx.beginPath();
+          cctx.arc(p.x, p.y, p.size * alpha, 0, Math.PI * 2);
+          cctx.fill();
+
+          /* Specular highlight glint */
+          cctx.fillStyle = "rgba(255,255,255," + (0.75 * alpha).toFixed(3) + ")";
+          cctx.beginPath();
+          cctx.arc(p.x - 0.5, p.y - 0.5, (p.size * 0.45) * alpha, 0, Math.PI * 2);
+          cctx.fill();
+        }
+
+        /* Draw vector constellation lines between nearby particles */
+        for (var i = 0; i < activePts.length; i++) {
+          for (var j = i + 1; j < activePts.length; j++) {
+            var p1 = activePts[i], p2 = activePts[j];
+            var pdist = Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+            if (pdist < 55) {
+              var lineAlpha = (1 - pdist / 55) * Math.min(p1.life, p2.life) * 0.35;
+              cctx.strokeStyle = "rgba(" + accentRgb.join(",") + "," + lineAlpha.toFixed(3) + ")";
+              cctx.lineWidth = 1;
+              cctx.beginPath();
+              cctx.moveTo(p1.x, p1.y);
+              cctx.lineTo(p2.x, p2.y);
+              cctx.stroke();
+            }
+          }
+        }
+
+        /* Update & render RCS shockwaves */
+        for (var si = shockwaves.length - 1; si >= 0; si--) {
+          var sw = shockwaves[si];
+          sw.r += 2.8;
+          sw.life -= 0.055;
+          if (sw.life <= 0) {
+            shockwaves.splice(si, 1);
+            continue;
+          }
+          cctx.strokeStyle = "rgba(" + accentRgb.join(",") + "," + (0.65 * sw.life).toFixed(3) + ")";
+          cctx.lineWidth = 1.5;
+          cctx.beginPath();
+          cctx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2);
+          cctx.stroke();
+        }
       }
 
       requestAnimationFrame(follow);
     }
     follow();
 
-    /* ---- interactive states ---- */
+    /* ---- 6. INTERACTIVE TARGET LOCK & RCS THRUSTER PULSE ---- */
     document.addEventListener("mouseover", function (e) {
-      if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head, .cta, .row, .uni")) {
-        blob.classList.add("is-big");
-        if (dotEl) dotEl.classList.add("is-hidden");
+      var target = e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head, .cta, .row, .uni, .kpi");
+      if (target) {
+        reticle.classList.add("is-target");
+        dotEl.classList.add("is-target");
+        hudEl.classList.add("is-target");
+        var label = target.getAttribute("data-short") || target.innerText || target.getAttribute("aria-label") || "TARGET";
+        label = label.trim().split("\n")[0].substring(0, 16).toUpperCase();
+        currentLockLabel = label;
       }
     });
+
     document.addEventListener("mouseout", function (e) {
-      if (e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head, .cta, .row, .uni")) {
-        blob.classList.remove("is-big");
-        if (dotEl) dotEl.classList.remove("is-hidden");
+      var target = e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head, .cta, .row, .uni, .kpi");
+      if (target) {
+        reticle.classList.remove("is-target");
+        dotEl.classList.remove("is-target");
+        hudEl.classList.remove("is-target");
+        currentLockLabel = null;
       }
     });
+
     document.addEventListener("mousedown", function () {
-      blob.classList.add("is-down");
+      reticle.classList.add("is-down");
+      /* Spawn impulse RCS shockwave burst on canvas */
+      if (cctx) {
+        shockwaves.push({ x: mx, y: my, r: 4, life: 1.0 });
+        for (var bi = 0; bi < 10; bi++) {
+          var bAng = (bi / 10) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
+          var bSpeed = 2 + Math.random() * 3.5;
+          particles.push({
+            x: mx, y: my,
+            vx: Math.cos(bAng) * bSpeed,
+            vy: Math.sin(bAng) * bSpeed,
+            life: 1.0,
+            decay: 0.045 + Math.random() * 0.03,
+            size: 2.8 + Math.random() * 2,
+          });
+        }
+      }
     });
+
     document.addEventListener("mouseup", function () {
-      blob.classList.remove("is-down");
+      reticle.classList.remove("is-down");
     });
+  }
 
     /* ---- 3D tilt on cards ---- */
     var tiltEls = Array.prototype.slice.call(document.querySelectorAll(".row, .uni"));

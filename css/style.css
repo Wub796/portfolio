@@ -164,46 +164,116 @@ main#top{position:relative;z-index:2}
 }
 .hero__name{animation:glitch 5.5s steps(1,end) infinite}
 
-/* ---------- custom cursor — frosted glass halo + precision dot + silky trail ---------- */
-.cursor{
-  position:fixed;top:0;left:0;pointer-events:none;border-radius:50%;
-  transform:translate(-50%,-50%);will-change:transform;z-index:301;
-}
-.cursor--dot{
-  width:6px;height:6px;background:var(--accent);
-  border-radius:50%;
-  box-shadow:0 0 0 1.5px var(--bg), 0 0 8px color-mix(in srgb,var(--accent) 75%,transparent);
-  transition:transform .22s var(--ease),opacity .22s;
-}
-.cursor--dot.is-hidden{opacity:0;transform:translate(-50%,-50%) scale(0)}
+/* ============================================================
+   EXPERIMENTAL ASTRO-NAV RETICLE, GYRO GIMBAL & TELEMETRY HUD
+   ============================================================ */
 
-.cursor-blob{
-  position:fixed;top:0;left:0;width:42px;height:42px;z-index:300;pointer-events:none;
-  border-radius:50%;transform:translate(-50%,-50%);will-change:transform;
-  border:1.5px solid color-mix(in srgb,var(--accent) 65%,transparent);
-  background:
-    radial-gradient(circle at 35% 30%,rgba(255,255,255,.5) 0%,transparent 40%),
-    radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--accent) 30%,transparent) 0%,color-mix(in srgb,var(--accent) 8%,transparent) 60%,transparent 80%);
-  box-shadow:0 0 16px color-mix(in srgb,var(--accent) 25%,transparent);
-  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
-  transition:width .28s var(--ease),height .28s var(--ease),border-color .28s,box-shadow .28s;
+/* Primary precision pointer dot */
+.cursor{display:none}
+.cursor--dot{
+  position:fixed;top:0;left:0;width:6px;height:6px;pointer-events:none;
+  border-radius:50%;background:var(--accent);z-index:350;
+  transform:translate(-50%,-50%);will-change:transform;
+  box-shadow:0 0 0 1.5px var(--bg), 0 0 10px var(--accent);
+  transition:width .2s var(--ease),height .2s var(--ease),background .2s,box-shadow .2s;
 }
-.cursor-blob.is-big{
-  width:80px;height:80px;
-  border-color:var(--accent);
-  background:
-    radial-gradient(circle at 35% 30%,rgba(255,255,255,.65) 0%,transparent 45%),
-    radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--accent) 35%,transparent) 0%,color-mix(in srgb,var(--accent) 12%,transparent) 62%,transparent 82%);
-  box-shadow:0 0 24px color-mix(in srgb,var(--accent) 45%,transparent);
+.cursor--dot.is-target{
+  width:4px;height:4px;background:#fff;
+  box-shadow:0 0 0 2px var(--accent),0 0 14px var(--accent);
 }
-.cursor-blob.is-down{
-  transform:translate(-50%,-50%) scale(.84);
+
+/* The Gyroscopic Orbital Reticle */
+.cursor-reticle{
+  position:fixed;top:0;left:0;pointer-events:none;z-index:340;
+  width:44px;height:44px;border-radius:50%;
+  transform:translate(-50%,-50%);will-change:transform;
+  display:flex;align-items:center;justify-content:center;
+  transition:width .32s var(--ease),height .32s var(--ease),opacity .3s;
 }
-.cursor-trail{
-  position:fixed;top:0;left:0;pointer-events:none;border-radius:50%;
-  transform:translate(-50%,-50%);will-change:transform;z-index:299;
+
+/* Reticle outer dashed attitude ring */
+.cursor-reticle__ring{
+  position:absolute;inset:0;border-radius:50%;
+  border:1.2px dashed color-mix(in srgb,var(--accent) 70%,transparent);
+  animation:reticleSpin 20s linear infinite;
+  transition:border-color .3s,box-shadow .3s,transform .3s var(--ease);
 }
-@media (hover:none),(pointer:coarse){.cursor,.cursor-blob,.cursor-trail{display:none}}
+@keyframes reticleSpin{to{transform:rotate(360deg)}}
+
+/* 4-Axis Crosshair tick marks */
+.cursor-reticle__cross{
+  position:absolute;inset:0;pointer-events:none;
+}
+.cursor-reticle__cross::before,
+.cursor-reticle__cross::after{
+  content:'';position:absolute;background:var(--accent);opacity:.65;
+  transition:transform .25s var(--ease),opacity .25s;
+}
+.cursor-reticle__cross::before{
+  top:50%;left:-3px;right:-3px;height:1px;transform:translateY(-50%);
+}
+.cursor-reticle__cross::after{
+  left:50%;top:-3px;bottom:-3px;width:1px;transform:translateX(-50%);
+}
+
+/* Target Corner Brackets [  ] */
+.cursor-reticle__brackets{
+  position:absolute;inset:-5px;pointer-events:none;opacity:0;
+  transition:opacity .25s var(--ease),inset .25s var(--ease);
+}
+.cursor-reticle__brackets::before,
+.cursor-reticle__brackets::after{
+  content:'';position:absolute;width:7px;height:7px;border-color:var(--accent);border-style:solid;
+}
+.cursor-reticle__brackets::before{top:0;left:0;border-width:1.5px 0 0 1.5px}
+.cursor-reticle__brackets::after{bottom:0;right:0;border-width:0 1.5px 1.5px 0}
+
+/* Target Lock State on Interactive Hover */
+.cursor-reticle.is-target{
+  width:74px;height:74px;
+}
+.cursor-reticle.is-target .cursor-reticle__ring{
+  border-style:solid;border-width:1.5px;border-color:var(--accent);
+  box-shadow:0 0 22px color-mix(in srgb,var(--accent) 45%,transparent);
+  animation-duration:5s;
+}
+.cursor-reticle.is-target .cursor-reticle__cross::before{transform:translateY(-50%) scaleX(1.4);opacity:.9}
+.cursor-reticle.is-target .cursor-reticle__cross::after{transform:translateX(-50%) scaleY(1.4);opacity:.9}
+.cursor-reticle.is-target .cursor-reticle__brackets{opacity:1;inset:-8px}
+.cursor-reticle.is-down{transform:translate(-50%,-50%) scale(.82)}
+
+/* Live Telemetry HUD Badge */
+.cursor-hud{
+  position:fixed;top:0;left:0;pointer-events:none;z-index:345;
+  transform:translate(26px,20px);will-change:transform;
+  font-family:var(--f-mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text);background:rgba(255,255,255,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  padding:.2rem .55rem;border-radius:4px;border:1px solid var(--line-strong);
+  box-shadow:0 4px 14px rgba(0,0,0,.07);
+  white-space:nowrap;
+  display:flex;align-items:center;gap:.35rem;
+  opacity:.88;transition:opacity .25s,transform .25s var(--ease),background .25s,border-color .25s,color .25s;
+}
+.cursor-hud b{color:var(--accent);font-weight:700}
+.cursor-hud::before{
+  content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 6px var(--accent);animation:hudBlink 1.4s ease-in-out infinite;flex-shrink:0;
+}
+@keyframes hudBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.65)}}
+.cursor-hud.is-target{
+  background:var(--text);color:var(--on-accent);border-color:var(--accent);
+  transform:translate(36px,26px);opacity:1;
+}
+.cursor-hud.is-target b{color:var(--lime)}
+
+/* Full-viewport Comet / Constellation Canvas */
+#comet{
+  position:fixed;inset:0;width:100%;height:100%;z-index:330;pointer-events:none;display:block;
+}
+
+@media (hover:none),(pointer:coarse){
+  .cursor--dot,.cursor-reticle,.cursor-hud,#comet{display:none!important}
+}
 .glow{
   position:fixed;top:0;left:0;width:560px;height:560px;z-index:0;pointer-events:none;
   border-radius:50%;opacity:.14;will-change:transform;
