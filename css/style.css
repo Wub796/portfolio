@@ -738,7 +738,7 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
 
 /* ---------- the system map (orbital navigation) ---------- */
 .sys-sec{background:radial-gradient(circle at 50% 34%,rgba(227,164,88,.08),transparent 62%)}
-.sys{position:relative;width:min(94vw,860px);aspect-ratio:1;margin:1rem auto 0}
+.sys{position:relative;width:min(96vw,980px);aspect-ratio:1;margin:1.5rem auto 0}
 .sys__sun{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;
   width:clamp(64px,8vw,104px);height:clamp(64px,8vw,104px);border-radius:50%;
