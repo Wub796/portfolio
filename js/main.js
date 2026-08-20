@@ -756,22 +756,59 @@
   /* ------------------------------------------------------------
      PAGE COMPONENT INITIALIZERS (called on load & SPA swaps)
      ------------------------------------------------------------ */
+  var GLYPHS = "01X◈★⏣◬☿♁♂♃♄♅♆♇";
+  function decryptText(el, duration) {
+    if (!el || el.__decrypting || reducedMotion) return;
+    el.__decrypting = true;
+    var original = el.textContent;
+    var chars = original.split("");
+    var dur = duration || 850;
+    var startTime = performance.now();
+
+    function frame(now) {
+      var progress = Math.min(1, (now - startTime) / dur);
+      var result = "";
+      for (var i = 0; i < chars.length; i++) {
+        if (chars[i] === " " || chars[i] === "·" || chars[i] === "—" || chars[i] === "\n") {
+          result += chars[i];
+        } else if (i / chars.length < progress) {
+          result += chars[i];
+        } else {
+          result += GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+        }
+      }
+      el.textContent = result;
+      if (progress < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        el.textContent = original;
+        el.__decrypting = false;
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
   var revealIo = null;
   function initReveals() {
-    var revealEls = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+    var revealEls = Array.prototype.slice.call(document.querySelectorAll(".reveal, .cascade"));
     var revealCount = 0;
     if (revealIo) { revealIo.disconnect(); revealIo = null; }
     if ("IntersectionObserver" in window && !reducedMotion) {
       revealIo = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
           if (en.isIntersecting) {
-            en.target.style.transitionDelay = Math.min(420, revealCount * 60) + "ms";
+            en.target.style.transitionDelay = Math.min(600, revealCount * 90) + "ms";
             revealCount++;
             en.target.classList.add("is-in");
+
+            /* trigger celestial text decryption on prominent titles */
+            var title = en.target.querySelector(".sec__title, .hero__name, .sec__num");
+            if (title) decryptText(title, 750);
+
             revealIo.unobserve(en.target);
           }
         });
-      }, { threshold: 0.08, rootMargin: "0px 0px -30px 0px" });
+      }, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
       revealEls.forEach(function (el) { revealIo.observe(el); });
     } else {
       revealEls.forEach(function (el) { el.classList.add("is-in"); });
