@@ -332,18 +332,31 @@
     return clean.replace(".html", "");
   }
 
+  var PLANET_ORDER = ["sol", "mission", "studies", "college", "applications", "extracurriculars", "schedule", "meal", "training", "deadlines"];
+
   function updateNavActive(slug) {
+    var curIdx = PLANET_ORDER.indexOf(slug);
+    if (curIdx === -1) curIdx = 0;
+
     var links = document.querySelectorAll(".nav__links a");
     links.forEach(function (a) {
       var aSlug = hrefToSlug(a.getAttribute("href"));
       a.classList.toggle("is-active", aSlug === slug);
     });
+
     var rails = document.querySelectorAll(".rail__node");
     rails.forEach(function (r) {
       var rSlug = r.dataset.planet || hrefToSlug(r.getAttribute("href"));
-      r.classList.toggle("is-active", rSlug === slug);
+      var rIdx = PLANET_ORDER.indexOf(rSlug);
+      var isCur = rSlug === slug;
+      var isPast = rIdx !== -1 && rIdx < curIdx;
+      r.classList.toggle("is-active", isCur);
+      r.classList.toggle("is-cur", isCur);
+      r.classList.toggle("is-past", isPast);
+      r.setAttribute("aria-current", isCur ? "page" : "false");
     });
   }
+  updateNavActive(currentPlanet);
 
   var isNavigatingSpa = false;
   function navigateSpa(href, pushState) {
