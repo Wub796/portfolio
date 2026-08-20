@@ -35,24 +35,24 @@ try {
 
   const scene = new THREE.Scene();
 
-  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 600);
-  camera.position.set(0, 4.2, 34);
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 6.2, 48);
 
   /* ------------------------------------------------------------
-     PLANET CATALOGUE — grand scale & spread-out orbits
+     PLANET CATALOGUE — expansive wide-orbit cosmic distribution
      d = orbit radius · s = radius · cam = framing offset
      ------------------------------------------------------------ */
   const P = {
-    sol:              { n: "Sol",           c: 0xe3a458, s: 1.80, d: 0,    sp: 0,     tilt: 0,     ring: false, cam: [0, 4.2, 34] },
-    mission:          { n: "Mission",       c: 0xe3a458, s: 1.45, d: 6.2,  sp: 0.042, tilt: 0.16,  ring: true,  cam: [0, 0.7, 6.2] },
-    studies:          { n: "Studies",       c: 0xa26833, s: 1.60, d: 8.0,  sp: 0.035, tilt: -0.10, ring: false, cam: [1.3, -0.5, 6.8] },
-    college:          { n: "College",       c: 0x7f3b2d, s: 1.80, d: 9.9,  sp: 0.029, tilt: 0.22,  ring: true,  cam: [0, 2.0, 7.6] },
-    applications:     { n: "Applications",  c: 0x523122, s: 1.95, d: 11.8, sp: 0.024, tilt: -0.16, ring: false, cam: [-1.4, 0.5, 8.2] },
-    extracurriculars: { n: "Extracurriculars", c: 0xc9a06b, s: 2.10, d: 13.8, sp: 0.020, tilt: 0.08,  ring: false, cam: [0.8, -1.2, 8.8] },
-    schedule:         { n: "Schedule",      c: 0xb98a5a, s: 2.30, d: 15.8, sp: 0.017, tilt: 0.26,  ring: true,  cam: [0, 1.2, 9.6] },
-    meal:             { n: "Meal",          c: 0xd9b26a, s: 2.45, d: 17.8, sp: 0.015, tilt: -0.08, ring: false, cam: [1.6, 0.9, 10.2] },
-    training:         { n: "Training",      c: 0x8a6a4f, s: 2.60, d: 19.8, sp: 0.013, tilt: 0.12,  ring: false, cam: [-1.1, -0.9, 10.8] },
-    deadlines:        { n: "Deadlines",     c: 0xe8c89b, s: 2.80, d: 22.0, sp: 0.011, tilt: -0.20, ring: true,  cam: [0, -1.8, 11.6] },
+    sol:              { n: "Sol",           c: 0xe3a458, s: 2.00, d: 0,    sp: 0,     tilt: 0,     ring: false, cam: [0, 6.2, 48] },
+    mission:          { n: "Mission",       c: 0xe3a458, s: 1.45, d: 8.5,  sp: 0.042, tilt: 0.16,  ring: true,  cam: [0, 0.9, 7.5] },
+    studies:          { n: "Studies",       c: 0xa26833, s: 1.60, d: 11.8, sp: 0.035, tilt: -0.10, ring: false, cam: [1.6, -0.6, 8.2] },
+    college:          { n: "College",       c: 0x7f3b2d, s: 1.80, d: 15.2, sp: 0.029, tilt: 0.22,  ring: true,  cam: [0, 2.4, 9.2] },
+    applications:     { n: "Applications",  c: 0x523122, s: 1.95, d: 18.8, sp: 0.024, tilt: -0.16, ring: false, cam: [-1.7, 0.6, 10.0] },
+    extracurriculars: { n: "Extracurriculars", c: 0xc9a06b, s: 2.10, d: 22.5, sp: 0.020, tilt: 0.08,  ring: false, cam: [1.0, -1.5, 10.8] },
+    schedule:         { n: "Schedule",      c: 0xb98a5a, s: 2.30, d: 26.2, sp: 0.017, tilt: 0.26,  ring: true,  cam: [0, 1.5, 11.8] },
+    meal:             { n: "Meal",          c: 0xd9b26a, s: 2.45, d: 30.0, sp: 0.015, tilt: -0.08, ring: false, cam: [2.0, 1.1, 12.6] },
+    training:         { n: "Training",      c: 0x8a6a4f, s: 2.60, d: 33.8, sp: 0.013, tilt: 0.12,  ring: false, cam: [-1.4, -1.1, 13.4] },
+    deadlines:        { n: "Deadlines",     c: 0xe8c89b, s: 2.80, d: 38.0, sp: 0.011, tilt: -0.20, ring: true,  cam: [0, -2.2, 14.4] },
   };
 
   /* ---------- lights ---------- */
@@ -245,7 +245,7 @@ try {
   }
   function frameOf(k, t) {
     const cfg = P[k];
-    if (k === "sol") return { pos: new THREE.Vector3(0, 4.2, 34), look: new THREE.Vector3(0, 0, 0) };
+    if (k === "sol") return { pos: new THREE.Vector3(0, 6.2, 48), look: new THREE.Vector3(0, 0, 0) };
     const pp = planetPos(k, t);
     return {
       pos: new THREE.Vector3(pp.x + cfg.cam[0], pp.y + cfg.cam[1], pp.z + cfg.cam[2]),
