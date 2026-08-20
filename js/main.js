@@ -593,8 +593,6 @@
     document.addEventListener("mouseup", function () {
       reticle.classList.remove("is-down");
     });
-  }
-
     /* ---- 3D tilt on cards ---- */
     var tiltEls = Array.prototype.slice.call(document.querySelectorAll(".row, .uni"));
     tiltEls.forEach(function (el) {
