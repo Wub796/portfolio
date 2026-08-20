@@ -681,6 +681,32 @@
   }
 
   /* ------------------------------------------------------------
+     BACKGROUND SCENE BLUR ON CONTENT SECTIONS
+     Gently softens and diffuses 3D background when reading dense content
+     ------------------------------------------------------------ */
+  var sceneCanvas = document.getElementById("scene3d");
+  if (sceneCanvas && "IntersectionObserver" in window && !reducedMotion) {
+    var blurSections = Array.prototype.slice.call(
+      document.querySelectorAll(".sec:not(#hero):not(.sys-sec), .schedule-wrap, .dl, .rows, .mission__cols, .split, .rules, .tbl")
+    );
+    var activeBlurMap = new Map();
+    var blurObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        activeBlurMap.set(en.target, en.isIntersecting);
+      });
+      var hasVisibleSection = false;
+      activeBlurMap.forEach(function (isVisible) {
+        if (isVisible) hasVisibleSection = true;
+      });
+      sceneCanvas.classList.toggle("is-blurred", hasVisibleSection);
+    }, { threshold: 0.1, rootMargin: "-8% 0px -15% 0px" });
+
+    blurSections.forEach(function (sec) {
+      blurObserver.observe(sec);
+    });
+  }
+
+  /* ------------------------------------------------------------
      HOUSTON CLOCK (home only)
      ------------------------------------------------------------ */
   var clock = document.getElementById("houstonClock");
