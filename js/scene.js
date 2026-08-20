@@ -10,9 +10,6 @@
    WebGL / the CDN is unavailable.
    ============================================================ */
 import * as THREE from "three";
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 
 try {
   const canvas = document.getElementById("scene3d");
@@ -235,12 +232,6 @@ try {
     bodies[k] = { cfg, g, phase: (i / 9) * Math.PI * 2 + (Math.random() - 0.5) * 0.4 };
   });
 
-  /* ---------- bloom ---------- */
-  const composer = new EffectComposer(renderer);
-  composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.2, 0.5, 0.4);
-  composer.addPass(bloom);
-
   /* ---------- framing: where the camera sits for a planet ---------- */
   function planetPos(k, t) {
     const cfg = P[k];
@@ -364,17 +355,13 @@ try {
       n.material.opacity = 0.18 + Math.sin(simT * 0.3 + i * 1.7) * 0.06;
     });
 
-    /* bloom stays gentle and clean */
-    bloom.strength = 0.18 + Math.min(0.2, Math.abs(vel) * 0.08);
-
-    composer.render();
+    renderer.render(scene, camera);
   }
 
   function onResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    composer.setSize(window.innerWidth, window.innerHeight);
   }
   window.addEventListener("resize", onResize);
 
@@ -384,7 +371,7 @@ try {
     bodies[k].g.visible = slug === "sol" || k === slug || (arr < 1 && k === fromSlug);
   });
   window.__sceneVis = Object.keys(bodies).filter((k) => bodies[k].g.visible);
-  composer.render();
+  renderer.render(scene, camera);
 
   if (!reduced) {
     loop();

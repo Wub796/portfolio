@@ -29,23 +29,10 @@
   var accentRgb = hexRgb(accentHex);
 
   /* ------------------------------------------------------------
-     FLUID — generative milk-tea sky behind the solar system.
-     Each planet gets its own seed (same palette family, own
-     composition); the dark deadlines planet gets a dark palette.
-     Vendored from github.com/enonforetsam/fluid (fluid-bg).
+     FLUID BACKGROUND — Disabled so 3D solar system is clean & clear
      ------------------------------------------------------------ */
-  var FLUID_BASE = "0.35,1.1,3,0.02,1,8,0,8";
-  var FLUID_TAIL = ",0,0,1.7778,0,0,1,0,0,0,0,0,9072207,11574627,14203285,16053467,0,0,0,0,0,0,0";
-  var FLUID_DARK_TAIL = ",0,0,1.7778,0,0,10,0,0,0,0,0,1247764,2826016,6045484,13214563,0,0,0,0,0,0,0";
-  var FLUID_SEEDS = { sol: 1, mission: 2, studies: 3, college: 4, applications: 5, extracurriculars: 6, schedule: 7, meal: 8, training: 9, deadlines: 10 };
-  var fluidHash = "#p=" + FLUID_BASE + "," + (FLUID_SEEDS[currentPlanet] || 1) + (currentPlanet === "deadlines" ? FLUID_DARK_TAIL : FLUID_TAIL);
-  if (window.FluidBg) {
-    var fluidLayer = document.getElementById("fluidLayer");
-    if (fluidLayer) {
-      try { window.__fluid = window.FluidBg.fluidBackground(fluidLayer, { hash: fluidHash }); }
-      catch (err) { console.warn("fluid background disabled:", err); }
-    }
-  }
+  var fluidLayer = document.getElementById("fluidLayer");
+  if (fluidLayer) fluidLayer.style.display = "none";
 
   /* ------------------------------------------------------------
      DEADLINES — Updated Program List & Timelines
