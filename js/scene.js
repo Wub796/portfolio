@@ -139,15 +139,170 @@ try {
     nebulas.push(s);
   });
 
+  /* ---------- procedural high-detail planetary textures ---------- */
+  function createPlanetTexture(k, baseColorHex, isDark) {
+    const c = document.createElement("canvas");
+    c.width = 512;
+    c.height = 256;
+    const ctx = c.getContext("2d");
+    const col = new THREE.Color(baseColorHex);
+    const hsl = {};
+    col.getHSL(hsl);
+
+    ctx.fillStyle = "#" + col.getHexString();
+    ctx.fillRect(0, 0, 512, 256);
+
+    if (k === "schedule" || k === "college" || k === "deadlines") {
+      /* Banded gas giant with planetary currents, jet streams and storms */
+      const bands = 28;
+      for (let i = 0; i < bands; i++) {
+        const y = (i / bands) * 256;
+        const h = 256 / bands + 3;
+        const lVar = hsl.l + (Math.sin(i * 1.6) * 0.2 + (Math.random() - 0.5) * 0.08);
+        ctx.fillStyle = `hsl(${Math.round(hsl.h * 360)}, ${Math.round(hsl.s * 100)}%, ${Math.max(6, Math.min(94, Math.round(lVar * 100)))}%)`;
+        ctx.fillRect(0, y, 512, h);
+
+        ctx.beginPath();
+        for (let x = 0; x <= 512; x += 12) {
+          const dy = Math.sin(x * 0.05 + i * 0.9) * 5 + Math.cos(x * 0.12) * 2.5;
+          if (x === 0) ctx.moveTo(x, y + dy);
+          else ctx.lineTo(x, y + dy);
+        }
+        ctx.strokeStyle = `hsla(${Math.round(hsl.h * 360 + 10)}, ${Math.round(hsl.s * 100)}%, ${Math.max(10, Math.min(90, Math.round((lVar + 0.12) * 100)))}%, 0.4)`;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+      }
+      /* Great cyclonic vortex */
+      const spotX = 160 + (k.length * 45) % 220;
+      const spotY = 120 + Math.sin(k.length) * 28;
+      const stormGrad = ctx.createRadialGradient(spotX, spotY, 2, spotX, spotY, 34);
+      stormGrad.addColorStop(0, `hsla(${Math.round(hsl.h * 360 + 25)}, 90%, 80%, 0.85)`);
+      stormGrad.addColorStop(0.5, `hsla(${Math.round(hsl.h * 360 - 20)}, 75%, 35%, 0.6)`);
+      stormGrad.addColorStop(1, "transparent");
+      ctx.fillStyle = stormGrad;
+      ctx.beginPath();
+      ctx.ellipse(spotX, spotY, 36, 20, 0.12, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (k === "mission" || k === "studies" || k === "extracurriculars" || k === "meal") {
+      /* Terrestrial continents, marbled fluid currents & polar ice caps */
+      for (let n = 0; n < 45; n++) {
+        const cx = Math.random() * 512;
+        const cy = 25 + Math.random() * 206;
+        const r = 20 + Math.random() * 60;
+        const lVar = hsl.l + (Math.random() - 0.5) * 0.32;
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+        grad.addColorStop(0, `hsla(${Math.round(hsl.h * 360 + (Math.random() - 0.5) * 35)}, ${Math.round(hsl.s * 100)}%, ${Math.round(Math.max(10, Math.min(92, lVar * 100)))}%, 0.8)`);
+        grad.addColorStop(0.7, `hsla(${Math.round(hsl.h * 360)}, ${Math.round(hsl.s * 85)}%, ${Math.round(Math.max(10, Math.min(90, lVar * 100)))}%, 0.45)`);
+        grad.addColorStop(1, "transparent");
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      /* Polar Caps */
+      const polarN = ctx.createLinearGradient(0, 0, 0, 32);
+      polarN.addColorStop(0, "rgba(255,255,255,0.9)");
+      polarN.addColorStop(1, "transparent");
+      ctx.fillStyle = polarN;
+      ctx.fillRect(0, 0, 512, 32);
+
+      const polarS = ctx.createLinearGradient(0, 224, 0, 256);
+      polarS.addColorStop(0, "transparent");
+      polarS.addColorStop(1, "rgba(255,255,255,0.9)");
+      ctx.fillStyle = polarS;
+      ctx.fillRect(0, 224, 512, 32);
+    } else {
+      /* Applications & Training: Rugged impact craters & tectonic fault lines */
+      for (let c = 0; c < 75; c++) {
+        const x = Math.random() * 512;
+        const y = Math.random() * 256;
+        const cr = 4 + Math.random() * 28;
+        const rimGrad = ctx.createRadialGradient(x, y, cr * 0.3, x, y, cr);
+        rimGrad.addColorStop(0, "rgba(0,0,0,0.65)");
+        rimGrad.addColorStop(0.8, "rgba(255,255,255,0.45)");
+        rimGrad.addColorStop(1, "transparent");
+        ctx.fillStyle = rimGrad;
+        ctx.beginPath();
+        ctx.arc(x, y, cr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      /* Tectonic ridges */
+      ctx.strokeStyle = "rgba(255,255,255,0.22)";
+      ctx.lineWidth = 1.5;
+      for (let r = 0; r < 8; r++) {
+        ctx.beginPath();
+        let lx = Math.random() * 512;
+        let ly = Math.random() * 256;
+        ctx.moveTo(lx, ly);
+        for (let s = 0; s < 5; s++) {
+          lx += (Math.random() - 0.5) * 90;
+          ly += (Math.random() - 0.5) * 60;
+          ctx.lineTo(lx, ly);
+        }
+        ctx.stroke();
+      }
+    }
+
+    const tex = new THREE.CanvasTexture(c);
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    return tex;
+  }
+
+  function createBumpTexture(k) {
+    const c = document.createElement("canvas");
+    c.width = 256;
+    c.height = 128;
+    const ctx = c.getContext("2d");
+    ctx.fillStyle = "#808080";
+    ctx.fillRect(0, 0, 256, 128);
+
+    for (let i = 0; i < 70; i++) {
+      const x = Math.random() * 256;
+      const y = Math.random() * 128;
+      const r = 3 + Math.random() * 24;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, Math.random() > 0.45 ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)");
+      g.addColorStop(1, "transparent");
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    const tex = new THREE.CanvasTexture(c);
+    tex.wrapS = THREE.RepeatWrapping;
+    return tex;
+  }
+
+  function createRingTexture(colorHex) {
+    const c = document.createElement("canvas");
+    c.width = 256;
+    c.height = 1;
+    const ctx = c.getContext("2d");
+    const col = new THREE.Color(colorHex);
+    const grad = ctx.createLinearGradient(0, 0, 256, 0);
+    grad.addColorStop(0, "rgba(0,0,0,0)");
+    grad.addColorStop(0.12, `rgba(${Math.round(col.r*255)},${Math.round(col.g*255)},${Math.round(col.b*255)},0.7)`);
+    grad.addColorStop(0.38, `rgba(${Math.round(col.r*255)},${Math.round(col.g*255)},${Math.round(col.b*255)},0.95)`);
+    grad.addColorStop(0.48, "rgba(0,0,0,0.05)"); /* Cassini Division */
+    grad.addColorStop(0.55, `rgba(${Math.round(col.r*255)},${Math.round(col.g*255)},${Math.round(col.b*255)},0.85)`);
+    grad.addColorStop(0.88, `rgba(${Math.round(col.r*255)},${Math.round(col.g*255)},${Math.round(col.b*255)},0.5)`);
+    grad.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 256, 1);
+    return new THREE.CanvasTexture(c);
+  }
+
   /* ---------- the sun ---------- */
   const sun = new THREE.Group();
+  const sunMat = new THREE.MeshBasicMaterial({
+    map: createPlanetTexture("schedule", 0xffc470, false),
+    color: 0xffd988,
+  });
+  sun.add(new THREE.Mesh(new THREE.SphereGeometry(P.sol.s, 48, 36), sunMat));
   sun.add(new THREE.Mesh(
-    new THREE.IcosahedronGeometry(P.sol.s, 6),
-    new THREE.MeshBasicMaterial({ color: 0xe3a458 })
-  ));
-  sun.add(new THREE.Mesh(
-    new THREE.IcosahedronGeometry(P.sol.s * 1.32, 3),
-    new THREE.MeshBasicMaterial({ wireframe: true, color: 0xffe8c2, transparent: true, opacity: 0.4 })
+    new THREE.IcosahedronGeometry(P.sol.s * 1.28, 3),
+    new THREE.MeshBasicMaterial({ wireframe: true, color: 0xffe8c2, transparent: true, opacity: 0.35 })
   ));
   const corona = new THREE.Sprite(new THREE.SpriteMaterial({
     map: radial("rgba(255,214,120,0.9)", "rgba(255,214,120,0)"),
@@ -157,13 +312,12 @@ try {
   sun.add(corona);
   scene.add(sun);
 
-  /* ---------- shared geometries & materials for instant init ---------- */
-  const sharedPlanetGeo = new THREE.IcosahedronGeometry(1, 3);
-  const sharedWireGeo = new THREE.IcosahedronGeometry(1.1, 2);
-  const sharedSatGeo = new THREE.IcosahedronGeometry(0.08, 1);
-  const sharedRingGeo1 = new THREE.RingGeometry(1.38, 1.72, 48);
-  const sharedRingGeo2 = new THREE.RingGeometry(1.85, 1.94, 48);
-  const atmoTex = radial("rgba(255,255,255,0.55)", "rgba(255,255,255,0)");
+  /* ---------- shared geometries for planets & satellites ---------- */
+  const sharedSphereGeo = new THREE.SphereGeometry(1, 48, 36);
+  const sharedWireGeo = new THREE.IcosahedronGeometry(1.08, 2);
+  const sharedSatGeo = new THREE.SphereGeometry(0.1, 16, 16);
+  const sharedRingGeo = new THREE.RingGeometry(1.35, 2.25, 64);
+  const atmoTex = radial("rgba(255,255,255,0.6)", "rgba(255,255,255,0)");
 
   /* ---------- planets ---------- */
   const bodies = {};
@@ -173,10 +327,17 @@ try {
     const cfg = P[k];
     const g = new THREE.Group();
 
+    const planetTex = createPlanetTexture(k, cfg.c, darkPage);
+    const bumpTex = createBumpTexture(k);
+
     const core = new THREE.Mesh(
-      sharedPlanetGeo,
+      sharedSphereGeo,
       new THREE.MeshStandardMaterial({
-        color: cfg.c, roughness: 0.55, metalness: 0.18,
+        map: planetTex,
+        bumpMap: bumpTex,
+        bumpScale: 0.055,
+        roughness: 0.52,
+        metalness: 0.16,
         emissive: new THREE.Color(cfg.c).multiplyScalar(darkPage ? 0.32 : 0.08),
       })
     );
@@ -184,31 +345,30 @@ try {
 
     const wire = new THREE.Mesh(
       sharedWireGeo,
-      new THREE.MeshBasicMaterial({ wireframe: true, color: cfg.c, transparent: true, opacity: 0.45 })
+      new THREE.MeshBasicMaterial({ wireframe: true, color: cfg.c, transparent: true, opacity: 0.38 })
     );
     wire.scale.setScalar(cfg.s);
 
     const atmo = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: atmoTex, transparent: true, opacity: darkPage ? 0.2 : 0.13, depthWrite: false,
+      map: atmoTex, transparent: true, opacity: darkPage ? 0.22 : 0.14, depthWrite: false,
     }));
-    atmo.scale.set(cfg.s * 3.6, cfg.s * 3.6, 1);
+    atmo.scale.set(cfg.s * 3.4, cfg.s * 3.4, 1);
     g.add(core, wire, atmo);
 
     if (cfg.ring) {
-      const r1 = new THREE.Mesh(
-        sharedRingGeo1,
-        new THREE.MeshBasicMaterial({ color: darkPage ? 0x2b2a2d : 0x523122, transparent: true, opacity: 0.35, side: THREE.DoubleSide, depthWrite: false })
-      );
-      r1.scale.setScalar(cfg.s);
-      r1.rotation.set(1.72, 0.35, 0);
-
-      const r2 = new THREE.Mesh(
-        sharedRingGeo2,
-        new THREE.MeshBasicMaterial({ color: cfg.c, transparent: true, opacity: 0.5, side: THREE.DoubleSide, depthWrite: false })
-      );
-      r2.scale.setScalar(cfg.s);
-      r2.rotation.set(1.72, 0.35, 0.15);
-      g.add(r1, r2);
+      const ringMat = new THREE.MeshStandardMaterial({
+        map: createRingTexture(cfg.c),
+        transparent: true,
+        opacity: 0.85,
+        side: THREE.DoubleSide,
+        roughness: 0.6,
+        metalness: 0.1,
+        depthWrite: false,
+      });
+      const ringMesh = new THREE.Mesh(sharedRingGeo, ringMat);
+      ringMesh.scale.setScalar(cfg.s);
+      ringMesh.rotation.set(1.72, 0.35, 0.12);
+      g.add(ringMesh);
     }
 
     for (let j = 0; j < 2; j++) {
@@ -217,7 +377,7 @@ try {
         new THREE.MeshStandardMaterial({ color: cfg.c, emissive: cfg.c, emissiveIntensity: 0.85 })
       );
       g.add(m);
-      sats.push({ m, r: cfg.s * 1.15 + j * 0.5, ph: (j / 2) * Math.PI * 2 + k.length, sp: 0.5 + j * 0.35 });
+      sats.push({ m, r: cfg.s * 1.22 + j * 0.55, ph: (j / 2) * Math.PI * 2 + k.length, sp: 0.55 + j * 0.35 });
     }
 
     /* orbit path — a tilted circle matching the planet's motion */
@@ -229,7 +389,7 @@ try {
     scene.add(path);
 
     scene.add(g);
-    bodies[k] = { cfg, g, phase: (i / 9) * Math.PI * 2 + (Math.random() - 0.5) * 0.4 };
+    bodies[k] = { cfg, g, core, wire, phase: (i / 9) * Math.PI * 2 + (Math.random() - 0.5) * 0.4 };
   });
 
   /* ---------- framing: where the camera sits for a planet ---------- */
@@ -382,14 +542,18 @@ try {
       s.mat.size = s.size * (1 + Math.min(1.5, Math.abs(vel) * 0.5));
     });
 
-    /* planets spin + satellites */
+    /* planets spin surface textures & telemetry cages */
     Object.keys(bodies).forEach((k) => {
       const b = bodies[k];
-      b.g.rotation.y += dt * 0.05 * speed;
+      if (b.core) b.core.rotation.y += dt * 0.08 * speed;
+      if (b.wire) {
+        b.wire.rotation.y -= dt * 0.035 * speed;
+        b.wire.rotation.x += dt * 0.015 * speed;
+      }
     });
     sats.forEach((s) => {
       s.ph += dt * s.sp * speed;
-      s.m.position.set(Math.cos(s.ph) * s.r, 0, Math.sin(s.ph) * s.r);
+      s.m.position.set(Math.cos(s.ph) * s.r, Math.sin(s.ph * 2) * 0.22, Math.sin(s.ph) * s.r);
     });
 
     /* sun breathes */
