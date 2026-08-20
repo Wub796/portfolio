@@ -281,23 +281,23 @@ try {
     fromFrame = fromSlug ? frameOf(fromSlug, simT) : toFrame;
   }
 
-  const FLY = 1.8;
+  const FLY = 2.4;
   let arr = (reduced || !fromSlug) ? 1 : 0;
   let curLook = fromSlug ? fromFrame.look.clone() : toFrame.look.clone();
 
   camera.position.copy(fromSlug ? fromFrame.pos : toFrame.pos);
   camera.lookAt(curLook);
 
-  /* Hold background state until everything has loaded on the new page */
+  /* Hold background state until everything has loaded and settled on the new page */
   let readyToFly = !fromSlug;
   function initiateFlight() {
     readyToFly = true;
   }
   if (!readyToFly) {
     if (document.readyState === "complete") {
-      setTimeout(initiateFlight, 120);
+      setTimeout(initiateFlight, 280);
     } else {
-      window.addEventListener("load", function () { setTimeout(initiateFlight, 120); }, { once: true });
+      window.addEventListener("load", function () { setTimeout(initiateFlight, 280); }, { once: true });
     }
   }
 

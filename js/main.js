@@ -298,6 +298,27 @@
     if (links) links.classList.remove("is-open");
   }
 
+  /* ------------------------------------------------------------
+     PAGE PREFETCHING & SEAMLESS WARP NAVIGATION
+     ------------------------------------------------------------ */
+  var prefetched = new Set();
+  function prefetch(url) {
+    if (!url || prefetched.has(url) || url.indexOf(".html") === -1) return;
+    prefetched.add(url);
+    var l = document.createElement("link");
+    l.rel = "prefetch";
+    l.href = url;
+    document.head.appendChild(l);
+  }
+
+  document.addEventListener("mouseover", function (e) {
+    var warpLink = e.target.closest && e.target.closest("a[data-warp]");
+    if (warpLink) {
+      var href = warpLink.getAttribute("href");
+      if (href) prefetch(href);
+    }
+  }, { passive: true });
+
   function doNavigate(href) {
     window.location.href = href;
   }
@@ -325,7 +346,10 @@
       if (exitLock) return;
       exitLock = true;
       saveSceneState();
-      doNavigate(href);
+      document.body.classList.add("is-departing");
+      setTimeout(function () {
+        doNavigate(href);
+      }, 160);
       return;
     }
     var anchor = e.target.closest ? e.target.closest('a[data-scroll]') : null;
