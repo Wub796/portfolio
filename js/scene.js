@@ -269,14 +269,16 @@ try {
   const fromSlug = last && P[last] && last !== slug ? last : null;
   const toFrame = frameOf(slug, 0);
   let fromFrame = fromSlug ? frameOf(last, 0) : toFrame;
-  const FLY = 1.4;
+  const FLY = 1.6;
   let arr = (reduced || !fromSlug) ? 1 : 0;
-  let warp = 0;
 
   camera.position.copy(fromSlug ? fromFrame.pos : toFrame.pos);
   camera.lookAt(fromSlug ? fromFrame.look : toFrame.look);
 
-  function easeInOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  /* quintic ease-in-out for silky cinematic spacecraft departure & arrival */
+  function easeQuint(t) {
+    return t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
+  }
 
   /* ---------- input ---------- */
   let mx = 0, my = 0;
@@ -304,12 +306,16 @@ try {
     });
     window.__sceneVis = Object.keys(bodies).filter((k) => bodies[k].g.visible);
 
-    /* arrival tween */
+    /* arrival tween: smooth orbital arc trajectory */
     if (arr < 1) {
       arr = Math.min(1, arr + dt / FLY);
-      const e = easeInOut(arr);
+      const e = easeQuint(arr);
+      const arcHeight = Math.sin(e * Math.PI) * 2.2;
       camera.position.lerpVectors(fromFrame.pos, toFrame.pos, e);
-      camera.lookAt(new THREE.Vector3().lerpVectors(fromFrame.look, toFrame.look, e));
+      camera.position.y += arcHeight;
+      camera.position.z += arcHeight * 0.35;
+      const curLook = new THREE.Vector3().lerpVectors(fromFrame.look, toFrame.look, e);
+      camera.lookAt(curLook);
     }
 
     /* post-arrival: subtle idle drift + mouse parallax + scroll pull-back */

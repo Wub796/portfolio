@@ -894,11 +894,18 @@ body[data-planet="deadlines"]{--accent:var(--p9)}
 /* a section page: header clears the fixed nav */
 .sec--page{padding-top:clamp(7rem,13vw,10rem);border-top:0}
 
-/* ---------- cross-document View Transitions ---------- */
+/* ---------- seamless cross-document View Transitions ---------- */
 @view-transition{navigation:auto}
-::view-transition-old(root){animation:vtFade .2s ease both}
-::view-transition-new(root){animation:vtFade .2s ease reverse both}
-@keyframes vtFade{to{opacity:0}}
+::view-transition-old(root),
+::view-transition-new(root){
+  animation-duration:.26s;
+  animation-timing-function:cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode:both;
+}
+::view-transition-old(root){animation-name:vtFadeOut}
+::view-transition-new(root){animation-name:vtFadeIn}
+@keyframes vtFadeOut{from{opacity:1}to{opacity:0}}
+@keyframes vtFadeIn{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){
   ::view-transition-old(root),::view-transition-new(root){animation-duration:.01ms}
 }
