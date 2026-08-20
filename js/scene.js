@@ -139,107 +139,345 @@ try {
     nebulas.push(s);
   });
 
-  /* ---------- procedural high-detail planetary textures ---------- */
+  /* ---------- ultra-high-definition procedural planetary textures (1024x512) ---------- */
   function createPlanetTexture(k, baseColorHex, isDark) {
     const c = document.createElement("canvas");
-    c.width = 512;
-    c.height = 256;
+    c.width = 1024;
+    c.height = 512;
     const ctx = c.getContext("2d");
     const col = new THREE.Color(baseColorHex);
     const hsl = {};
     col.getHSL(hsl);
 
+    const hDeg = Math.round(hsl.h * 360);
+    const sPct = Math.round(hsl.s * 100);
+    const lPct = Math.round(hsl.l * 100);
+
     ctx.fillStyle = "#" + col.getHexString();
-    ctx.fillRect(0, 0, 512, 256);
+    ctx.fillRect(0, 0, 1024, 512);
 
-    if (k === "schedule" || k === "college" || k === "deadlines") {
-      /* Banded gas giant with planetary currents, jet streams and storms */
-      const bands = 28;
-      for (let i = 0; i < bands; i++) {
-        const y = (i / bands) * 256;
-        const h = 256 / bands + 3;
-        const lVar = hsl.l + (Math.sin(i * 1.6) * 0.2 + (Math.random() - 0.5) * 0.08);
-        ctx.fillStyle = `hsl(${Math.round(hsl.h * 360)}, ${Math.round(hsl.s * 100)}%, ${Math.max(6, Math.min(94, Math.round(lVar * 100)))}%)`;
-        ctx.fillRect(0, y, 512, h);
+    if (k === "mission") {
+      /* 01 MISSION: Golden Terrestrial Earth-like with archipelagos, shallow reefs, and wispy clouds */
+      const ocean = ctx.createLinearGradient(0, 0, 0, 512);
+      ocean.addColorStop(0, `hsl(${hDeg}, ${sPct}%, 18%)`);
+      ocean.addColorStop(0.5, `hsl(${hDeg}, ${sPct}%, 28%)`);
+      ocean.addColorStop(1, `hsl(${hDeg}, ${sPct}%, 18%)`);
+      ctx.fillStyle = ocean;
+      ctx.fillRect(0, 0, 1024, 512);
 
-        ctx.beginPath();
-        for (let x = 0; x <= 512; x += 12) {
-          const dy = Math.sin(x * 0.05 + i * 0.9) * 5 + Math.cos(x * 0.12) * 2.5;
-          if (x === 0) ctx.moveTo(x, y + dy);
-          else ctx.lineTo(x, y + dy);
-        }
-        ctx.strokeStyle = `hsla(${Math.round(hsl.h * 360 + 10)}, ${Math.round(hsl.s * 100)}%, ${Math.max(10, Math.min(90, Math.round((lVar + 0.12) * 100)))}%, 0.4)`;
-        ctx.lineWidth = 2.5;
-        ctx.stroke();
-      }
-      /* Great cyclonic vortex */
-      const spotX = 160 + (k.length * 45) % 220;
-      const spotY = 120 + Math.sin(k.length) * 28;
-      const stormGrad = ctx.createRadialGradient(spotX, spotY, 2, spotX, spotY, 34);
-      stormGrad.addColorStop(0, `hsla(${Math.round(hsl.h * 360 + 25)}, 90%, 80%, 0.85)`);
-      stormGrad.addColorStop(0.5, `hsla(${Math.round(hsl.h * 360 - 20)}, 75%, 35%, 0.6)`);
-      stormGrad.addColorStop(1, "transparent");
-      ctx.fillStyle = stormGrad;
-      ctx.beginPath();
-      ctx.ellipse(spotX, spotY, 36, 20, 0.12, 0, Math.PI * 2);
-      ctx.fill();
-    } else if (k === "mission" || k === "studies" || k === "extracurriculars" || k === "meal") {
-      /* Terrestrial continents, marbled fluid currents & polar ice caps */
-      for (let n = 0; n < 45; n++) {
-        const cx = Math.random() * 512;
-        const cy = 25 + Math.random() * 206;
-        const r = 20 + Math.random() * 60;
-        const lVar = hsl.l + (Math.random() - 0.5) * 0.32;
-        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-        grad.addColorStop(0, `hsla(${Math.round(hsl.h * 360 + (Math.random() - 0.5) * 35)}, ${Math.round(hsl.s * 100)}%, ${Math.round(Math.max(10, Math.min(92, lVar * 100)))}%, 0.8)`);
-        grad.addColorStop(0.7, `hsla(${Math.round(hsl.h * 360)}, ${Math.round(hsl.s * 85)}%, ${Math.round(Math.max(10, Math.min(90, lVar * 100)))}%, 0.45)`);
-        grad.addColorStop(1, "transparent");
-        ctx.fillStyle = grad;
+      for (let n = 0; n < 80; n++) {
+        const cx = Math.random() * 1024;
+        const cy = 60 + Math.random() * 392;
+        const r = 18 + Math.random() * 120;
+        const landGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+        landGrad.addColorStop(0, `hsl(${hDeg + 15}, 85%, 68%)`);
+        landGrad.addColorStop(0.65, `hsl(${hDeg}, 75%, 52%)`);
+        landGrad.addColorStop(0.88, `hsl(${hDeg - 15}, 80%, 38%)`);
+        landGrad.addColorStop(1, "transparent");
+        ctx.fillStyle = landGrad;
         ctx.beginPath();
         ctx.arc(cx, cy, r, 0, Math.PI * 2);
         ctx.fill();
       }
-      /* Polar Caps */
-      const polarN = ctx.createLinearGradient(0, 0, 0, 32);
-      polarN.addColorStop(0, "rgba(255,255,255,0.9)");
-      polarN.addColorStop(1, "transparent");
-      ctx.fillStyle = polarN;
-      ctx.fillRect(0, 0, 512, 32);
 
-      const polarS = ctx.createLinearGradient(0, 224, 0, 256);
-      polarS.addColorStop(0, "transparent");
-      polarS.addColorStop(1, "rgba(255,255,255,0.9)");
-      ctx.fillStyle = polarS;
-      ctx.fillRect(0, 224, 512, 32);
-    } else {
-      /* Applications & Training: Rugged impact craters & tectonic fault lines */
-      for (let c = 0; c < 75; c++) {
-        const x = Math.random() * 512;
-        const y = Math.random() * 256;
-        const cr = 4 + Math.random() * 28;
-        const rimGrad = ctx.createRadialGradient(x, y, cr * 0.3, x, y, cr);
-        rimGrad.addColorStop(0, "rgba(0,0,0,0.65)");
-        rimGrad.addColorStop(0.8, "rgba(255,255,255,0.45)");
-        rimGrad.addColorStop(1, "transparent");
-        ctx.fillStyle = rimGrad;
+      ctx.fillStyle = "rgba(255,255,255,0.42)";
+      for (let w = 0; w < 30; w++) {
         ctx.beginPath();
-        ctx.arc(x, y, cr, 0, Math.PI * 2);
+        let wx = Math.random() * 1024;
+        let wy = 50 + Math.random() * 412;
+        ctx.moveTo(wx, wy);
+        for (let s = 0; s < 8; s++) {
+          wx += (Math.random() - 0.2) * 80;
+          wy += Math.sin(wx * 0.02) * 20;
+          ctx.bezierCurveTo(wx - 20, wy + 15, wx + 20, wy - 15, wx, wy);
+        }
         ctx.fill();
       }
-      /* Tectonic ridges */
-      ctx.strokeStyle = "rgba(255,255,255,0.22)";
-      ctx.lineWidth = 1.5;
-      for (let r = 0; r < 8; r++) {
+
+      ctx.fillStyle = "rgba(255,255,255,0.92)";
+      ctx.fillRect(0, 0, 1024, 42);
+      ctx.fillRect(0, 470, 1024, 42);
+
+    } else if (k === "studies") {
+      /* 02 STUDIES: Dune Ridges, Canyon Networks & Martian Ochre Strata */
+      const duneGrad = ctx.createLinearGradient(0, 0, 0, 512);
+      duneGrad.addColorStop(0, `hsl(${hDeg - 10}, 65%, 22%)`);
+      duneGrad.addColorStop(0.5, `hsl(${hDeg}, 70%, 36%)`);
+      duneGrad.addColorStop(1, `hsl(${hDeg - 10}, 65%, 22%)`);
+      ctx.fillStyle = duneGrad;
+      ctx.fillRect(0, 0, 1024, 512);
+
+      for (let y = 30; y < 482; y += 7) {
         ctx.beginPath();
-        let lx = Math.random() * 512;
-        let ly = Math.random() * 256;
-        ctx.moveTo(lx, ly);
-        for (let s = 0; s < 5; s++) {
-          lx += (Math.random() - 0.5) * 90;
-          ly += (Math.random() - 0.5) * 60;
-          ctx.lineTo(lx, ly);
+        ctx.strokeStyle = `hsla(${hDeg + (y % 14 === 0 ? 25 : -15)}, 70%, ${y % 14 === 0 ? 55 : 24}%, 0.55)`;
+        ctx.lineWidth = 2.5;
+        for (let x = 0; x <= 1024; x += 16) {
+          const dy = Math.sin(x * 0.03 + y * 0.2) * 4.5 + Math.cos(x * 0.07) * 2.5;
+          if (x === 0) ctx.moveTo(x, y + dy);
+          else ctx.lineTo(x, y + dy);
         }
         ctx.stroke();
+      }
+
+      ctx.strokeStyle = "rgba(40,18,10,0.7)";
+      ctx.lineWidth = 2.5;
+      for (let c = 0; c < 12; c++) {
+        ctx.beginPath();
+        let cx = Math.random() * 1024;
+        let cy = 80 + Math.random() * 352;
+        ctx.moveTo(cx, cy);
+        for (let s = 0; s < 12; s++) {
+          cx += (Math.random() - 0.5) * 60;
+          cy += (Math.random() - 0.5) * 35;
+          ctx.lineTo(cx, cy);
+        }
+        ctx.stroke();
+      }
+
+    } else if (k === "college") {
+      /* 03 COLLEGE: Jovian Banded Giant with Crimson Turbulence & Storm Ovals */
+      const numBands = 44;
+      for (let b = 0; b < numBands; b++) {
+        const y = (b / numBands) * 512;
+        const h = 512 / numBands + 4;
+        const lVar = hsl.l + Math.sin(b * 1.5) * 0.22 + (b % 3 === 0 ? 0.08 : -0.06);
+        ctx.fillStyle = `hsl(${hDeg + (b % 2 ? 15 : -10)}, ${sPct}%, ${Math.max(8, Math.min(92, Math.round(lVar * 100)))}%)`;
+        ctx.fillRect(0, y, 1024, h);
+
+        ctx.beginPath();
+        ctx.strokeStyle = `hsla(${hDeg + 25}, 80%, ${Math.round(lVar * 100 + 15)}%, 0.45)`;
+        ctx.lineWidth = 2;
+        for (let x = 0; x <= 1024; x += 16) {
+          const dy = Math.sin(x * 0.04 + b) * 7 + Math.sin(x * 0.12) * 3;
+          if (x === 0) ctx.moveTo(x, y + dy);
+          else ctx.lineTo(x, y + dy);
+        }
+        ctx.stroke();
+      }
+
+      for (let v = 0; v < 2; v++) {
+        const vx = 300 + v * 420;
+        const vy = 200 + v * 120;
+        const sGrad = ctx.createRadialGradient(vx, vy, 4, vx, vy, 48);
+        sGrad.addColorStop(0, "rgba(255,140,110,0.95)");
+        sGrad.addColorStop(0.5, "rgba(180,45,30,0.8)");
+        sGrad.addColorStop(0.8, "rgba(90,20,15,0.5)");
+        sGrad.addColorStop(1, "transparent");
+        ctx.fillStyle = sGrad;
+        ctx.beginPath();
+        ctx.ellipse(vx, vy, 54, 28, 0.08, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+    } else if (k === "applications") {
+      /* 04 APPLICATIONS: Bronze Basalt World with Luminous Rayed Impact Craters */
+      ctx.fillStyle = "#1e140e";
+      ctx.fillRect(0, 0, 1024, 512);
+
+      for (let p = 0; p < 25; p++) {
+        const px = Math.random() * 1024;
+        const py = Math.random() * 512;
+        const pr = 40 + Math.random() * 120;
+        const pGrad = ctx.createRadialGradient(px, py, 0, px, py, pr);
+        pGrad.addColorStop(0, `hsl(${hDeg}, 40%, 26%)`);
+        pGrad.addColorStop(1, "transparent");
+        ctx.fillStyle = pGrad;
+        ctx.beginPath();
+        ctx.arc(px, py, pr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      for (let c = 0; c < 90; c++) {
+        const cx = Math.random() * 1024;
+        const cy = Math.random() * 512;
+        const cr = 4 + Math.random() * 26;
+
+        if (cr > 16) {
+          ctx.strokeStyle = "rgba(230,200,160,0.28)";
+          ctx.lineWidth = 1.2;
+          for (let ray = 0; ray < 10; ray++) {
+            const angle = (ray / 10) * Math.PI * 2 + Math.random() * 0.2;
+            const rLen = cr * (3 + Math.random() * 4);
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx + Math.cos(angle) * rLen, cy + Math.sin(angle) * rLen);
+            ctx.stroke();
+          }
+        }
+
+        const cGrad = ctx.createRadialGradient(cx, cy, cr * 0.25, cx, cy, cr);
+        cGrad.addColorStop(0, "rgba(10,5,2,0.85)");
+        cGrad.addColorStop(0.75, "rgba(220,180,130,0.65)");
+        cGrad.addColorStop(1, "transparent");
+        ctx.fillStyle = cGrad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, cr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+    } else if (k === "extracurriculars") {
+      /* 05 EXTRACURRICULARS: Caramel Milk-Tea Silky Marbled Fluid Convection World */
+      for (let s = 0; s < 70; s++) {
+        const sx = Math.random() * 1024;
+        const sy = Math.random() * 512;
+        const sr = 35 + Math.random() * 140;
+        const swirlGrad = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr);
+        swirlGrad.addColorStop(0, `hsl(${hDeg + 20}, 85%, 78%)`);
+        swirlGrad.addColorStop(0.4, `hsl(${hDeg}, 75%, 60%)`);
+        swirlGrad.addColorStop(0.8, `hsl(${hDeg - 15}, 65%, 42%)`);
+        swirlGrad.addColorStop(1, "transparent");
+        ctx.fillStyle = swirlGrad;
+        ctx.beginPath();
+        ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      for (let r = 0; r < 20; r++) {
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(255,240,210,0.45)";
+        ctx.lineWidth = 3;
+        let rx = Math.random() * 1024;
+        let ry = Math.random() * 512;
+        ctx.moveTo(rx, ry);
+        for (let seg = 0; seg < 6; seg++) {
+          rx += (Math.random() - 0.5) * 160;
+          ry += (Math.random() - 0.5) * 90;
+          ctx.quadraticCurveTo(rx + 40, ry - 40, rx, ry);
+        }
+        ctx.stroke();
+      }
+
+    } else if (k === "schedule") {
+      /* 06 SCHEDULE: Ultra-Fine Master Multi-Strata Saturnian Gas Giant */
+      const numBelts = 64;
+      for (let b = 0; b < numBelts; b++) {
+        const y = (b / numBelts) * 512;
+        const h = 512 / numBelts + 3;
+        const lVar = hsl.l + Math.sin(b * 1.8) * 0.18 + Math.cos(b * 0.5) * 0.1;
+        ctx.fillStyle = `hsl(${hDeg + (b % 4 ? 8 : -8)}, ${Math.round(hsl.s * 85)}%, ${Math.max(12, Math.min(88, Math.round(lVar * 100)))}%)`;
+        ctx.fillRect(0, y, 1024, h);
+
+        if (b % 2 === 0) {
+          ctx.fillStyle = "rgba(255,255,255,0.18)";
+          ctx.fillRect(0, y, 1024, 1.5);
+        }
+      }
+
+      const eqGrad = ctx.createLinearGradient(0, 220, 0, 292);
+      eqGrad.addColorStop(0, "transparent");
+      eqGrad.addColorStop(0.5, "rgba(255,255,255,0.4)");
+      eqGrad.addColorStop(1, "transparent");
+      ctx.fillStyle = eqGrad;
+      ctx.fillRect(0, 220, 1024, 72);
+
+    } else if (k === "meal") {
+      /* 07 MEAL: Honey Amber Luminous Oasis World with Cellular Tessellation */
+      ctx.fillStyle = "#8a5818";
+      ctx.fillRect(0, 0, 1024, 512);
+
+      for (let c = 0; c < 120; c++) {
+        const cx = Math.random() * 1024;
+        const cy = Math.random() * 512;
+        const cr = 14 + Math.random() * 45;
+        const cGrad = ctx.createRadialGradient(cx, cy, 2, cx, cy, cr);
+        cGrad.addColorStop(0, "hsl(48, 95%, 76%)");
+        cGrad.addColorStop(0.65, "hsl(40, 90%, 54%)");
+        cGrad.addColorStop(0.9, "hsl(30, 80%, 36%)");
+        cGrad.addColorStop(1, "transparent");
+        ctx.fillStyle = cGrad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, cr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.strokeStyle = "rgba(255,220,120,0.35)";
+      ctx.lineWidth = 2.5;
+      for (let a = 0; a < 8; a++) {
+        ctx.beginPath();
+        const ay = 40 + a * 60;
+        ctx.moveTo(0, ay);
+        for (let x = 0; x <= 1024; x += 32) {
+          ctx.lineTo(x, ay + Math.sin(x * 0.02 + a) * 18);
+        }
+        ctx.stroke();
+      }
+
+    } else if (k === "training") {
+      /* 08 TRAINING: Alpine Tectonic World with Mountain Ridges & Magma Fissures */
+      const baseGrad = ctx.createLinearGradient(0, 0, 0, 512);
+      baseGrad.addColorStop(0, "#2c1c14");
+      baseGrad.addColorStop(0.5, "#483226");
+      baseGrad.addColorStop(1, "#2c1c14");
+      ctx.fillStyle = baseGrad;
+      ctx.fillRect(0, 0, 1024, 512);
+
+      for (let m = 0; m < 55; m++) {
+        const mx = Math.random() * 1024;
+        const my = 40 + Math.random() * 432;
+        const mr = 25 + Math.random() * 85;
+        const mGrad = ctx.createRadialGradient(mx, my, 0, mx, my, mr);
+        mGrad.addColorStop(0, "rgba(255,255,255,0.85)");
+        mGrad.addColorStop(0.35, "hsl(28, 45%, 48%)");
+        mGrad.addColorStop(0.7, "hsl(20, 40%, 28%)");
+        mGrad.addColorStop(1, "transparent");
+        ctx.fillStyle = mGrad;
+        ctx.beginPath();
+        ctx.arc(mx, my, mr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.strokeStyle = "rgba(255,110,40,0.65)";
+      ctx.lineWidth = 1.8;
+      for (let f = 0; f < 14; f++) {
+        ctx.beginPath();
+        let fx = Math.random() * 1024;
+        let fy = Math.random() * 512;
+        ctx.moveTo(fx, fy);
+        for (let s = 0; s < 8; s++) {
+          fx += (Math.random() - 0.5) * 80;
+          fy += (Math.random() - 0.5) * 45;
+          ctx.lineTo(fx, fy);
+        }
+        ctx.stroke();
+      }
+
+    } else if (k === "deadlines") {
+      /* 09 DEADLINES: Obsidian Brutalist Monolith World with Platinum & Neon Gold Trace Filaments */
+      ctx.fillStyle = "#121114";
+      ctx.fillRect(0, 0, 1024, 512);
+
+      for (let f = 0; f < 40; f++) {
+        const fx = Math.random() * 1024;
+        const fy = Math.random() * 512;
+        const fr = 30 + Math.random() * 90;
+        const fGrad = ctx.createRadialGradient(fx, fy, 0, fx, fy, fr);
+        fGrad.addColorStop(0, "rgba(65,60,72,0.6)");
+        fGrad.addColorStop(0.6, "rgba(28,26,32,0.4)");
+        fGrad.addColorStop(1, "transparent");
+        ctx.fillStyle = fGrad;
+        ctx.beginPath();
+        ctx.arc(fx, fy, fr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.strokeStyle = "rgba(232,200,155,0.75)";
+      ctx.lineWidth = 1.5;
+      for (let g = 0; g < 22; g++) {
+        ctx.beginPath();
+        let gx = Math.floor(Math.random() * 32) * 32;
+        let gy = Math.floor(Math.random() * 16) * 32;
+        ctx.moveTo(gx, gy);
+        for (let s = 0; s < 5; s++) {
+          if (Math.random() > 0.5) gx += (Math.random() > 0.5 ? 64 : -64);
+          else gy += (Math.random() > 0.5 ? 64 : -64);
+          ctx.lineTo(gx, gy);
+        }
+        ctx.stroke();
+
+        ctx.fillStyle = "rgba(255,225,180,0.95)";
+        ctx.beginPath();
+        ctx.arc(gx, gy, 3.5, 0, Math.PI * 2);
+        ctx.fill();
       }
     }
 
