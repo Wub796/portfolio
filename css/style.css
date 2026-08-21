@@ -887,8 +887,8 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
 .rail__node b{
   font-family:var(--f-mono);font-size:.56rem;font-weight:600;letter-spacing:.14em;color:var(--text);white-space:nowrap;
   opacity:0;transform:translateX(-6px);
-  padding:3px 7px;border-radius:6px;background:rgba(255,255,255,.92);
-  border:1px solid rgba(0,0,0,.08);box-shadow:0 4px 12px rgba(82,49,34,.08);
+  padding:3px 7px;border-radius:6px;background:var(--panel2);
+  border:1px solid var(--line-strong);box-shadow:0 4px 12px rgba(0,0,0,.14);
   transition:opacity .25s var(--ease),transform .25s var(--ease);
   pointer-events:none;
 }
