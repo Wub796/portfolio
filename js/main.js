@@ -343,6 +343,8 @@
     var links = document.getElementById("navLinks");
     if (toggle) toggle.setAttribute("aria-expanded", "false");
     if (links) links.classList.remove("is-open");
+    document.body.classList.remove("menu-open");
+    if (lenis) lenis.start();
   }
 
   /* ------------------------------------------------------------
@@ -778,8 +780,11 @@
   if (navToggle && navLinksEl) {
     navToggle.addEventListener("click", function () {
       var open = navToggle.getAttribute("aria-expanded") === "true";
-      navToggle.setAttribute("aria-expanded", String(!open));
-      navLinksEl.classList.toggle("is-open", !open);
+      var willOpen = !open;
+      navToggle.setAttribute("aria-expanded", String(willOpen));
+      navLinksEl.classList.toggle("is-open", willOpen);
+      document.body.classList.toggle("menu-open", willOpen);
+      if (lenis) { if (willOpen) lenis.stop(); else lenis.start(); }
     });
   }
 
