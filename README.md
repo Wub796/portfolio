@@ -33,7 +33,7 @@ All content (studies, college plan, application process, extracurriculars, daily
 | 06 | `schedule.html` | school-year ⇄ summer week grid, rules |
 | 07 | `meal.html` | calorie cycling, lipid-safe rules, bone stack |
 | 08 | `training.html` | split, plyometrics, height unlock |
-| 09 | `deadlines.html` | 16 programs with live countdowns (dark planet) |
+| 09 | `deadlines.html` | 20 programs with live countdowns (dark planet) |
 
 ## Run
 

@@ -36,7 +36,7 @@
 
   /* ------------------------------------------------------------
      DEADLINES — Updated Program List & Timelines
-     16 premier aerospace, research, and selective STEM programs
+     20 premier aerospace, research, and selective STEM programs
      ------------------------------------------------------------ */
   var DEADLINES = [
     {
@@ -53,8 +53,21 @@
       note: "GridEvac AI entered — demo video + codebase submitted.",
     },
     {
+      org: "NASA · Hack Club · AMD · GitHub",
+      name: "Stardance Challenge",
+      type: "Engineering Competition",
+      status: "countdown",
+      primary: "2026-09-30T23:59:00-05:00",
+      events: [
+        ["Challenge Window", "June 1 – September 30, 2026"],
+        ["Submission Deadline", "September 30, 2026"],
+        ["Rewards", "Log build hours → space tokens for Raspberry Pi, Flipper Zero, 3D printers"],
+      ],
+      note: "Build with real NASA mission data — log Orbital Watch, Flight Logger, reaction wheel & rover hours for hardware.",
+    },
+    {
       org: "NASA",
-      name: "NASA HUNCH (Software & Hardware Engineering)",
+      name: "NASA HUNCH (Software · Hardware · Data Science)",
       type: "Engineering Competition",
       status: "open",
       events: [
@@ -63,7 +76,7 @@
         ["Critical Design Reviews (CDR)", "February – March"],
         ["Final Review / National Showcase", "April"],
       ],
-      note: "Software & Hardware Engineering tracks — pairs with flight logger and payload prototyping.",
+      note: "Software, Hardware & Machine Learning / Data Science tracks (NASA Human Research Program) — pairs with flight logger and payload prototyping.",
     },
     {
       org: "CEE · MIT",
@@ -175,7 +188,7 @@
     },
     {
       org: "AIA · NAR",
-      name: "The American Rocketry Challenge (TARC)",
+      name: "American Rocketry Challenge (ARC)",
       type: "Rocketry Competition",
       status: "countdown",
       primary: "2026-12-31T23:59:00-05:00",
@@ -184,7 +197,7 @@
         ["Qualifying Flights Due", "April"],
         ["National Finals", "May"],
       ],
-      note: "National model rocketry competition (Registration: Sep – Dec; Flights due: Apr; Finals: May).",
+      note: "2026 target: 750 ft altitude, 36–39s flight, single egg payload (formerly TARC) — registration Sep–Dec, flights due Apr, finals May.",
     },
     {
       org: "Caltech · NASA JPL",
@@ -246,6 +259,40 @@
         ["Program Dates", "July (3 weeks)"],
       ],
       note: "Engineering prototyping and technological management with Penn Engineering and Wharton.",
+    },
+    {
+      org: "Blue Ocean Competition",
+      name: "Blue Ocean Competition",
+      type: "Entrepreneurship Competition",
+      status: "open",
+      events: [
+        ["Pitch Submission", "3–5 min YouTube video tagged #blueoceancompetition + slide deck"],
+        ["Required Frameworks", "As-Is & To-Be strategy canvases · ERRC grid · three tiers of noncustomers"],
+      ],
+      note: "International pitch competition — design a business that opens a new \"blue ocean\" market space.",
+    },
+    {
+      org: "Ladder Internships",
+      name: "Ladder Internships",
+      type: "Virtual Internship",
+      status: "rolling",
+      events: [
+        ["Placement", "High-growth startups in tech, finance, healthcare & engineering"],
+        ["Structure", "Cohort-based · founder/CEO-directed projects"],
+        ["Program Cost", "$2,990 – $7,400 depending on track"],
+      ],
+      note: "Virtual startup internship to build an engineering/academic spike for applications.",
+    },
+    {
+      org: "Harvard Undergraduate Capital Partners",
+      name: "HUCP Startup Pitch & Investment Competition",
+      type: "Pitch Competition",
+      status: "open",
+      events: [
+        ["Competition", "Annual startup pitch & investment-modeling competition"],
+        ["Current Prep", "SigIQ.ai founder interview research + pitch deck"],
+      ],
+      note: "Harvard student-run VC competition — pitching AI tutoring startup SigIQ.ai with a presentation team.",
     },
   ];
 
