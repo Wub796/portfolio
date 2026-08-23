@@ -561,17 +561,37 @@
     /* ---- state ---- */
     var mx = -100, my = -100, dx = -100, dy = -100, rx = -100, ry = -100, gx = -100, gy = -100, hx = -100, hy = -100;
     var moved = false, followT = 0, lastSpawnT = 0, lastHudT = 0;
+    var curAng = 0, curStretch = 0;
     var currentLockLabel = null;
 
     window.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
       if (!moved) {
         moved = true;
+        dx = mx; dy = my;
+        rx = mx; ry = my;
+        hx = mx; hy = my;
+        gx = mx; gy = my;
         dotEl.style.opacity = "";
         reticle.style.opacity = "";
         hudEl.style.opacity = "";
       }
     }, { passive: true });
+
+    document.addEventListener("mouseleave", function () {
+      dotEl.style.opacity = "0";
+      reticle.style.opacity = "0";
+      hudEl.style.opacity = "0";
+    });
+
+    document.addEventListener("mouseenter", function () {
+      if (moved) {
+        dotEl.style.opacity = "";
+        reticle.style.opacity = "";
+        hudEl.style.opacity = "";
+      }
+    });
+
     dotEl.style.opacity = "0";
     reticle.style.opacity = "0";
     hudEl.style.opacity = "0";
@@ -582,45 +602,59 @@
       var dt = Math.min(45, now - (followT || now));
       followT = now;
 
-      /* Precision dot follows mouse instantly with silky high-speed damp */
+      /* Precision dot follows mouse with instantaneous response for clicking accuracy */
+      dx = mx;
+      dy = my;
+
+      /* Reticle, HUD and Ambient Glow follow with silky staggered damping */
       if (window.anime && anime.utils && anime.utils.damp) {
-        dx = anime.utils.damp(dx, mx, 40, dt); dy = anime.utils.damp(dy, my, 40, dt);
-        rx = anime.utils.damp(rx, mx, 16, dt); ry = anime.utils.damp(ry, my, 16, dt);
-        hx = anime.utils.damp(hx, mx, 9, dt);  hy = anime.utils.damp(hy, my, 9, dt);
-        gx = anime.utils.damp(gx, mx, 5, dt);  gy = anime.utils.damp(gy, my, 5, dt);
+        rx = anime.utils.damp(rx, mx, 24, dt); ry = anime.utils.damp(ry, my, 24, dt);
+        hx = anime.utils.damp(hx, mx, 14, dt); hy = anime.utils.damp(hy, my, 14, dt);
+        gx = anime.utils.damp(gx, mx, 6, dt);  gy = anime.utils.damp(gy, my, 6, dt);
       } else {
-        dx += (mx - dx) * 0.45; dy += (my - dy) * 0.45;
-        rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
-        hx += (mx - hx) * 0.1;  hy += (my - hy) * 0.1;
-        gx += (mx - gx) * 0.05; gy += (my - gy) * 0.05;
+        rx += (mx - rx) * (1 - Math.exp(-dt * 0.024));
+        ry += (my - ry) * (1 - Math.exp(-dt * 0.024));
+        hx += (mx - hx) * (1 - Math.exp(-dt * 0.014));
+        hy += (my - hy) * (1 - Math.exp(-dt * 0.014));
+        gx += (mx - gx) * (1 - Math.exp(-dt * 0.006));
+        gy += (my - gy) * (1 - Math.exp(-dt * 0.006));
       }
 
-      dotEl.style.transform = "translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px) translate(-50%,-50%)";
+      dotEl.style.transform = "translate3d(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px,0) translate(-50%,-50%)";
 
-      /* Velocity & attitude angle */
+      /* Smooth Velocity & shortest-path Attitude Angle */
       var vx = mx - rx, vy = my - ry;
       var dist = Math.sqrt(vx * vx + vy * vy);
-      var ang = Math.atan2(vy, vx);
       var speedKmh = Math.round(dist * 24);
 
-      /* Reticle attitude tilt & velocity stretch */
-      var st = Math.min(0.35, dist * 0.005);
-      reticle.style.transform = "translate(" + rx.toFixed(1) + "px," + ry.toFixed(1) + "px) translate(-50%,-50%) rotate(" + ang.toFixed(3) + "rad) scale(" + (1 + st).toFixed(3) + "," + (1 - st * 0.35).toFixed(3) + ")";
+      if (dist > 1.8) {
+        var targetAng = Math.atan2(vy, vx);
+        var diffAng = (targetAng - curAng) % (Math.PI * 2);
+        if (diffAng > Math.PI) diffAng -= Math.PI * 2;
+        if (diffAng < -Math.PI) diffAng += Math.PI * 2;
+        curAng += diffAng * (1 - Math.exp(-dt * 0.018));
+      }
+
+      /* Elastic velocity stretch */
+      var targetStretch = Math.min(0.24, dist * 0.0035);
+      curStretch += (targetStretch - curStretch) * (1 - Math.exp(-dt * 0.022));
+
+      reticle.style.transform = "translate3d(" + rx.toFixed(1) + "px," + ry.toFixed(1) + "px,0) translate(-50%,-50%) rotate(" + curAng.toFixed(3) + "rad) scale(" + (1 + curStretch).toFixed(3) + "," + (1 - curStretch * 0.3).toFixed(3) + ")";
 
       /* Telemetry HUD position & dynamic readout */
-      hudEl.style.transform = "translate(" + (hx + 24).toFixed(1) + "px," + (hy + 18).toFixed(1) + "px)";
+      hudEl.style.transform = "translate3d(" + (hx + 24).toFixed(1) + "px," + (hy + 18).toFixed(1) + "px,0)";
       if (now - lastHudT > 80) {
         lastHudT = now;
         if (currentLockLabel) {
           hudEl.innerHTML = '<b>[LOCK // ' + currentLockLabel + ']</b>';
         } else if (dist > 3) {
-          hudEl.innerHTML = '<b>[VEL]</b> ' + speedKmh + ' km/h · ' + Math.round(ang * 180 / Math.PI) + '°';
+          hudEl.innerHTML = '<b>[VEL]</b> ' + speedKmh + ' km/h · ' + Math.round(curAng * 180 / Math.PI) + '°';
         } else {
           hudEl.innerHTML = '<b>[ORBIT]</b> 0 km/h · ' + currentPlanet.toUpperCase();
         }
       }
 
-      glow.style.transform = "translate(" + gx.toFixed(1) + "px," + gy.toFixed(1) + "px) translate(-50%,-50%)";
+      glow.style.transform = "translate3d(" + gx.toFixed(1) + "px," + gy.toFixed(1) + "px,0) translate(-50%,-50%)";
 
       /* ---- 5. CONSTELLATION ION WAKE PHYSICS ON CANVAS ---- */
       if (cctx && cw > 0 && ch > 0) {

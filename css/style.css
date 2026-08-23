@@ -197,9 +197,9 @@ main#top.is-swapping{
 .cursor--dot{
   position:fixed;top:0;left:0;width:6px;height:6px;pointer-events:none;
   border-radius:50%;background:var(--accent);z-index:350;
-  transform:translate(-50%,-50%);will-change:transform;
+  transform:translate3d(0,0,0) translate(-50%,-50%);will-change:transform;
   box-shadow:0 0 0 1.5px var(--bg), 0 0 10px var(--accent);
-  transition:width .2s var(--ease),height .2s var(--ease),background .2s,box-shadow .2s;
+  transition:width .24s cubic-bezier(0.16,1,0.3,1),height .24s cubic-bezier(0.16,1,0.3,1),background .2s,box-shadow .2s;
 }
 .cursor--dot.is-target{
   width:4px;height:4px;background:#fff;
@@ -210,9 +210,9 @@ main#top.is-swapping{
 .cursor-reticle{
   position:fixed;top:0;left:0;pointer-events:none;z-index:340;
   width:44px;height:44px;border-radius:50%;
-  transform:translate(-50%,-50%);will-change:transform;
+  transform:translate3d(0,0,0) translate(-50%,-50%);will-change:transform;
   display:flex;align-items:center;justify-content:center;
-  transition:width .32s var(--ease),height .32s var(--ease),opacity .3s;
+  transition:width .36s cubic-bezier(0.16,1,0.3,1),height .36s cubic-bezier(0.16,1,0.3,1),opacity .3s;
 }
 
 /* Reticle outer dashed attitude ring */
@@ -220,7 +220,7 @@ main#top.is-swapping{
   position:absolute;inset:0;border-radius:50%;
   border:1.2px dashed color-mix(in srgb,var(--accent) 70%,transparent);
   animation:reticleSpin 20s linear infinite;
-  transition:border-color .3s,box-shadow .3s,transform .3s var(--ease);
+  transition:border-color .3s,box-shadow .3s,transform .3s cubic-bezier(0.16,1,0.3,1);
 }
 @keyframes reticleSpin{to{transform:rotate(360deg)}}
 
@@ -231,7 +231,7 @@ main#top.is-swapping{
 .cursor-reticle__cross::before,
 .cursor-reticle__cross::after{
   content:'';position:absolute;background:var(--accent);opacity:.65;
-  transition:transform .25s var(--ease),opacity .25s;
+  transition:transform .28s cubic-bezier(0.16,1,0.3,1),opacity .28s;
 }
 .cursor-reticle__cross::before{
   top:50%;left:-3px;right:-3px;height:1px;transform:translateY(-50%);
@@ -243,7 +243,7 @@ main#top.is-swapping{
 /* Target Corner Brackets [  ] */
 .cursor-reticle__brackets{
   position:absolute;inset:-5px;pointer-events:none;opacity:0;
-  transition:opacity .25s var(--ease),inset .25s var(--ease);
+  transition:opacity .28s cubic-bezier(0.16,1,0.3,1),inset .28s cubic-bezier(0.16,1,0.3,1);
 }
 .cursor-reticle__brackets::before,
 .cursor-reticle__brackets::after{
@@ -254,29 +254,29 @@ main#top.is-swapping{
 
 /* Target Lock State on Interactive Hover */
 .cursor-reticle.is-target{
-  width:74px;height:74px;
+  width:72px;height:72px;
 }
 .cursor-reticle.is-target .cursor-reticle__ring{
   border-style:solid;border-width:1.5px;border-color:var(--accent);
   box-shadow:0 0 22px color-mix(in srgb,var(--accent) 45%,transparent);
-  animation-duration:5s;
+  animation-duration:6s;
 }
-.cursor-reticle.is-target .cursor-reticle__cross::before{transform:translateY(-50%) scaleX(1.4);opacity:.9}
-.cursor-reticle.is-target .cursor-reticle__cross::after{transform:translateX(-50%) scaleY(1.4);opacity:.9}
-.cursor-reticle.is-target .cursor-reticle__brackets{opacity:1;inset:-8px}
-.cursor-reticle.is-down{transform:translate(-50%,-50%) scale(.82)}
+.cursor-reticle.is-target .cursor-reticle__cross::before{transform:translateY(-50%) scaleX(1.35);opacity:.9}
+.cursor-reticle.is-target .cursor-reticle__cross::after{transform:translateX(-50%) scaleY(1.35);opacity:.9}
+.cursor-reticle.is-target .cursor-reticle__brackets{opacity:1;inset:-7px}
+.cursor-reticle.is-down{transform:translate3d(0,0,0) translate(-50%,-50%) scale(.84)}
 
 /* Live Telemetry HUD Badge */
 .cursor-hud{
   position:fixed;top:0;left:0;pointer-events:none;z-index:345;
-  transform:translate(26px,20px);will-change:transform;
+  transform:translate3d(26px,20px,0);will-change:transform;
   font-family:var(--f-mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--text);background:rgba(255,255,255,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  padding:.2rem .55rem;border-radius:4px;border:1px solid var(--line-strong);
-  box-shadow:0 4px 14px rgba(0,0,0,.07);
+  color:var(--text);background:rgba(255,255,255,.84);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  padding:.22rem .58rem;border-radius:5px;border:1px solid var(--line-strong);
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
   white-space:nowrap;
   display:flex;align-items:center;gap:.35rem;
-  opacity:.88;transition:opacity .25s,transform .25s var(--ease),background .25s,border-color .25s,color .25s;
+  opacity:.88;transition:opacity .25s,transform .3s cubic-bezier(0.16,1,0.3,1),background .25s,border-color .25s,color .25s;
 }
 .cursor-hud b{color:var(--accent);font-weight:700}
 .cursor-hud::before{
@@ -286,7 +286,7 @@ main#top.is-swapping{
 @keyframes hudBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.65)}}
 .cursor-hud.is-target{
   background:var(--text);color:var(--on-accent);border-color:var(--accent);
-  transform:translate(36px,26px);opacity:1;
+  transform:translate3d(34px,24px,0);opacity:1;
 }
 .cursor-hud.is-target b{color:var(--lime)}
 
