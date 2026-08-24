@@ -147,7 +147,7 @@ main#top.is-swapping{
 /* solid panels — no glass over the 3D scene; hard offset shadows for depth */
 .panel{background:var(--panel);border:2px solid var(--text);box-shadow:6px 6px 0 var(--text)}
 .mission__col,.rule{background:var(--panel);border:2px solid var(--text);box-shadow:5px 5px 0 var(--text)}
-.split__day,.stack__i{background:var(--panel);border:2px solid var(--text)}
+.stack__i{background:var(--panel);border:2px solid var(--text)}
 .row{background:var(--panel2)}
 .row:hover{background:var(--panel);box-shadow:4px 4px 0 var(--text)}
 .phase{background:var(--panel2)}
@@ -617,17 +617,29 @@ ul.check li strong{color:var(--text);font-weight:600}
 }
 .stack__i b{color:var(--accent);font-size:.8rem}
 
-/* ---------- training split ---------- */
-.split{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:1px}
-.split__day{background:var(--bg);padding:1.2rem 1rem;display:flex;flex-direction:column;gap:.3rem;transition:background .3s var(--ease)}
-.split__day:hover{background:var(--panel)}
-.split__day b{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.16em;color:var(--text)}
-.split__day span{font-size:.74rem;color:var(--muted)}
-.split__day--main{box-shadow:inset 0 2px 0 var(--c-gym)}
-.split__day--plyo{box-shadow:inset 0 2px 0 var(--c-plyo)}
-.split__day--rec{box-shadow:inset 0 2px 0 var(--c-sport)}
-.split__day--fun{box-shadow:inset 0 2px 0 var(--c-cardio)}
-.split__day--mob{box-shadow:inset 0 2px 0 var(--c-mobility)}
+/* ---------- weekly program (training) ---------- */
+.prog-h{margin:2.6rem 0 1.1rem}
+.prog{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:1.1rem;
+}
+.prog__card{
+  background:var(--panel);border:2px solid var(--text);border-radius:1.2em;
+  box-shadow:6px 6px 0 var(--text);
+  padding:1.35rem 1.3rem;display:flex;flex-direction:column;gap:.8rem;transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+}
+.prog__card:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--text)}
+.prog__day{display:flex;align-items:baseline;gap:.6rem;padding-bottom:.7rem;border-bottom:2px solid var(--line)}
+.prog__day b{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.18em;color:var(--text)}
+.prog__day span{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.prog__card--gym .prog__day{border-color:var(--c-gym)}
+.prog__card--cardio .prog__day{border-color:var(--c-cardio)}
+.prog__card--mob .prog__day{border-color:var(--c-mobility)}
+.prog__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.42rem}
+.prog__list li{display:flex;align-items:baseline;gap:.6rem;font-size:.82rem}
+.prog__list i{font-family:var(--f-mono);font-style:normal;font-size:.6rem;color:var(--accent);white-space:nowrap;min-width:4.2em}
+.prog__list span{color:var(--text)}
+.prog__note{margin:auto 0 0;padding-top:.7rem;border-top:1px solid var(--line);color:var(--muted);font-size:.74rem;line-height:1.5}
 
 /* ---------- deadlines — the whole page is dark ---------- */
 body[data-planet="deadlines"]{
@@ -964,7 +976,6 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
   .hero__badge{display:none}
   .mission__cols{grid-template-columns:1fr}
   .rules{grid-template-columns:repeat(2,1fr)}
-  .split{grid-template-columns:repeat(4,1fr)}
   .row{grid-template-columns:44px minmax(0,1fr) auto;gap:.9rem}
   .row__mid,.cat{display:none}
   .reveal.flip3d{transform:rotateX(-45deg) translateY(30px)}
@@ -1009,7 +1020,6 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
   body.menu-open .nav__toggle span{background:#fff}
   .sec__head{flex-direction:column;align-items:flex-start;gap:.9rem}
   .hero__stat{border-left:0;padding-left:0;margin-right:1.2rem;min-width:130px}
-  .split{grid-template-columns:repeat(2,1fr)}
   .foot__giant{padding-left:var(--gutter)}
 }
 @media (prefers-reduced-motion:reduce){

@@ -32,7 +32,7 @@ All content (studies, college plan, application process, extracurriculars, daily
 | 05 | `extracurriculars.html` | Sea Cadets, volleyball, research, projects, honors |
 | 06 | `schedule.html` | school-year ⇄ summer week grid, rules |
 | 07 | `meal.html` | calorie cycling, lipid-safe rules, bone stack |
-| 08 | `training.html` | split, plyometrics, height unlock |
+| 08 | `training.html` | day-by-day workouts, height unlock |
 | 09 | `deadlines.html` | 20 programs with live countdowns (dark planet) |
 
 ## Run
