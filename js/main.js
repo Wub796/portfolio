@@ -1131,6 +1131,136 @@
     }, 1000);
   }
 
+  /* ------------------------------------------------------------
+     LIVE TIMES — any element with data-deadline renders a countdown
+     that ticks every second; Operation Liftoff phases mark themselves
+     live from their date ranges; the schedule page highlights the
+     current CT row and auto-picks school vs summer by the calendar.
+     ------------------------------------------------------------ */
+  var liveTimer = null;
+  var liveDeadlines = [];
+  var livePhases = [];
+  var schedNowRows = [];
+  var lastNowRow = null;
+
+  function parseTarget(v) {
+    if (!v) return NaN;
+    var t = new Date(v).getTime();
+    return isNaN(t) ? NaN : t;
+  }
+
+  function cdShort(diff) {
+    diff = Math.max(0, diff);
+    return pad(Math.floor(diff / 86400000)) + "d " + pad(Math.floor((diff % 86400000) / 3600000)) + "h " + pad(Math.floor((diff % 3600000) / 60000)) + "m";
+  }
+
+  function cdLong(diff) {
+    diff = Math.max(0, diff);
+    return cdShort(diff) + " " + pad(Math.floor((diff % 60000) / 1000)) + "s";
+  }
+
+  function ctMinutes() {
+    try {
+      var parts = new Date().toLocaleTimeString("en-US", { timeZone: "America/Chicago", hour12: false, hour: "2-digit", minute: "2-digit" }).split(":");
+      return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+    } catch (e) { return -1; }
+  }
+
+  function initScheduleNow() {
+    // auto-pick school vs summer by the calendar (summer window Jun 4 – Aug 12)
+    var modeSummer = document.getElementById("modeSummer");
+    var modeSchool = document.getElementById("modeSchool");
+    var n = new Date();
+    var mo = n.getMonth() + 1, d = n.getDate();
+    var isSummer = (mo === 6 && d >= 4) || mo === 7 || (mo === 8 && d <= 12);
+    if (modeSummer && modeSchool && isSummer && !modeSummer.classList.contains("is-on")) {
+      modeSummer.click();
+    }
+    // collect every time row from both tables for the now-highlight
+    schedNowRows = [];
+    Array.prototype.forEach.call(document.querySelectorAll(".schedule-wrap tbody tr"), function (tr) {
+      var td = tr.querySelector("td");
+      if (!td) return;
+      var m = /^(\d{1,2}):(\d{2})/.exec(td.textContent.trim());
+      if (!m) return;
+      schedNowRows.push({ tr: tr, mins: parseInt(m[1], 10) * 60 + parseInt(m[2], 10) });
+    });
+    tickScheduleNow();
+  }
+
+  function tickScheduleNow() {
+    if (!schedNowRows.length) return;
+    var nowMin = ctMinutes();
+    if (nowMin < 0) return;
+    var current = null;
+    for (var i = 0; i < schedNowRows.length; i++) {
+      if (schedNowRows[i].mins <= nowMin) current = schedNowRows[i].tr;
+    }
+    if (current === lastNowRow) return;
+    if (lastNowRow) lastNowRow.classList.remove("is-now");
+    lastNowRow = current;
+    if (current) current.classList.add("is-now");
+  }
+
+  function initLiveTimes() {
+    if (liveTimer) { clearInterval(liveTimer); liveTimer = null; }
+
+    liveDeadlines = Array.prototype.filter.call(
+      Array.prototype.map.call(document.querySelectorAll("[data-deadline]"), function (el) {
+        return { el: el, target: parseTarget(el.getAttribute("data-deadline")), mode: el.getAttribute("data-mode") || "long" };
+      }),
+      function (d) { return !isNaN(d.target); }
+    );
+
+    livePhases = Array.prototype.filter.call(
+      Array.prototype.map.call(document.querySelectorAll(".phase[data-phase-start]"), function (li) {
+        var span = document.createElement("span");
+        span.className = "live-cd phase-live-cd";
+        var dEl = li.querySelector(".phase__d");
+        if (dEl) dEl.appendChild(span);
+        return {
+          li: li,
+          start: parseTarget(li.getAttribute("data-phase-start")),
+          end: parseTarget(li.getAttribute("data-phase-end")),
+          span: span
+        };
+      }),
+      function (p) { return !isNaN(p.start) && !isNaN(p.end); }
+    );
+
+    function tick() {
+      var now = Date.now();
+      liveDeadlines.forEach(function (d) {
+        var diff = d.target - now;
+        if (diff <= 0) {
+          d.el.textContent = "passed";
+          d.el.classList.add("is-past");
+        } else {
+          d.el.textContent = d.mode === "short" ? cdShort(diff) : cdLong(diff);
+          d.el.classList.remove("is-past");
+        }
+      });
+      livePhases.forEach(function (p) {
+        if (now >= p.start && now <= p.end) {
+          p.li.classList.add("phase--live");
+          p.span.classList.remove("is-past");
+          p.span.textContent = "· " + cdShort(p.end - now) + " left";
+        } else if (now > p.end) {
+          p.li.classList.remove("phase--live");
+          p.span.classList.add("is-past");
+          p.span.textContent = "· ended";
+        } else {
+          p.li.classList.remove("phase--live");
+          p.span.classList.remove("is-past");
+          p.span.textContent = "· in " + cdShort(p.start - now);
+        }
+      });
+      tickScheduleNow();
+    }
+    tick();
+    liveTimer = setInterval(tick, 1000);
+  }
+
   function initPageFeatures() {
     initReveals();
     initBackgroundBlur();
@@ -1138,6 +1268,8 @@
     initDockSync();
     initScheduleToggle();
     initDeadlines();
+    initScheduleNow();
+    initLiveTimes();
   }
   initPageFeatures();
 

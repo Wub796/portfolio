@@ -58,6 +58,7 @@ Or from the CLI: `npx vercel` (deploys the static folder as-is).
 ## Editing content
 
 - Deadlines live in `DEADLINES` at the top of `js/main.js` — dates render exactly as written, countdowns compute live against the visitor's clock.
+- Any element with a `data-deadline` attribute (ISO date) renders a live ticking countdown; college phases marked with `data-phase-start` / `data-phase-end` mark themselves live, and the schedule page auto-selects school/summer by the calendar and highlights the current CT row.
 - Schedule grids are static tables in `schedule.html` (two tables, toggled by `#modeSchool` / `#modeSummer`).
 - Planet config (colors, orbit radius, speed, camera framing) lives in the `P` catalogue at the top of `js/scene.js`.
 - The shared page shell (nav, rail, footer) is duplicated per page — edit all copies or generate from one template.
