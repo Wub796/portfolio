@@ -986,6 +986,24 @@
     modeSummer.addEventListener("click", function () { setMode(true); });
   }
 
+  function initTrainingToggle() {
+    var modeGym = document.getElementById("modeGym");
+    var modeHome = document.getElementById("modeHome");
+    var progGym = document.getElementById("progGym");
+    var progHome = document.getElementById("progHome");
+    if (!modeGym || !modeHome || !progGym || !progHome) return;
+    function setMode(home) {
+      modeGym.classList.toggle("is-on", !home);
+      modeHome.classList.toggle("is-on", home);
+      modeGym.setAttribute("aria-selected", String(!home));
+      modeHome.setAttribute("aria-selected", String(home));
+      progGym.hidden = home;
+      progHome.hidden = !home;
+    }
+    modeGym.addEventListener("click", function () { setMode(false); });
+    modeHome.addEventListener("click", function () { setMode(true); });
+  }
+
   function pad(n) { return String(n).padStart(2, "0"); }
 
   function renderCountdown(statusEl, countEl, target) {
@@ -1267,6 +1285,7 @@
     initHoustonClock();
     initDockSync();
     initScheduleToggle();
+    initTrainingToggle();
     initDeadlines();
     initScheduleNow();
     initLiveTimes();

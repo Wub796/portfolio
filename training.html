@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>08 · Training Plan — BENJAMIN WU</title>
-<meta name="description" content="Growth-plate-safe 4-day upper/lower split with a specific workout for every day — V-taper, quad/core, active recovery, thickness/arms, posterior chain, full rest — plus the daily 15-minute Height Unlock sequence." />
+<meta name="description" content="Growth-plate-safe 4-day upper/lower split with a specific workout for every day — V-taper, quad/core, active recovery, thickness/arms, posterior chain, full rest — in gym or at-home (yoga mat + 2×20 lb dumbbells) versions, plus the daily 15-minute Height Unlock sequence." />
 <meta name="theme-color" content="#f7f1e8" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101010'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%238a6a4f' stroke-width='2.4'/%3E%3Ccircle cx='19.5' cy='12.5' r='2.6' fill='%238a6a4f'/%3E%3C/svg%3E" />
 <link rel="stylesheet" href="css/style.css" />
@@ -74,7 +74,12 @@
     </header>
 
     <h3 class="mini-h prog-h">Weekly program — day-by-day workouts</h3>
-    <div class="prog reveal">
+    <div class="toggle reveal" role="tablist" aria-label="Workout location">
+      <button class="toggle__b is-on" id="modeGym" role="tab" aria-selected="true">Gym</button>
+      <button class="toggle__b" id="modeHome" role="tab" aria-selected="false">At Home</button>
+    </div>
+    <p class="prog__hint">At-home mode — yoga mat + 2×20 lb dumbbells only</p>
+    <div class="prog reveal" id="progGym">
 
       <div class="prog__card prog__card--gym reveal">
         <div class="prog__day"><b>MON</b><span>Day 1 · Upper — V-Taper</span></div>
@@ -134,6 +139,90 @@
           <li><i>3×8–10</i><span>Ab Wheel Rollouts (or plank shoulder taps)</span></li>
         </ul>
         <p class="prog__note">Slow eccentric on curls; keep the lower back on the pad on leg press; rollouts in posterior pelvic tilt.</p>
+      </div>
+
+      <div class="prog__card prog__card--cardio reveal">
+        <div class="prog__day"><b>SAT</b><span>Day 6 · Active Recovery</span></div>
+        <ul class="prog__list">
+          <li><i>10,000</i><span>Steps (minimum)</span></li>
+          <li><i>15 min</i><span>Posture &amp; Decompression Routine</span></li>
+          <li><i>optional</i><span>20–30 min LISS if steps fall short</span></li>
+        </ul>
+        <p class="prog__note">The week's work is done — recovery drives the gains. Keep HR low.</p>
+      </div>
+
+      <div class="prog__card prog__card--mob reveal">
+        <div class="prog__day"><b>SUN</b><span>Day 7 · Full Rest</span></div>
+        <ul class="prog__list">
+          <li><i>rest</i><span>No training — full physical rest</span></li>
+          <li><i>15 min</i><span>Posture &amp; Decompression Routine (before bed)</span></li>
+          <li><i>8.5–9.5 h</i><span>Sleep — GH pulses do the work</span></li>
+        </ul>
+        <p class="prog__note">Shutdown by 10 PM. No screens, cool room — protect the growth-hormone window.</p>
+      </div>
+
+    </div>
+
+    <div class="prog reveal" id="progHome" hidden>
+
+      <div class="prog__card prog__card--gym reveal">
+        <div class="prog__day"><b>MON</b><span>Day 1 · Upper — V-Taper</span></div>
+        <ul class="prog__list">
+          <li><i>4×8–10</i><span>DB Pullovers (yoga mat)</span></li>
+          <li><i>3×8–12</i><span>DB Floor Press (yoga mat)</span></li>
+          <li><i>3×10–12</i><span>Bent-Over DB Rows (torso braced on bed)</span></li>
+          <li><i>4×12–15</i><span>DB Lateral Raises</span></li>
+          <li><i>3×10–12</i><span>DB Hammer Curls</span></li>
+          <li><i>3×15</i><span>Reverse DB Flys (bent over)</span></li>
+        </ul>
+        <p class="prog__note">Width day — lats, side delts, rear delts. Pullovers open the lats; keep shoulders down on rows; slow 2-s lowering on flys.</p>
+      </div>
+
+      <div class="prog__card prog__card--gym reveal">
+        <div class="prog__day"><b>TUE</b><span>Day 2 · Lower — Quad &amp; Core</span></div>
+        <ul class="prog__list">
+          <li><i>4×10–12/leg</i><span>Bulgarian Split Squats (DBs, rear foot on chair)</span></li>
+          <li><i>3×10–12</i><span>DB Romanian Deadlifts</span></li>
+          <li><i>3×12–15</i><span>Goblet Squats (DB racked at chest)</span></li>
+          <li><i>4×15/leg</i><span>Single-Leg Calf Raises (on stair)</span></li>
+          <li><i>3×12–15</i><span>Dead Bugs (yoga mat)</span></li>
+        </ul>
+        <p class="prog__note">Torso upright on split squats to bias quads; hold the DB to your chest on goblets; lower back glued to the mat on dead bugs.</p>
+      </div>
+
+      <div class="prog__card prog__card--cardio reveal">
+        <div class="prog__day"><b>WED</b><span>Day 3 · Active Recovery</span></div>
+        <ul class="prog__list">
+          <li><i>10,000</i><span>Steps (minimum)</span></li>
+          <li><i>20–30 min</i><span>LISS — brisk walk or bike, HR 120–140</span></li>
+          <li><i>15 min</i><span>Posture &amp; Decompression Routine</span></li>
+        </ul>
+        <p class="prog__note">Recovery day, not a training day — keep it easy, keep moving, keep the heart rate low.</p>
+      </div>
+
+      <div class="prog__card prog__card--gym reveal">
+        <div class="prog__day"><b>THU</b><span>Day 4 · Upper — Thickness &amp; Arms</span></div>
+        <ul class="prog__list">
+          <li><i>4×8–10</i><span>Wide Push-Ups (feet elevated)</span></li>
+          <li><i>3×10–12</i><span>One-Arm DB Rows (opposite hand on mat)</span></li>
+          <li><i>3×10–12</i><span>Seated DB Shoulder Press</span></li>
+          <li><i>3×8–12</i><span>Diamond Push-Ups (yoga mat)</span></li>
+          <li><i>3×10–12</i><span>Alternating DB Curls</span></li>
+          <li><i>3×12–15</i><span>DB Lateral Raises (slow tempo)</span></li>
+        </ul>
+        <p class="prog__note">Tuck elbows 45° on push-ups; press-ups replace dips — slow eccentric, full lockout; squeeze at the top of curls.</p>
+      </div>
+
+      <div class="prog__card prog__card--gym reveal">
+        <div class="prog__day"><b>FRI</b><span>Day 5 · Lower — Posterior Chain</span></div>
+        <ul class="prog__list">
+          <li><i>4×10–12</i><span>DB Sumo Squats (goblet hold)</span></li>
+          <li><i>3×12–15/leg</i><span>Single-Leg DB Romanian Deadlifts</span></li>
+          <li><i>3×12/leg</i><span>DB Reverse Lunges (yoga mat)</span></li>
+          <li><i>3×12–15/leg</i><span>Single-Leg Calf Raises (DB in hand)</span></li>
+          <li><i>3×8–10</i><span>Plank Shoulder Taps (yoga mat)</span></li>
+        </ul>
+        <p class="prog__note">Slow eccentric on RDLs; keep chest proud and spine neutral; core braced on plank taps — no hip sway.</p>
       </div>
 
       <div class="prog__card prog__card--cardio reveal">

@@ -624,6 +624,7 @@ ul.check li strong{color:var(--text);font-weight:600}
   display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
   gap:1.1rem;margin-bottom:clamp(2.2rem,4vw,3.2rem);
 }
+.prog[hidden]{display:none}
 .prog__card{
   background:var(--panel);border:2px solid var(--text);border-radius:1.2em;
   box-shadow:6px 6px 0 var(--text);
@@ -641,6 +642,7 @@ ul.check li strong{color:var(--text);font-weight:600}
 .prog__list i{font-family:var(--f-mono);font-style:normal;font-size:.6rem;color:var(--accent);white-space:nowrap;min-width:4.2em}
 .prog__list span{color:var(--text)}
 .prog__note{margin:auto 0 0;padding-top:.7rem;border-top:1px solid var(--line);color:var(--muted);font-size:.74rem;line-height:1.5}
+.prog__hint{margin:-.9rem 0 1.5rem;color:var(--muted);font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase}
 
 /* ---------- live times ---------- */
 .live-cd{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.06em;color:var(--accent);white-space:nowrap}
