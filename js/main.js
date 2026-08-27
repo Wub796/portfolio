@@ -294,6 +294,18 @@
       ],
       note: "Harvard student-run VC competition — pitching AI tutoring startup SigIQ.ai with a presentation team.",
     },
+    {
+      org: "Conrad Foundation · Space Center Houston",
+      name: "The Conrad Challenge",
+      type: "Innovation Competition",
+      status: "open",
+      events: [
+        ["Team Formation", "Aug 15–31, 2026 — 3–5 members + coach · aerospace / aviation track"],
+        ["Innovation Stage", "Investor pitch + business plan — fall 2026"],
+        ["Semifinals", "Jan 15 – Feb 15, 2027"],
+      ],
+      note: "Prototype an aerospace innovation and commercial spaceflight business plan through technical design review.",
+    },
   ];
 
   /* ------------------------------------------------------------
