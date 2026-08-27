@@ -529,10 +529,6 @@ ul.check li strong{color:var(--text);font-weight:600}
 .row__mid{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
 .row__val{font-family:var(--f-mono);font-size:.84rem;color:var(--text);white-space:nowrap}
 .cat{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;padding:.22rem .6rem;border:1px solid var(--line-strong);color:var(--muted);white-space:nowrap}
-.uni--reach .cat{color:var(--accent);border-color:rgba(87,36,255,.5)}
-.uni--target .cat{color:var(--sky);border-color:rgba(79,183,221,.5)}
-.uni--safe .cat{color:var(--olive);border-color:rgba(142,152,63,.55)}
-
 /* steps / ecards body */
 .row__body p{margin:.35rem 0 0;color:var(--muted);font-size:.86rem;max-width:760px}
 .step .row__name{font-size:1.05rem}
@@ -695,6 +691,7 @@ body[data-planet="deadlines"] .sched td:first-child{background:rgba(34,33,35,.95
   padding:0 1rem 1.5rem;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
   gap:1.5rem 2.5rem;
 }
+.dl-card__body[hidden]{display:none}
 .dl-card__dates{display:flex;flex-direction:column;gap:.3rem}
 .dl-card__dates span{font-family:var(--f-mono);font-size:.72rem;color:rgba(255,255,255,.68)}
 .dl-card__dates b{color:#fff;font-weight:500}

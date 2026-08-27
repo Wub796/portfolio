@@ -36,7 +36,7 @@
 
   /* ------------------------------------------------------------
      DEADLINES — Updated Program List & Timelines
-     20 premier aerospace, research, and selective STEM programs
+     21 premier aerospace, research, and selective STEM programs
      ------------------------------------------------------------ */
   var DEADLINES = [
     {
@@ -139,7 +139,7 @@
       primary: "2027-02-22T23:59:00-06:00",
       events: [
         ["Applications Open", "December / January"],
-        ["Application Deadline", "February 22, 2026 (Annual)"],
+        ["Application Deadline", "February 22, 2027 (Annual)"],
         ["Distance Learning Modules", "May 15 – July 1"],
         ["On-Site Residency / Virtual Symposium", "July 5 – July 21"],
       ],
@@ -164,10 +164,10 @@
       primary: "2027-02-04T23:59:00-05:00",
       events: [
         ["Application Window", "Opens December 15"],
-        ["Student Application Deadline", "February 4, 2026 at 11:59 PM EST"],
-        ["Recommendation Letters Deadline", "February 11, 2026 at 11:59 PM EST"],
+        ["Student Application Deadline", "February 4, 2027 at 11:59 PM EST"],
+        ["Recommendation Letters Deadline", "February 11, 2027 at 11:59 PM EST"],
         ["Admissions Decisions", "6–8 weeks post-deadline (Late March / Early April)"],
-        ["Program Dates", "June 28 – August 7, 2026 (6-week residential/commuter research program)"],
+        ["Program Dates", "June 28 – August 7, 2027 (6-week residential/commuter research program)"],
       ],
       note: "6-week university laboratory research under faculty mentorship.",
     },
@@ -181,8 +181,8 @@
         ["Application Window", "Opens early February"],
         ["Priority Deadline", "Late March"],
         ["Decision Notifications", "Late April – early May"],
-        ["Session 1 Dates", "July 12 – July 18, 2026"],
-        ["Session 2 Dates", "July 26 – August 1, 2026"],
+        ["Session 1 Dates", "July 12 – July 18, 2027"],
+        ["Session 2 Dates", "July 26 – August 1, 2027"],
       ],
       note: "Aerodynamics, flight mechanics, propulsion & wind tunnel testing at UIUC.",
     },
@@ -218,7 +218,7 @@
       status: "countdown",
       primary: "2026-10-20T23:59:00-05:00",
       events: [
-        ["Registration Window", "August – October"],
+        ["Registration Window", "July 1 – October 20"],
         ["Online Coursework", "Junior Year"],
         ["JSC On-Site Residency", "June – July"],
       ],
