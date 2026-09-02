@@ -261,40 +261,6 @@
       note: "Engineering prototyping and technological management with Penn Engineering and Wharton.",
     },
     {
-      org: "Blue Ocean Competition",
-      name: "Blue Ocean Competition",
-      type: "Entrepreneurship Competition",
-      status: "open",
-      events: [
-        ["Pitch Submission", "3–5 min YouTube video tagged #blueoceancompetition + slide deck"],
-        ["Required Frameworks", "As-Is & To-Be strategy canvases · ERRC grid · three tiers of noncustomers"],
-      ],
-      note: "International pitch competition — design a business that opens a new \"blue ocean\" market space.",
-    },
-    {
-      org: "Ladder Internships",
-      name: "Ladder Internships",
-      type: "Virtual Internship",
-      status: "rolling",
-      events: [
-        ["Placement", "High-growth startups in tech, finance, healthcare & engineering"],
-        ["Structure", "Cohort-based · founder/CEO-directed projects"],
-        ["Program Cost", "$2,990 – $7,400 depending on track"],
-      ],
-      note: "Virtual startup internship to build an engineering/academic spike for applications.",
-    },
-    {
-      org: "Harvard Undergraduate Capital Partners",
-      name: "HUCP Startup Pitch & Investment Competition",
-      type: "Pitch Competition",
-      status: "open",
-      events: [
-        ["Competition", "Annual startup pitch & investment-modeling competition"],
-        ["Current Prep", "SigIQ.ai founder interview research + pitch deck"],
-      ],
-      note: "Harvard student-run VC competition — pitching AI tutoring startup SigIQ.ai with a presentation team.",
-    },
-    {
       org: "Conrad Foundation · Space Center Houston",
       name: "The Conrad Challenge",
       type: "Innovation Competition",
