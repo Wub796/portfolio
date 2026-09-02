@@ -55,6 +55,14 @@ try {
     deadlines:        { n: "Deadlines",     c: 0xe8c89b, s: 2.80, d: 38.0, sp: 0.011, tilt: -0.20, ring: true,  cam: [0, -2.2, 14.4] },
   };
 
+  /* flight order — scrolling a page flies you toward the next planet */
+  const FLIGHT_ORDER = ["sol", "mission", "studies", "college", "applications", "extracurriculars", "schedule", "meal", "training", "deadlines"];
+  function nextOf(k) {
+    const i = FLIGHT_ORDER.indexOf(k);
+    if (i === -1 || i >= FLIGHT_ORDER.length - 1) return null;
+    return FLIGHT_ORDER[i + 1];
+  }
+
   /* ---------- lights ---------- */
   scene.add(new THREE.AmbientLight(0xffffff, 0.75));
   const sunLight = new THREE.PointLight(0xe3a458, 140, 260);
@@ -745,19 +753,43 @@ try {
       camera.lookAt(curLook);
     }
 
-    /* post-arrival: subtle idle drift + mouse parallax + scroll pull-back */
+    /* post-arrival: SCROLL JOURNEY — the camera flies through the system
+       as you scroll. On a planet page it arcs over the current planet and
+       glides toward the next one (which drifts into frame); on the index
+       it swings around the whole system so the planets parade past in the
+       background. Idle breathing + mouse parallax are layered on top and
+       ease out as the journey deepens. */
     const vel = window.__scrollVel || 0;
     if (arr >= 1) {
       const t = simT;
-      const sc = window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const ox = Math.sin(t * 0.22) * 0.35 + mx * 0.55;
-      const oy = Math.cos(t * 0.18) * 0.28 + my * 0.42;
-      const oz = sc * 1.6 + Math.sin(t * 0.12) * 0.3;
-      camera.position.copy(toFrame.pos);
-      camera.position.x += ox;
-      camera.position.y += oy;
-      camera.position.z += oz;
-      curLook.copy(toFrame.look);
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const sc = window.scrollY / maxScroll;
+      const scE = sc * sc * (3 - 2 * sc); /* smoothstep — no jerk at either end */
+      const travel = Math.min(1, scE * (currentSlug === "sol" ? 1.15 : 0.62));
+
+      if (currentSlug === "sol") {
+        /* swing around the whole system — planets sweep past as you scroll */
+        const ang = travel * 1.2;
+        camera.position.set(Math.sin(ang) * 48, 6.2 - travel * 5.4, Math.cos(ang) * 48);
+        curLook.set(0, 0, 0);
+      } else {
+        /* arc from the current planet toward the next one in the order */
+        const nextK = nextOf(currentSlug);
+        const fA = frameOf(currentSlug, t);
+        const fB = nextK ? frameOf(nextK, t) : fA;
+        camera.position.lerpVectors(fA.pos, fB.pos, travel);
+        camera.position.y += Math.sin(travel * Math.PI) * 3.4;
+        camera.position.z += Math.sin(travel * Math.PI) * 1.2;
+        curLook.lerpVectors(fA.look, fB.look, travel);
+        curLook.y += Math.sin(travel * Math.PI) * 1.1;
+        if (nextK && bodies[nextK]) bodies[nextK].g.visible = travel > 0.2;
+      }
+
+      /* idle breathing + mouse parallax, scaled down as the journey grows */
+      const idle = 1 - travel;
+      camera.position.x += (Math.sin(t * 0.22) * 0.35 + mx * 0.55) * idle;
+      camera.position.y += (Math.cos(t * 0.18) * 0.28 + my * 0.42) * idle;
+      camera.position.z += Math.sin(t * 0.12) * 0.3 * idle;
       camera.lookAt(curLook);
     }
 

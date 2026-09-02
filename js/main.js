@@ -811,9 +811,59 @@
     if (mine === currentPlanet || (currentPlanet === "sol" && mine === "index")) a.classList.add("is-active");
   });
 
+  /* ------------------------------------------------------------
+     SCROLL PARALLAX — optional, opt-in only. Tag any element with
+     data-par="0.1" … "0.4" to drift it at that speed relative to
+     its rest position while the page scrolls (0.3 = drifts fastest).
+     Nothing is parallaxed by default: section headers stay glued
+     together, and the 3D camera journey + hero scrub provide the
+     scroll motion. Offsets are measured from the rest position
+     captured at init, re-captured once fonts settle and on resize.
+     ------------------------------------------------------------ */
+  var parEls = [];
+  function initParallax() {
+    parEls = [];
+    var seen = {};
+    function add(el, speed) {
+      if (!el || seen[el]) return;
+      seen[el] = true;
+      parEls.push({ el: el, speed: speed, base: 0 });
+    }
+    Array.prototype.forEach.call(document.querySelectorAll("[data-par]"), function (c) {
+      add(c, parseFloat(c.getAttribute("data-par")) || 0.15);
+    });
+    captureParallaxBase();
+    /* re-capture once fonts & reveal animations have settled */
+    setTimeout(captureParallaxBase, 1500);
+  }
+
+  function captureParallaxBase() {
+    var vh = window.innerHeight || 1;
+    for (var i = 0; i < parEls.length; i++) {
+      var r = parEls[i].el.getBoundingClientRect();
+      parEls[i].base = r.top + r.height * 0.5 - vh * 0.5;
+    }
+  }
+
+  function updateParallax() {
+    if (reducedMotion || !parEls.length) return;
+    var vh = window.innerHeight || 1;
+    for (var i = 0; i < parEls.length; i++) {
+      var p = parEls[i];
+      var r = p.el.getBoundingClientRect();
+      if (r.bottom < -280 || r.top > vh + 280) {
+        if (p.el.style.transform) p.el.style.transform = "";
+        continue;
+      }
+      var mid = r.top + r.height * 0.5 - vh * 0.5;
+      p.el.style.transform = "translate3d(0," + ((mid - p.base) * p.speed).toFixed(1) + "px,0)";
+    }
+  }
+
   function onScroll() {
     var y = window.scrollY || 0;
     trackScroll(y);
+    updateParallax();
     if (nav) nav.classList.toggle("is-solid", y > 24);
     if (progressBar) {
       var doc = document.documentElement;
@@ -821,6 +871,7 @@
       progressBar.style.width = (max > 0 ? y / max : 0) * 100 + "%";
     }
   }
+  window.addEventListener("resize", captureParallaxBase, { passive: true });
   if (lenis) lenis.on("scroll", function (e) { onScroll(); });
   else window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
@@ -874,13 +925,13 @@
       revealIo = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
           if (en.isIntersecting) {
-            en.target.style.transitionDelay = Math.min(600, revealCount * 90) + "ms";
+            en.target.style.transitionDelay = Math.min(220, revealCount * 25) + "ms";
             revealCount++;
             en.target.classList.add("is-in");
 
             /* trigger celestial text decryption on prominent titles */
             var title = en.target.querySelector(".sec__title, .hero__name, .sec__num");
-            if (title) decryptText(title, 750);
+            if (title) decryptText(title, 380);
 
             revealIo.unobserve(en.target);
           }
@@ -1258,6 +1309,8 @@
   }
 
   function initPageFeatures() {
+    initParallax();
+    updateParallax();
     initReveals();
     initBackgroundBlur();
     initHoustonClock();
