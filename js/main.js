@@ -63,7 +63,7 @@
         ["Submission Deadline", "September 30, 2026"],
         ["Rewards", "Log build hours → space tokens for Raspberry Pi, Flipper Zero, 3D printers"],
       ],
-      note: "Build with real NASA mission data — log Orbital Watch, Flight Logger, reaction wheel & rover hours for hardware.",
+      note: "Build with real NASA mission data — log ARES-1, Flight Logger, reaction wheel & rover hours for hardware.",
     },
     {
       org: "NASA",
