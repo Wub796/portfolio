@@ -733,13 +733,13 @@ try {
     const dt = Math.min(0.05, clock.getDelta());
     simT += dt * 0.7;
 
-    /* place planets on their orbits; on a section page only the current
-       planet (and the one we flew from, during arrival) stays visible */
+    /* place planets on their orbits — every planet stays visible through
+       arrivals and the scroll journey, so nothing pops in or out of the
+       sky mid-flight */
     Object.keys(bodies).forEach((k) => {
       bodies[k].g.position.copy(planetPos(k, simT));
-      bodies[k].g.visible = currentSlug === "sol" || k === currentSlug || (arr < 1 && k === fromSlug);
     });
-    window.__sceneVis = Object.keys(bodies).filter((k) => bodies[k].g.visible);
+    window.__sceneVis = Object.keys(bodies);
 
     /* arrival tween: smooth slowed-down orbital arc trajectory */
     if (fromSlug && arr < 1) {
@@ -782,7 +782,6 @@ try {
         camera.position.z += Math.sin(travel * Math.PI) * 1.2;
         curLook.lerpVectors(fA.look, fB.look, travel);
         curLook.y += Math.sin(travel * Math.PI) * 1.1;
-        if (nextK && bodies[nextK]) bodies[nextK].g.visible = travel > 0.2;
       }
 
       /* idle breathing + mouse parallax, scaled down as the journey grows */
@@ -851,9 +850,8 @@ try {
   /* instant frame 0 render so canvas paints with zero delay */
   Object.keys(bodies).forEach((k) => {
     bodies[k].g.position.copy(planetPos(k, 0));
-    bodies[k].g.visible = slug === "sol" || k === slug || (arr < 1 && k === fromSlug);
   });
-  window.__sceneVis = Object.keys(bodies).filter((k) => bodies[k].g.visible);
+  window.__sceneVis = Object.keys(bodies);
   renderer.render(scene, camera);
 
   if (!reduced) {
