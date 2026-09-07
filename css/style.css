@@ -639,8 +639,6 @@ ul.check li strong{color:var(--text);font-weight:600}
 .prog__list span{color:var(--text);flex:1 1 auto;min-width:0;line-height:1.45;overflow-wrap:break-word}
 body[data-planet="training"] .grid2{background:transparent}
 body[data-planet="training"] .grid2 .panel{box-shadow:none}
-body[data-planet="training"] .cursor-reticle,
-body[data-planet="training"] .cursor-hud{display:none!important}
 .prog__note{margin:auto 0 0;padding-top:.7rem;border-top:1px solid var(--line);color:var(--muted);font-size:.74rem;line-height:1.5}
 .prog__hint{margin:-.9rem 0 1.5rem;color:var(--muted);font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase}
 
