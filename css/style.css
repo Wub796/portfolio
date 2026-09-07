@@ -628,15 +628,19 @@ ul.check li strong{color:var(--text);font-weight:600}
 }
 .prog__card:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--text)}
 .prog__day{display:flex;align-items:baseline;gap:.6rem;padding-bottom:.7rem;border-bottom:2px solid var(--line)}
-.prog__day b{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.18em;color:var(--text)}
-.prog__day span{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.prog__day b{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.18em;color:var(--text);flex:0 0 auto}
+.prog__day span{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);min-width:0;line-height:1.45}
 .prog__card--gym .prog__day{border-color:var(--c-gym)}
 .prog__card--cardio .prog__day{border-color:var(--c-cardio)}
 .prog__card--mob .prog__day{border-color:var(--c-mobility)}
 .prog__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.42rem}
-.prog__list li{display:flex;align-items:baseline;gap:.6rem;font-size:.82rem}
-.prog__list i{font-family:var(--f-mono);font-style:normal;font-size:.6rem;color:var(--accent);white-space:nowrap;min-width:4.2em}
-.prog__list span{color:var(--text)}
+.prog__list li{display:flex;align-items:flex-start;gap:.7rem;font-size:.82rem}
+.prog__list i{font-family:var(--f-mono);font-style:normal;font-size:.6rem;color:var(--accent);white-space:normal;overflow-wrap:anywhere;flex:0 0 8em;min-width:8em;line-height:1.5}
+.prog__list span{color:var(--text);flex:1 1 auto;min-width:0;line-height:1.45;overflow-wrap:break-word}
+body[data-planet="training"] .grid2{background:transparent}
+body[data-planet="training"] .grid2 .panel{box-shadow:none}
+body[data-planet="training"] .cursor-reticle,
+body[data-planet="training"] .cursor-hud{display:none!important}
 .prog__note{margin:auto 0 0;padding-top:.7rem;border-top:1px solid var(--line);color:var(--muted);font-size:.74rem;line-height:1.5}
 .prog__hint{margin:-.9rem 0 1.5rem;color:var(--muted);font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase}
 
