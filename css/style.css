@@ -927,6 +927,13 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
 /* ---------- warp disabled ---------- */
 .warp{display:none!important}
 
+/* ---------- vgpu hyperspace warp canvas ---------- */
+#warpfx{
+  position:fixed;inset:0;z-index:400;width:100vw;height:100vh;pointer-events:none;
+  opacity:0;transition:opacity .18s ease-out;display:block;
+}
+#warpfx.is-on{opacity:1}
+
 /* footer — return to sol */
 .foot__sol{margin:0 0 .4rem;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase}
 .foot__sol a{color:var(--lime);border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:2px}

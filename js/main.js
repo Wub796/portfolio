@@ -339,14 +339,19 @@
   }
 
   function handlePrefetchTrigger(e) {
-    var warpLink = e.target.closest && e.target.closest("a[data-warp]");
+    var warpLink = e.target.closest && e.target.closest("a[data-warp], .nav__links a, .rail__node, .foot__nav a, .foot__sol a, .sys__planet, .sys__dock-btn");
     if (warpLink) {
       var href = warpLink.getAttribute("href");
       if (href) prefetch(href);
+      if (window.__warpFX) window.__warpFX.warm();
     }
   }
   document.addEventListener("mouseover", handlePrefetchTrigger, { passive: true });
   document.addEventListener("pointerdown", handlePrefetchTrigger, { passive: true });
+
+  /* WebGPU hyperspace warp — vgpu bundle is lazy-loaded on first idle;
+     browsers without WebGPU never fetch it and keep the CSS transition. */
+  if (window.__warpFX) window.__warpFX.warm();
 
   /* ------------------------------------------------------------
      SEAMLESS SPA ROUTER & CLIENT-SIDE PAGE TRANSITION
@@ -399,16 +404,21 @@
     if (isNavigatingSpa) return;
     isNavigatingSpa = true;
 
-    /* 1. Immediately launch smooth slowed-down 3D background flight */
+    /* 1. Immediately launch smooth 3D background flight */
     if (window.__flyToPlanet) {
       window.__flyToPlanet(targetSlug);
     }
 
-    /* 2. Softly fade out old main content */
-    var mainEl = document.getElementById("top");
-    if (mainEl) mainEl.classList.add("is-swapping");
+    /* 2. Hyperspace flash — vgpu WebGPU shader when available */
+    if (window.__warpFX) {
+      window.__warpFX.play(targetSlug);
+    }
 
-    /* 3. Fetch destination HTML in the background with zero lag */
+    /* 3. Softly fade out old main content */
+    var mainEl0 = document.getElementById("top");
+    if (mainEl0) mainEl0.classList.add("is-swapping");
+
+    /* 4. Fetch destination HTML in the background with zero lag */
     fetch(href)
       .then(function (res) {
         if (!res.ok) throw new Error("fetch failed");
@@ -424,8 +434,8 @@
         }
 
         setTimeout(function () {
-          if (mainEl) {
-            mainEl.innerHTML = newMain.innerHTML;
+          if (mainEl0) {
+            mainEl0.innerHTML = newMain.innerHTML;
           }
           document.title = doc.title;
           document.body.dataset.planet = targetSlug;
@@ -435,8 +445,10 @@
           initPageFeatures();
 
           requestAnimationFrame(function () {
-            if (mainEl) mainEl.classList.remove("is-swapping");
-            isNavigatingSpa = false;
+            if (mainEl0) mainEl0.classList.remove("is-swapping");
+            setTimeout(function () {
+              isNavigatingSpa = false;
+            }, 300);
           });
 
           if (pushState !== false) {

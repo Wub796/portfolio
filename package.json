@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "animejs": "^4.5.0"
+    "@paper-design/shaders-react": "^0.0.80",
+    "animejs": "^4.5.0",
+    "vgpu": "*"
   }
 }
