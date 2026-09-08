@@ -538,12 +538,49 @@
 
     /* ---- state ---- */
     var mx = -100, my = -100, dx = -100, dy = -100, rx = -100, ry = -100, gx = -100, gy = -100, hx = -100, hy = -100;
-    var moved = false, followT = 0, lastSpawnT = 0, lastHudT = 0;
+    var moved = false, followT = 0, lastSpawnT = 0, lastHudT = 0, lastTargetCheckT = 0;
     var curAng = 0, curStretch = 0;
     var currentLockLabel = null;
+    var currentLockTarget = null;
+    var cursorTargetSelector = "a, button, [role='tab'], .dl-card__head, .cta, .row, .uni, .kpi";
+
+    function clearCursorTarget() {
+      reticle.classList.remove("is-target");
+      dotEl.classList.remove("is-target");
+      hudEl.classList.remove("is-target");
+      currentLockTarget = null;
+      currentLockLabel = null;
+    }
+
+    function getCursorTarget(node) {
+      return node && node.closest ? node.closest(cursorTargetSelector) : null;
+    }
+
+    function setCursorTarget(target) {
+      if (!target || currentLockTarget === target) return;
+      reticle.classList.add("is-target");
+      dotEl.classList.add("is-target");
+      hudEl.classList.add("is-target");
+      var label = target.getAttribute("data-short") || target.getAttribute("aria-label") || target.innerText || "TARGET";
+      label = label.trim().split("\n")[0].substring(0, 16).toUpperCase();
+      currentLockTarget = target;
+      currentLockLabel = label || "TARGET";
+    }
+
+    function updateCursorTargetAtPointer() {
+      if (!moved || mx < 0 || my < 0 || mx > window.innerWidth || my > window.innerHeight) {
+        if (currentLockTarget) clearCursorTarget();
+        return;
+      }
+      var underPointer = document.elementFromPoint(mx, my);
+      var target = getCursorTarget(underPointer);
+      if (target) setCursorTarget(target);
+      else if (currentLockTarget) clearCursorTarget();
+    }
 
     window.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
+      updateCursorTargetAtPointer();
       if (!moved) {
         moved = true;
         dx = mx; dy = my;
@@ -556,11 +593,16 @@
       }
     }, { passive: true });
 
+    window.addEventListener("scroll", updateCursorTargetAtPointer, { passive: true });
+
     document.addEventListener("mouseleave", function () {
       dotEl.style.opacity = "0";
       reticle.style.opacity = "0";
       hudEl.style.opacity = "0";
+      clearCursorTarget();
     });
+
+    window.addEventListener("blur", clearCursorTarget);
 
     document.addEventListener("mouseenter", function () {
       if (moved) {
@@ -618,6 +660,18 @@
       curStretch += (targetStretch - curStretch) * (1 - Math.exp(-dt * 0.022));
 
       reticle.style.transform = "translate3d(" + rx.toFixed(1) + "px," + ry.toFixed(1) + "px,0) translate(-50%,-50%) rotate(" + curAng.toFixed(3) + "rad) scale(" + (1 + curStretch).toFixed(3) + "," + (1 - curStretch * 0.3).toFixed(3) + ")";
+
+      /* A stationary pointer can pass over a new target while the page
+         scrolls or content is replaced, so periodically resolve the
+         screen position instead of trusting stale mouseout events. */
+      if (now - lastTargetCheckT > 80) {
+        lastTargetCheckT = now;
+        updateCursorTargetAtPointer();
+      }
+
+      /* A SPA page swap can remove the element that held the last lock
+         without emitting a mouseout event. Never keep a dead lock alive. */
+      if (currentLockTarget && !currentLockTarget.isConnected) clearCursorTarget();
 
       /* Telemetry HUD position & dynamic readout */
       hudEl.style.transform = "translate3d(" + (hx + 24).toFixed(1) + "px," + (hy + 18).toFixed(1) + "px,0)";
@@ -718,28 +772,6 @@
     follow();
 
     /* ---- 6. INTERACTIVE TARGET LOCK & RCS THRUSTER PULSE ---- */
-    document.addEventListener("mouseover", function (e) {
-      var target = e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head, .cta, .row, .uni, .kpi");
-      if (target) {
-        reticle.classList.add("is-target");
-        dotEl.classList.add("is-target");
-        hudEl.classList.add("is-target");
-        var label = target.getAttribute("data-short") || target.innerText || target.getAttribute("aria-label") || "TARGET";
-        label = label.trim().split("\n")[0].substring(0, 16).toUpperCase();
-        currentLockLabel = label;
-      }
-    });
-
-    document.addEventListener("mouseout", function (e) {
-      var target = e.target.closest && e.target.closest("a, button, [role='tab'], .dl-card__head, .cta, .row, .uni, .kpi");
-      if (target) {
-        reticle.classList.remove("is-target");
-        dotEl.classList.remove("is-target");
-        hudEl.classList.remove("is-target");
-        currentLockLabel = null;
-      }
-    });
-
     document.addEventListener("mousedown", function () {
       reticle.classList.add("is-down");
       /* Spawn impulse RCS shockwave burst on canvas */
