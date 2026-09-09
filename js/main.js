@@ -1364,7 +1364,6 @@
     initDeadlines();
     initScheduleNow();
     initLiveTimes();
-    if (window.__paperFX) window.__paperFX.init(currentPlanet);
   }
   initPageFeatures();
 

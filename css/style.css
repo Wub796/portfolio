@@ -728,10 +728,6 @@ body[data-planet="deadlines"] .sched td:first-child{background:rgba(34,33,35,.95
   background:radial-gradient(circle at 50% 50%,rgba(227,164,88,.5) 0%,rgba(227,164,88,.16) 40%,rgba(227,164,88,0) 68%);
   animation:sunPulse 8s ease-in-out infinite;
 }
-.hero__sun canvas{
-  position:absolute;inset:0;width:100%!important;height:100%!important;
-  border-radius:50%;pointer-events:none;mix-blend-mode:screen;z-index:0;
-}
 .hero__sun::after{
   content:'';position:absolute;inset:12%;border-radius:50%;
   border:1px dashed rgba(162,104,51,.35);animation:warpSpin 70s linear infinite;
@@ -744,15 +740,20 @@ body[data-planet="deadlines"] .sched td:first-child{background:rgba(34,33,35,.95
   flex-shrink:0;display:grid;place-items:center;
   animation:planetFloat 6s ease-in-out infinite;
 }
-.planet__corona{
-  position:absolute;inset:-30%;width:160%;height:160%;
-  pointer-events:none;border-radius:50%;z-index:0;
-  mix-blend-mode:screen;opacity:.88;
+/* atmospheric corona — soft halo tinted by the orb's accent; pure CSS ::before, no canvas */
+.planet::before{
+  content:'';position:absolute;inset:-55%;border-radius:50%;
+  pointer-events:none;z-index:0;
+  background:radial-gradient(circle at 50% 50%,
+    color-mix(in srgb,var(--pc,#a26833) 34%,transparent) 0%,
+    color-mix(in srgb,var(--pc,#a26833) 16%,transparent) 34%,
+    color-mix(in srgb,var(--pc,#a26833) 5%,transparent) 55%,
+    transparent 70%);
+  filter:blur(6px);
+  animation:coronaBreathe 7s ease-in-out infinite;
 }
-.planet__corona canvas{
-  position:absolute;inset:0;width:100%!important;height:100%!important;
-  border-radius:50%;pointer-events:none;
-}
+@keyframes coronaBreathe{0%,100%{opacity:.75;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+@media (prefers-reduced-motion: reduce){.planet::before{animation:none}}
 .planet__orb{
   position:relative;width:60%;height:60%;border-radius:50%;z-index:1;
   background:
@@ -762,6 +763,17 @@ body[data-planet="deadlines"] .sched td:first-child{background:rgba(34,33,35,.95
     0 0 26px color-mix(in srgb,var(--pc,#a26833) 45%,transparent),
     inset -10px -12px 20px rgba(0,0,0,.35);
 }
+/* tactile terrain texture on the orb surface — two soft highlight blotches, slow drift */
+.planet__orb::after{
+  content:'';position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  background:
+    radial-gradient(circle at 66% 30%,rgba(255,255,255,.16) 0%,rgba(255,255,255,0) 26%),
+    radial-gradient(circle at 32% 62%,rgba(0,0,0,.14) 0%,rgba(0,0,0,0) 34%);
+  mix-blend-mode:soft-light;
+  animation:orbTextureDrift 18s ease-in-out infinite alternate;
+}
+@keyframes orbTextureDrift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(5%,-4%) scale(1.05)}}
+@media (prefers-reduced-motion: reduce){.planet__orb::after{animation:none}}
 .planet__ring{
   position:absolute;inset:4%;border-radius:50%;
   border:1.5px dashed var(--accent);opacity:.65;pointer-events:none;
@@ -946,16 +958,6 @@ body[data-planet="deadlines"] .planet__num{background:var(--dark);color:#fff;bor
   opacity:0;transition:opacity .18s ease-out;display:block;
 }
 #warpfx.is-on{opacity:1}
-
-/* ---------- paper design tactile texture canvas ---------- */
-#paperTexture{
-  position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;
-  z-index:1;opacity:.28;mix-blend-mode:multiply;display:block;
-}
-#paperTexture canvas{
-  position:absolute;inset:0;width:100%!important;height:100%!important;
-  pointer-events:none;
-}
 
 /* footer — return to sol */
 .foot__sol{margin:0 0 .4rem;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase}
