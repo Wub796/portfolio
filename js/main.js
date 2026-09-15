@@ -376,15 +376,10 @@
     if (warpLink) {
       var href = warpLink.getAttribute("href");
       if (href) prefetch(href);
-      if (window.__warpFX) window.__warpFX.warm();
     }
   }
   document.addEventListener("mouseover", handlePrefetchTrigger, { passive: true });
   document.addEventListener("pointerdown", handlePrefetchTrigger, { passive: true });
-
-  /* WebGPU hyperspace warp — vgpu bundle is lazy-loaded on first idle;
-     browsers without WebGPU never fetch it and keep the CSS transition. */
-  if (window.__warpFX) window.__warpFX.warm();
 
   /* ------------------------------------------------------------
      SEAMLESS SPA ROUTER & CLIENT-SIDE PAGE TRANSITION
@@ -455,17 +450,14 @@
     /* 1. the camera leaves for the destination planet immediately */
     if (window.__flyToPlanet) window.__flyToPlanet(targetSlug);
 
-    /* 2. hyperspace flash — vgpu WebGPU shader when available */
-    if (window.__warpFX) window.__warpFX.play(targetSlug);
-
-    /* 3. old content lifts away while the destination HTML loads */
+    /* 2. old content lifts away while the destination HTML loads */
     var mainEl = document.getElementById("top");
     if (mainEl) {
       mainEl.classList.remove("is-arriving");
       mainEl.classList.add("is-leaving");
     }
 
-    /* 4. swap once the exit has finished AND the HTML is in hand */
+    /* 3. swap once the exit has finished AND the HTML is in hand */
     Promise.all([fetchPage(href), wait(EXIT_MS)])
       .then(function (res) {
         var doc = new DOMParser().parseFromString(res[0], "text/html");
@@ -488,7 +480,7 @@
         initPageFeatures();
         onScroll();
 
-        /* 5. park the new content just below with no transition, then release it */
+        /* 4. park the new content just below with no transition, then release it */
         mainEl.classList.add("is-arriving");
         mainEl.classList.remove("is-leaving");
         void mainEl.offsetHeight;

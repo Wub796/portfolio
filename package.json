@@ -1,7 +1,6 @@
 {
   "dependencies": {
-    "animejs": "^4.5.0",
-    "vgpu": "*"
+    "animejs": "^4.5.0"
   },
   "devDependencies": {
     "esbuild": "^0.28.2"
