@@ -27,6 +27,11 @@
   }
   var accentHex = accentCSS();
   var accentRgb = hexRgb(accentHex);
+  /* an SPA swap changes body[data-planet] — re-read the tint the canvases use */
+  function refreshAccent() {
+    accentHex = accentCSS();
+    accentRgb = hexRgb(accentHex);
+  }
 
   /* ------------------------------------------------------------
      FLUID BACKGROUND — Disabled so 3D solar system is clean & clear
@@ -36,7 +41,7 @@
 
   /* ------------------------------------------------------------
      DEADLINES — Updated Program List & Timelines
-     21 premier aerospace, research, and selective STEM programs
+     aerospace camps, research programs, and selective STEM competitions
      ------------------------------------------------------------ */
   var DEADLINES = [
     {
@@ -187,6 +192,24 @@
       note: "Aerodynamics, flight mechanics, propulsion & wind tunnel testing at UIUC.",
     },
     {
+      org: "Texas A&M Aerospace Engineering",
+      name: "Camp SOAR (Summer Opportunities in Aerospace Research)",
+      type: "Aerospace Camp",
+      status: "countdown",
+      primary: "2027-01-01T00:00:00-06:00",
+      primaryKind: "opens",
+      events: [
+        ["Applications Open", "January 1, 2027 (both sessions)"],
+        ["Application Deadline", "Not yet posted — watch the program page"],
+        ["Session A", "June 13 – 18, 2027"],
+        ["Session B", "July 11 – 16, 2027"],
+        ["Eligibility", "High school juniors or seniors as of Fall 2026 · any state"],
+        ["Cost", "$35 nonrefundable application fee · camp fee covers room, board & activities · need-based scholarships"],
+      ],
+      note: "6-day residential camp at Texas A&M, College Station — aircraft, rotorcraft, space mission design & space robotics tracks, professor lectures, hypersonic wind tunnel and Vehicle Systems & Control Lab tours.",
+      link: "https://engineering.tamu.edu/aerospace/prospective-students/undergraduate/camp-soar.html",
+    },
+    {
       org: "AIA · NAR",
       name: "American Rocketry Challenge (ARC)",
       type: "Rocketry Competition",
@@ -312,9 +335,7 @@
   /* ------------------------------------------------------------
      NAVIGATION — warp between planets, no flash.
      ------------------------------------------------------------ */
-  var vtSupported = typeof document.startViewTransition === "function";
   var navFade = document.getElementById("navFade");
-  var exitLock = false;
 
   function closeMenu() {
     var toggle = document.getElementById("navToggle");
@@ -328,14 +349,26 @@
   /* ------------------------------------------------------------
      PAGE PREFETCHING & INSTANT SEAMLESS NAVIGATION
      ------------------------------------------------------------ */
-  var prefetched = new Set();
+  /* hover / pointerdown starts the fetch, so by the time the click lands
+     the destination HTML is usually already in memory */
+  var pageCache = {};
+  function fetchPage(url) {
+    if (!pageCache[url]) {
+      pageCache[url] = fetch(url)
+        .then(function (res) {
+          if (!res.ok) throw new Error("fetch failed");
+          return res.text();
+        })
+        .catch(function (err) {
+          delete pageCache[url];
+          throw err;
+        });
+    }
+    return pageCache[url];
+  }
   function prefetch(url) {
-    if (!url || prefetched.has(url) || url.indexOf(".html") === -1) return;
-    prefetched.add(url);
-    var l = document.createElement("link");
-    l.rel = "prefetch";
-    l.href = url;
-    document.head.appendChild(l);
+    if (!url || url.indexOf(".html") === -1) return;
+    fetchPage(url).catch(function () {});
   }
 
   function handlePrefetchTrigger(e) {
@@ -390,74 +423,87 @@
   }
   updateNavActive(currentPlanet);
 
-  var isNavigatingSpa = false;
+  /* the router owns scroll position on back/forward */
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+  var EXIT_MS = reducedMotion ? 0 : 300;
+  var navBusy = false;
+  var pendingNav = null;
+
+  function wait(ms) {
+    return new Promise(function (resolve) { setTimeout(resolve, ms); });
+  }
+
   function navigateSpa(href, pushState) {
     if (!href) return;
     var targetSlug = hrefToSlug(href);
     closeMenu();
 
-    if (targetSlug === currentPlanet) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    /* a click (or back/forward) mid-flight is queued, never dropped */
+    if (navBusy) {
+      pendingNav = [href, pushState];
       return;
     }
 
-    if (isNavigatingSpa) return;
-    isNavigatingSpa = true;
+    if (targetSlug === currentPlanet) {
+      if (lenis) lenis.scrollTo(0, { duration: 1.2 });
+      else window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
+      return;
+    }
+    navBusy = true;
 
-    /* 1. Immediately launch smooth 3D background flight */
-    if (window.__flyToPlanet) {
-      window.__flyToPlanet(targetSlug);
+    /* 1. the camera leaves for the destination planet immediately */
+    if (window.__flyToPlanet) window.__flyToPlanet(targetSlug);
+
+    /* 2. hyperspace flash — vgpu WebGPU shader when available */
+    if (window.__warpFX) window.__warpFX.play(targetSlug);
+
+    /* 3. old content lifts away while the destination HTML loads */
+    var mainEl = document.getElementById("top");
+    if (mainEl) {
+      mainEl.classList.remove("is-arriving");
+      mainEl.classList.add("is-leaving");
     }
 
-    /* 2. Hyperspace flash — vgpu WebGPU shader when available */
-    if (window.__warpFX) {
-      window.__warpFX.play(targetSlug);
-    }
-
-    /* 3. Softly fade out old main content */
-    var mainEl0 = document.getElementById("top");
-    if (mainEl0) mainEl0.classList.add("is-swapping");
-
-    /* 4. Fetch destination HTML in the background with zero lag */
-    fetch(href)
+    /* 4. swap once the exit has finished AND the HTML is in hand */
+    Promise.all([fetchPage(href), wait(EXIT_MS)])
       .then(function (res) {
-        if (!res.ok) throw new Error("fetch failed");
-        return res.text();
-      })
-      .then(function (html) {
-        var parser = new DOMParser();
-        var doc = parser.parseFromString(html, "text/html");
+        var doc = new DOMParser().parseFromString(res[0], "text/html");
         var newMain = doc.getElementById("top");
-        if (!newMain) {
-          window.location.href = href;
-          return;
-        }
+        if (!newMain || !mainEl) throw new Error("no main");
 
-        setTimeout(function () {
-          if (mainEl0) {
-            mainEl0.innerHTML = newMain.innerHTML;
-          }
-          document.title = doc.title;
-          document.body.dataset.planet = targetSlug;
-          currentPlanet = targetSlug;
-          window.scrollTo(0, 0);
-          updateNavActive(targetSlug);
-          initPageFeatures();
+        mainEl.innerHTML = newMain.innerHTML;
+        document.title = doc.title;
+        var themeMeta = document.querySelector('meta[name="theme-color"]');
+        var nextTheme = doc.querySelector('meta[name="theme-color"]');
+        if (themeMeta && nextTheme) themeMeta.setAttribute("content", nextTheme.getAttribute("content"));
+        document.body.dataset.planet = targetSlug;
+        currentPlanet = targetSlug;
+        refreshAccent();
+        if (pushState !== false) history.pushState({ slug: targetSlug }, doc.title, href);
 
-          requestAnimationFrame(function () {
-            if (mainEl0) mainEl0.classList.remove("is-swapping");
-            setTimeout(function () {
-              isNavigatingSpa = false;
-            }, 300);
-          });
+        if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
+        window.scrollTo(0, 0);
+        updateNavActive(targetSlug);
+        initPageFeatures();
+        onScroll();
 
-          if (pushState !== false) {
-            history.pushState({ slug: targetSlug, href: href }, doc.title, href);
-          }
-        }, 260);
+        /* 5. park the new content just below with no transition, then release it */
+        mainEl.classList.add("is-arriving");
+        mainEl.classList.remove("is-leaving");
+        void mainEl.offsetHeight;
+        mainEl.classList.remove("is-arriving");
       })
       .catch(function () {
         window.location.href = href;
+      })
+      .then(function () {
+        navBusy = false;
+        if (pendingNav) {
+          var next = pendingNav;
+          pendingNav = null;
+          navigateSpa(next[0], next[1]);
+        }
       });
   }
 
@@ -807,21 +853,26 @@
     document.addEventListener("mouseup", function () {
       reticle.classList.remove("is-down");
     });
-    /* ---- 3D tilt on cards ---- */
-    var tiltEls = Array.prototype.slice.call(document.querySelectorAll(".row, .uni"));
-    tiltEls.forEach(function (el) {
-      el.addEventListener("mousemove", function (e) {
-        var r = el.getBoundingClientRect();
-        var px = (e.clientX - r.left) / r.width - 0.5;
-        var py = (e.clientY - r.top) / r.height - 0.5;
-        el.style.transitionDuration = "0.12s";
-        el.style.transform = "perspective(700px) rotateX(" + (-py * 7).toFixed(2) + "deg) rotateY(" + (px * 9).toFixed(2) + "deg) translateZ(0)";
-      });
-      el.addEventListener("mouseleave", function () {
-        el.style.transitionDuration = "";
-        el.style.transform = "";
-      });
-    });
+    /* ---- 3D tilt on cards — delegated, so rows swapped in by the router tilt too ---- */
+    var tiltEl = null;
+    function releaseTilt() {
+      if (!tiltEl) return;
+      tiltEl.style.transitionDuration = "";
+      tiltEl.style.transform = "";
+      tiltEl = null;
+    }
+    document.addEventListener("mousemove", function (e) {
+      var el = e.target.closest ? e.target.closest(".row, .uni") : null;
+      if (el !== tiltEl) releaseTilt();
+      if (!el) return;
+      tiltEl = el;
+      var r = el.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width - 0.5;
+      var py = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transitionDuration = "0.12s";
+      el.style.transform = "perspective(700px) rotateX(" + (-py * 7).toFixed(2) + "deg) rotateY(" + (px * 9).toFixed(2) + "deg) translateZ(0)";
+    }, { passive: true });
+    document.addEventListener("mouseleave", releaseTilt);
   }
 
   /* ------------------------------------------------------------
@@ -912,7 +963,7 @@
     if (progressBar) {
       var doc = document.documentElement;
       var max = doc.scrollHeight - window.innerHeight;
-      progressBar.style.width = (max > 0 ? y / max : 0) * 100 + "%";
+      progressBar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, y / max) : 0).toFixed(4) + ")";
     }
   }
   window.addEventListener("resize", captureParallaxBase, { passive: true });
@@ -963,22 +1014,28 @@
   var revealIo = null;
   function initReveals() {
     var revealEls = Array.prototype.slice.call(document.querySelectorAll(".reveal, .cascade"));
-    var revealCount = 0;
     if (revealIo) { revealIo.disconnect(); revealIo = null; }
     if ("IntersectionObserver" in window && !reducedMotion) {
       revealIo = new IntersectionObserver(function (entries) {
+        /* stagger within one batch only — an element scrolled into view on
+           its own reveals immediately instead of inheriting a page-wide delay */
+        var batch = 0;
         entries.forEach(function (en) {
-          if (en.isIntersecting) {
-            en.target.style.transitionDelay = Math.min(220, revealCount * 25) + "ms";
-            revealCount++;
-            en.target.classList.add("is-in");
+          if (!en.isIntersecting) return;
+          var el = en.target;
+          el.style.transitionDelay = Math.min(240, batch++ * 60) + "ms";
+          el.classList.add("is-in");
 
-            /* trigger celestial text decryption on prominent titles */
-            var title = en.target.querySelector(".sec__title, .hero__name, .sec__num");
-            if (title) decryptText(title, 380);
+          /* trigger celestial text decryption on prominent titles */
+          var title = el.querySelector(".sec__title, .hero__name, .sec__num");
+          if (title) decryptText(title, 380);
 
-            revealIo.unobserve(en.target);
-          }
+          revealIo.unobserve(el);
+          /* once settled, drop the delay (hovers stay snappy) and the GPU layer */
+          setTimeout(function () {
+            el.style.transitionDelay = "";
+            el.style.willChange = "auto";
+          }, 1100);
         });
       }, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
       revealEls.forEach(function (el) { revealIo.observe(el); });
@@ -1079,16 +1136,29 @@
 
   function pad(n) { return String(n).padStart(2, "0"); }
 
+  function setStatus(el, text, cls) {
+    if (el.textContent !== text) el.textContent = text;
+    cls = "dl-card__status " + cls;
+    if (el.className !== cls) el.className = cls;
+  }
+
+  /* status[data-kind="opens"] counts down to an application window opening
+     (no deadline published yet); everything else counts down to a deadline */
   function renderCountdown(statusEl, countEl, target) {
-    var now = Date.now();
-    var diff = target - now;
+    var opens = statusEl.dataset.kind === "opens";
+    var diff = target - Date.now();
     var numEl = countEl.querySelector(".c-num");
     var lblEl = countEl.querySelector(".c-lbl");
     if (diff <= 0) {
-      statusEl.textContent = "Cycle closed";
-      statusEl.className = "dl-card__status s-closed";
-      if (numEl) numEl.textContent = "0";
-      if (lblEl) lblEl.textContent = "deadline passed";
+      if (opens) {
+        setStatus(statusEl, "Application open", "s-open");
+        if (numEl) numEl.textContent = "◈";
+        if (lblEl) lblEl.textContent = "deadline not posted";
+      } else {
+        setStatus(statusEl, "Cycle closed", "s-closed");
+        if (numEl) numEl.textContent = "0";
+        if (lblEl) lblEl.textContent = "deadline passed";
+      }
       return;
     }
     var days = Math.floor(diff / 86400000);
@@ -1096,15 +1166,11 @@
     var mins = Math.floor((diff % 3600000) / 60000);
     var secs = Math.floor((diff % 60000) / 1000);
     if (numEl) numEl.textContent = pad(days);
-    if (lblEl) lblEl.textContent = "d " + pad(hrs) + "h " + pad(mins) + "m " + pad(secs) + "s · until deadline";
+    if (lblEl) lblEl.textContent = "d " + pad(hrs) + "h " + pad(mins) + "m " + pad(secs) + "s · until " + (opens ? "apps open" : "deadline");
 
-    if (diff <= 60 * 86400000) {
-      statusEl.textContent = "Deadline soon";
-      statusEl.className = "dl-card__status s-soon";
-    } else {
-      statusEl.textContent = "Application open";
-      statusEl.className = "dl-card__status s-open";
-    }
+    if (opens) setStatus(statusEl, "Not yet open", "s-upcoming");
+    else if (diff <= 60 * 86400000) setStatus(statusEl, "Deadline soon", "s-soon");
+    else setStatus(statusEl, "Application open", "s-open");
   }
 
   var dlTimer = null;
@@ -1116,11 +1182,13 @@
     DEADLINES.forEach(function (p, i) {
       var card = document.createElement("article");
       card.className = "dl-card";
+      card.style.setProperty("--i", i);
 
       var head = document.createElement("button");
       head.className = "dl-card__head";
       head.type = "button";
       head.setAttribute("aria-expanded", "false");
+      head.setAttribute("aria-controls", "dl-body-" + i);
 
       var idx = document.createElement("span");
       idx.className = "dl-card__idx";
@@ -1161,6 +1229,7 @@
       } else if (p.primary) {
         var target = new Date(p.primary).getTime();
         status.dataset.target = String(target);
+        if (p.primaryKind) status.dataset.kind = p.primaryKind;
         renderCountdown(status, count, target);
       } else {
         status.textContent = "Window open";
@@ -1175,9 +1244,16 @@
       head.appendChild(count);
       head.appendChild(plus);
 
+      /* body collapses through a 0fr → 1fr grid row, so open/close
+         animates the real content height (clip → inner keeps padding out of the 0fr row) */
       var body = document.createElement("div");
       body.className = "dl-card__body";
-      body.hidden = true;
+      body.id = "dl-body-" + i;
+      body.inert = true;
+      var clip = document.createElement("div");
+      clip.className = "dl-card__clip";
+      var inner = document.createElement("div");
+      inner.className = "dl-card__inner";
 
       var dates = document.createElement("div");
       dates.className = "dl-card__dates";
@@ -1189,19 +1265,36 @@
         row.appendChild(document.createTextNode(" " + ev[1]));
         dates.appendChild(row);
       });
-      body.appendChild(dates);
+      inner.appendChild(dates);
 
-      if (p.note) {
-        var note = document.createElement("p");
-        note.className = "dl-card__note";
-        note.textContent = p.note;
-        body.appendChild(note);
+      if (p.note || p.link) {
+        var aside = document.createElement("div");
+        aside.className = "dl-card__aside";
+        if (p.note) {
+          var note = document.createElement("p");
+          note.className = "dl-card__note";
+          note.textContent = p.note;
+          aside.appendChild(note);
+        }
+        if (p.link) {
+          var link = document.createElement("a");
+          link.className = "dl-card__link";
+          link.href = p.link;
+          link.target = "_blank";
+          link.rel = "noopener";
+          link.textContent = "Program page ↗";
+          aside.appendChild(link);
+        }
+        inner.appendChild(aside);
       }
 
+      clip.appendChild(inner);
+      body.appendChild(clip);
+
       head.addEventListener("click", function () {
-        var open = body.hidden;
-        body.hidden = !open;
+        var open = !card.classList.contains("is-open");
         card.classList.toggle("is-open", open);
+        body.inert = !open;
         head.setAttribute("aria-expanded", String(open));
       });
 
@@ -1214,10 +1307,9 @@
       var els = grid.querySelectorAll(".dl-card__status[data-target]");
       for (var i = 0; i < els.length; i++) {
         var st = els[i];
-        var targetTime = Number(st.dataset.target);
         var card = st.closest(".dl-card");
         var countEl = card ? card.querySelector(".dl-card__count") : null;
-        if (countEl) renderCountdown(st, countEl, targetTime);
+        if (countEl) renderCountdown(st, countEl, Number(st.dataset.target));
       }
     }, 1000);
   }
@@ -1364,34 +1456,49 @@
     initDeadlines();
     initScheduleNow();
     initLiveTimes();
+    initPageAnims();
   }
-  initPageFeatures();
 
   /* ------------------------------------------------------------
-     ANIME ORCHESTRA — the rest of anime.js v4, wired in everywhere.
+     ANIME ORCHESTRA — anime.js v4, wired in everywhere.
 
      1. MAGNETIC CTA   — anime.utils.damp pulls the button toward the
-                         cursor; spring easing blooms its shadow.
+                         cursor; a spring blooms its shadow.
      2. STAT COUNTERS  — anime.animate + onUpdate count hero numbers up.
-     3. SCRAMBLE LINKS — scrambleText modifier on the `text` property
-                         for every nav / CTA / footer link hover.
-     4. SCROLL SCRUB   — paused createTimeline for the hero, the system
-                         map and the giant footer type, linked to
-                         ScrollObserver (anime.onScroll + sync), so
-                         scroll position scrubs the motion directly.
-     5. MOTION-PATH COMET — svg.createMotionPath rides the ellipse in
+     3. SCROLL SCRUB   — paused createTimeline for the hero, the system
+                         map and the giant footer type, linked to a
+                         ScrollObserver (onScroll + link), so scroll
+                         position scrubs the motion directly.
+     4. MOTION-PATH COMET — svg.createMotionPath rides the ellipse in
                          the system map forever.
-     6. AMBIENT DUST   — createSeededRandom scatters motes, each one a
-                         looping animation with random duration/delay.
+     5. SCRAMBLE LINKS — scrambleText modifier for every nav / CTA /
+                         footer link hover (delegated once).
 
-     Each feature is individually guarded — one failure can never
-     take the page down with it.
+     1–4 are bound to page DOM, so initPageAnims() rebuilds them after
+     every SPA swap and reverts the previous page's animations and
+     scroll observers first — nothing keeps ticking against detached
+     nodes. Each feature is individually guarded.
      ------------------------------------------------------------ */
-  if (window.anime && !reducedMotion) {
+  var canAnime = !!(window.anime && !reducedMotion);
+  var pageAnims = [];
+  var statIO = null;
 
-    /* ---- 1. MAGNETIC CTA ---- */
+  function keepAnim(a) {
+    if (a) pageAnims.push(a);
+    return a;
+  }
+
+  function revertPageAnims() {
+    pageAnims.forEach(function (a) {
+      try { if (typeof a.revert === "function") a.revert(); } catch (err) { /* already gone */ }
+    });
+    pageAnims = [];
+    if (statIO) { statIO.disconnect(); statIO = null; }
+  }
+
+  function initMagneticCta() {
+    if (!finePointer) return;
     Array.prototype.forEach.call(document.querySelectorAll(".cta"), function (cta) {
-      if (!finePointer) return;
       var curX = 0, curY = 0, tx = 0, ty = 0, magnetOn = false, rafId = 0, lastT = 0;
       function magnetLoop() {
         var now = performance.now();
@@ -1404,18 +1511,26 @@
           rafId = requestAnimationFrame(magnetLoop);
         } else {
           rafId = 0;
+          lastT = 0;
           cta.style.transform = "";
         }
       }
-      cta.addEventListener("mouseenter", function () {
+      /* shadow offset rides a spring on a plain number, so an interrupted
+         hover picks up from wherever the shadow currently is */
+      var shadow = { o: 8 };
+      function shadowTo(o) {
         try {
-          anime.animate(cta, {
-            boxShadow: ["8px 8px 0 rgb(" + accentRgb.join(",") + ")", "14px 14px 0 rgb(" + accentRgb.join(",") + ")"],
-            duration: 600,
-            easing: anime.spring({ stiffness: 160, damping: 14 }),
+          anime.animate(shadow, {
+            o: o,
+            ease: anime.spring({ stiffness: 160, damping: 14 }),
+            onUpdate: function () {
+              cta.style.boxShadow = shadow.o.toFixed(2) + "px " + shadow.o.toFixed(2) + "px 0 var(--text)";
+            },
+            onComplete: function () { if (o === 8) cta.style.boxShadow = ""; },
           });
         } catch (err) { /* shadow spring is decorative */ }
-      });
+      }
+      cta.addEventListener("mouseenter", function () { shadowTo(14); });
       cta.addEventListener("mousemove", function (e) {
         var r = cta.getBoundingClientRect();
         var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
@@ -1432,61 +1547,139 @@
       cta.addEventListener("mouseleave", function () {
         magnetOn = false; tx = 0; ty = 0;
         if (!rafId) magnetLoop();
+        shadowTo(8);
       });
     });
+  }
 
-    /* ---- 2. STAT COUNTERS ---- */
-    var statBs = Array.prototype.slice.call(document.querySelectorAll(".hero__stats b"));
-    statBs = statBs.filter(function (b) {
-      if (b.id === "houstonClock") return false;
-      return /^\d+(\.\d+)?$/.test((b.textContent || "").trim());
+  function initStatCounters() {
+    var stats = Array.prototype.filter.call(document.querySelectorAll(".hero__stats b"), function (b) {
+      return b.id !== "houstonClock" && /^\d+(\.\d+)?$/.test((b.textContent || "").trim());
+    }).map(function (b) {
+      var txt = b.textContent.trim();
+      var dot = txt.indexOf(".");
+      var target = parseFloat(txt);
+      var frac = dot > -1 ? txt.length - dot - 1 : 0;
+      /* a year counts up from a couple of decades back, not from zero */
+      var from = !frac && target >= 1900 && target <= 2100 ? target - 24 : 0;
+      return { el: b, target: target, frac: frac, from: from };
     });
-    if (statBs.length) {
-      var statData = statBs.map(function (b) {
-        var txt = b.textContent.trim();
-        var dot = txt.indexOf(".");
-        var frac = dot > -1 ? txt.length - dot - 1 : 0;
-        return { el: b, target: parseFloat(txt), frac: frac };
-      });
-      function formatStat(d, v) { return d.frac ? v.toFixed(d.frac) : String(Math.round(v)); }
-      function countUp(d) {
-        var counter = { v: 0 };
-        try {
-          anime.animate({
-            targets: counter,
-            v: [0, d.target],
-            duration: 1500,
-            delay: 320,
-            easing: "easeOutExpo",
-            onUpdate: function () { d.el.textContent = formatStat(d, counter.v); },
-          });
-        } catch (err) { return; }
-        /* safety — a stalled engine must never leave a zero on screen */
-        setTimeout(function () {
-          if (parseFloat(d.el.textContent) < d.target * 0.95) {
-            d.el.textContent = formatStat(d, d.target);
-          }
-        }, 3400);
-      }
-      if ("IntersectionObserver" in window) {
-        var statIO = new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) {
-            if (!en.isIntersecting) return;
-            var d = statData.filter(function (s) { return s.el === en.target; })[0];
-            if (!d) return;
-            statIO.unobserve(en.target);
-            countUp(d);
-          });
-        }, { threshold: 0.5 });
-        statData.forEach(function (d) { statIO.observe(d.el); });
-      } else {
-        statData.forEach(countUp);
-      }
+    if (!stats.length) return;
+
+    function fmt(d, v) { return d.frac ? v.toFixed(d.frac) : String(Math.round(v)); }
+    function countUp(d) {
+      var counter = { v: d.from };
+      d.el.textContent = fmt(d, d.from);
+      try {
+        keepAnim(anime.animate(counter, {
+          v: d.target,
+          duration: 1500,
+          delay: 120,
+          ease: "outExpo",
+          onUpdate: function () { d.el.textContent = fmt(d, counter.v); },
+          onComplete: function () { d.el.textContent = fmt(d, d.target); },
+        }));
+      } catch (err) { /* fall through to the safety net */ }
+      /* safety — a stalled engine must never leave a wrong number on screen */
+      setTimeout(function () {
+        if (d.el.isConnected && d.el.textContent !== fmt(d, d.target)) d.el.textContent = fmt(d, d.target);
+      }, 2400);
     }
+    if ("IntersectionObserver" in window) {
+      statIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          var d = stats.filter(function (s) { return s.el === en.target; })[0];
+          if (!d) return;
+          statIO.unobserve(en.target);
+          countUp(d);
+        });
+      }, { threshold: 0.5 });
+      stats.forEach(function (d) { statIO.observe(d.el); });
+    } else {
+      stats.forEach(countUp);
+    }
+  }
 
-    /* ---- 3. SCRAMBLE LINKS ---- */
+  function scrubTimeline(sel, addMotion, thresholds) {
+    var target = document.querySelector(sel);
+    if (!target) return;
+    var tl = anime.createTimeline({ autoplay: false, defaults: { ease: "linear", duration: 1000 } });
+    if (!addMotion(tl, target)) return;
+    var params = { target: target, sync: true };
+    if (thresholds) { params.enter = thresholds[0]; params.leave = thresholds[1]; }
+    keepAnim(tl);
+    keepAnim(anime.onScroll(params).link(tl));
+  }
+
+  function initScrubs() {
+    /* hero content drifts down + dims as the first screen scrolls away —
+       thresholds are "<container> <target>": from the hero's top at the
+       viewport top until the hero's bottom reaches the viewport top */
+    scrubTimeline(".hero", function (tl, hero) {
+      var inner = hero.querySelector(".hero__inner");
+      if (!inner) return false;
+      tl.add(inner, { translateY: [0, 70], opacity: [1, 0] }, 0);
+      return true;
+    }, ["start start", "start end"]);
+    /* the system map tilts + rises as it crosses the screen */
+    scrubTimeline(".sys-sec", function (tl, sec) {
+      var sys = sec.querySelector(".sys");
+      if (!sys) return false;
+      tl.add(sys, { translateY: [0, -34], rotate: [0, 2.4] }, 0);
+      return true;
+    });
+    /* the giant footer type slides as the footer crosses the screen */
+    scrubTimeline(".foot", function (tl, foot) {
+      var giant = foot.querySelector(".foot__giant");
+      if (!giant) return false;
+      tl.add(giant, { translateX: ["0%", "-7%"], rotate: [0, 1.4] }, 0);
+      return true;
+    });
+  }
+
+  function initComet() {
+    var sysMap = document.querySelector(".sys");
+    if (!sysMap || !anime.svg || !anime.svg.createMotionPath) return;
+    var SVGNS = "http://www.w3.org/2000/svg";
+    var orbitSvg = document.createElementNS(SVGNS, "svg");
+    orbitSvg.setAttribute("viewBox", "0 0 100 100");
+    orbitSvg.setAttribute("class", "sys__orbitpath");
+    orbitSvg.setAttribute("aria-hidden", "true");
+    var orbitPath = document.createElementNS(SVGNS, "path");
+    orbitPath.setAttribute("d", "M50,50 m-47,0 a47,31 0 1,1 94,0 a47,31 0 1,1 -94,0");
+    orbitPath.setAttribute("fill", "none");
+    orbitSvg.appendChild(orbitPath);
+    sysMap.appendChild(orbitSvg);
+    var comet = document.createElement("div");
+    comet.className = "sys__comet";
+    comet.setAttribute("aria-hidden", "true");
+    sysMap.appendChild(comet);
+    var mp = anime.svg.createMotionPath(orbitPath);
+    keepAnim(anime.animate(comet, {
+      translateX: mp.translateX,
+      translateY: mp.translateY,
+      rotate: mp.rotate,
+      duration: 16000,
+      loop: true,
+      ease: "linear",
+    }));
+  }
+
+  function initPageAnims() {
+    if (!canAnime) return;
+    revertPageAnims();
+    [initMagneticCta, initStatCounters, initScrubs, initComet].forEach(function (fn) {
+      try { fn(); } catch (err) { /* decorative — one failure never takes the page down */ }
+    });
+  }
+
+  initPageFeatures();
+
+  /* ---- scramble links — delegated once, survives SPA swaps ---- */
+  if (canAnime) {
     var scrambleBusy = new WeakMap();
-    function scrambleIn(el) {
+    var scrambleIn = function (el) {
       if (scrambleBusy.get(el)) return;
       var original = (el.textContent || "").trim();
       if (!original) return;
@@ -1495,79 +1688,14 @@
         anime.animate(el, {
           text: { value: original, modifier: anime.scrambleText({ duration: 640, revealDelay: 60 }) },
           duration: 640,
-          easing: "linear",
+          ease: "linear",
         });
       } catch (err) { /* text property unsupported here — hover stays plain */ }
       setTimeout(function () { scrambleBusy.set(el, false); }, 780);
-    }
+    };
     document.addEventListener("mouseover", function (e) {
       var a = e.target && e.target.closest ? e.target.closest(".nav__links a, .nav__brand, .cta__large, .foot__sol a") : null;
       if (a) scrambleIn(a);
     });
-
-    /* ---- 4. SCROLL SCRUB (ScrollObserver + linked paused timeline) ---- */
-    function scrubTimeline(sel, addMotion, thresholds) {
-      var target = document.querySelector(sel);
-      if (!target) return;
-      var tl = anime.createTimeline({ autoplay: false });
-      var added = addMotion(tl, target);
-      if (!added) return;
-      try {
-        var params = { target: sel, linked: tl, sync: true };
-        if (thresholds) { params.enter = thresholds[0]; params.leave = thresholds[1]; }
-        anime.onScroll(params);
-      } catch (err) { /* scrub is decorative; never fatal */ }
-    }
-    /* hero content drifts down + dims as the first screen scrolls away */
-    scrubTimeline(".hero", function (tl, hero) {
-      var inner = hero.querySelector(".hero__inner");
-      if (!inner) return false;
-      tl.add(inner, { translateY: [0, 70], opacity: [1, 0], duration: 1000, easing: "linear" }, 0);
-      return true;
-    }, ["top top", "bottom top"]);
-    /* the system map tilts + rises as you approach it */
-    scrubTimeline(".sys-sec", function (tl, sec) {
-      var sys = sec.querySelector(".sys");
-      if (!sys) return false;
-      tl.add(sys, { translateY: [0, -34], rotate: [0, 2.4], duration: 1000, easing: "linear" }, 0);
-      return true;
-    });
-    /* the giant footer type slides as the footer crosses the screen */
-    scrubTimeline(".foot", function (tl, foot) {
-      var giant = foot.querySelector(".foot__giant");
-      if (!giant) return false;
-      tl.add(giant, { translateX: [0, "-7%"], rotate: [0, 1.4], duration: 1000, easing: "linear" }, 0);
-      return true;
-    });
-
-    /* ---- 5. MOTION-PATH COMET ---- */
-    var sysMap = document.querySelector(".sys");
-    if (sysMap && anime.svg && anime.svg.createMotionPath) {
-      var SVGNS = "http://www.w3.org/2000/svg";
-      var orbitSvg = document.createElementNS(SVGNS, "svg");
-      orbitSvg.setAttribute("viewBox", "0 0 100 100");
-      orbitSvg.setAttribute("class", "sys__orbitpath");
-      orbitSvg.setAttribute("aria-hidden", "true");
-      var orbitPath = document.createElementNS(SVGNS, "path");
-      orbitPath.setAttribute("d", "M50,50 m-47,0 a47,31 0 1,1 94,0 a47,31 0 1,1 -94,0");
-      orbitPath.setAttribute("fill", "none");
-      orbitSvg.appendChild(orbitPath);
-      sysMap.appendChild(orbitSvg);
-      var comet = document.createElement("div");
-      comet.className = "sys__comet";
-      comet.setAttribute("aria-hidden", "true");
-      sysMap.appendChild(comet);
-      try {
-        var mp = anime.svg.createMotionPath(orbitPath);
-        anime.animate(comet, {
-          translateX: mp.translateX,
-          translateY: mp.translateY,
-          rotate: mp.rotate,
-          duration: 16000,
-          loop: true,
-          easing: "linear",
-        });
-      } catch (err) { /* comet stays parked */ }
-    }
   }
 })();

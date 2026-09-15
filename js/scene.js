@@ -26,6 +26,15 @@ try {
   const STAR = darkPage ? 0xe8c89b : 0x523122;
   const PATH = darkPage ? 0x3a352f : 0xb09a7f;
 
+  /* light ⇄ dark palettes — boot uses the page's own, then an SPA flight
+     into or out of the dark deadlines planet blends between them live */
+  const THEME = {
+    starLight: new THREE.Color(0x523122), starDark: new THREE.Color(0xe8c89b),
+    pathLight: new THREE.Color(0xb09a7f), pathDark: new THREE.Color(0x3a352f),
+  };
+  let themeK = darkPage ? 1 : 0;
+  let themeTarget = themeK;
+
   /* the renderer is transparent so the generative fluid sky (fluid-bg,
      mounted by main.js) shows through and the system floats inside it */
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !coarse, powerPreference: "high-performance" });
@@ -116,7 +125,7 @@ try {
     });
     const pts = new THREE.Points(geo, mat);
     scene.add(pts);
-    starLayers.push({ pts, mat, size });
+    starLayers.push({ pts, mat, size, opacity });
   }
   starShell(coarse ? 300 : 800, 40, 150, 0.5, 0.8);
   starShell(coarse ? 200 : 600, 14, 44, 0.26, 0.5);
@@ -568,6 +577,7 @@ try {
   /* ---------- planets ---------- */
   const bodies = {};
   const sats = [];
+  const pathMats = [];
   Object.keys(P).forEach((k, i) => {
     if (k === "sol") return;
     const cfg = P[k];
@@ -633,6 +643,7 @@ try {
     );
     path.rotation.x = cfg.tilt - Math.PI / 2;
     scene.add(path);
+    pathMats.push(path.material);
 
     scene.add(g);
     bodies[k] = { cfg, g, core, wire, phase: (i / 9) * Math.PI * 2 + (Math.random() - 0.5) * 0.4 };
@@ -708,6 +719,11 @@ try {
     toFrame = frameOf(currentSlug, simT);
     arr = 0;
     FLY = 2.8;
+    themeTarget = targetSlug === "deadlines" ? 1 : 0;
+    if (window.__scene3d) {
+      window.__scene3d.slug = targetSlug;
+      window.__scene3d.dark = targetSlug === "deadlines";
+    }
   };
 
   /* quintic ease-in-out for silky cinematic spacecraft departure & arrival */
@@ -795,7 +811,7 @@ try {
     /* export live state for seamless handoff to next page */
     window.__getSceneState = function () {
       return {
-        planet: slug,
+        planet: currentSlug,
         pos: [camera.position.x, camera.position.y, camera.position.z],
         look: [curLook.x, curLook.y, curLook.z],
         simT: simT,
@@ -836,6 +852,20 @@ try {
     nebulas.forEach((n, i) => {
       n.material.opacity = 0.18 + Math.sin(simT * 0.3 + i * 1.7) * 0.06;
     });
+
+    /* blend the palette toward the destination planet's theme */
+    if (themeK !== themeTarget) {
+      themeK += (themeTarget - themeK) * (1 - Math.exp(-dt * 2.4));
+      if (Math.abs(themeTarget - themeK) < 0.002) themeK = themeTarget;
+      starLayers.forEach((s) => {
+        s.mat.color.lerpColors(THEME.starLight, THEME.starDark, themeK);
+        s.mat.opacity = s.opacity * (0.4 + 0.1 * themeK);
+      });
+      pathMats.forEach((m) => m.color.lerpColors(THEME.pathLight, THEME.pathDark, themeK));
+      Object.keys(bodies).forEach((k) => {
+        bodies[k].core.material.emissive.setHex(bodies[k].cfg.c).multiplyScalar(0.08 + 0.24 * themeK);
+      });
+    }
 
     renderer.render(scene, camera);
   }

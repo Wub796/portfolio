@@ -11,8 +11,10 @@
 
   if (window.__warpFX) return;
 
-  var VGPU_FALLBACK_URL = "./vendor/vgpu.esm.mjs";
-  var WARP_MS = 850;
+  /* dynamic import() resolves relative to *this script*, not the page,
+     so capture an absolute URL while document.currentScript is still set */
+  var SCRIPT_SRC = document.currentScript && document.currentScript.src;
+  var WARP_MS = 700;
 
   /* Planet accent color catalogue (aligns with scene.js catalogue) */
   var PLANET_ACCENTS = {
@@ -88,12 +90,13 @@ fn hash21(p: vec2f) -> f32 {
 `;
 
   function resolveVgpuUrl() {
-    if (document.currentScript && document.currentScript.src) {
-      try {
-        return new URL("../vendor/vgpu.esm.mjs", document.currentScript.src).href;
-      } catch (e) {}
+    try {
+      return SCRIPT_SRC
+        ? new URL("../vendor/vgpu.esm.mjs", SCRIPT_SRC).href
+        : new URL("vendor/vgpu.esm.mjs", document.baseURI).href;
+    } catch (e) {
+      return "/vendor/vgpu.esm.mjs";
     }
-    return VGPU_FALLBACK_URL;
   }
 
   function ensureCanvas() {
@@ -192,17 +195,16 @@ fn hash21(p: vec2f) -> f32 {
     /* surface autoResize tracks canvas layout; we only set CSS size here */
   }
 
-  function tickFrame(vgpu) {
+  /* frameLoop runs each tick inside a frame and hands it in — draw into that
+     frame. A nested vgpu.frame() here throws VGPU-FRAME-REENTRANT and kills
+     the loop on its first tick. */
+  function tickFrame(frame) {
     if (!state.playing || !state.gpu) return;
     var t = (performance.now() - state.start) / 1000;
     var u = Math.min(1, t / (WARP_MS / 1000));
-    if (u >= 1) {
-      stop();
-      if (state.onDone) { var cb = state.onDone; state.onDone = null; cb(); }
-      return;
-    }
-    /* intensity: quick attack, hold, release near the end */
-    var strength = u < 0.15 ? u / 0.15 : (u > 0.8 ? (1 - u) / 0.2 : 1);
+    /* intensity: quick attack, hold, release near the end; the final tick
+       draws a zero-strength pass so the canvas is left clear */
+    var strength = u >= 1 ? 0 : u < 0.15 ? u / 0.15 : (u > 0.8 ? (1 - u) / 0.2 : 1);
     state.effect.set({
       params: {
         time: t,
@@ -211,9 +213,17 @@ fn hash21(p: vec2f) -> f32 {
         tint: [state.tint[0], state.tint[1], state.tint[2], 1],
       },
     });
-    vgpu.frame(state.gpu, function (frame) {
-      frame.pass({ target: state.surface, clear: { r: 0, g: 0, b: 0, a: 0 } }, state.effect);
-    });
+    frame.pass({ target: state.surface, clear: { r: 0, g: 0, b: 0, a: 0 } }, state.effect);
+    if (u >= 1) finish();
+  }
+
+  /* end of a play-through — safe inside the loop callback (no nested frame) */
+  function finish() {
+    clearTimeout(state.safety);
+    state.playing = false;
+    if (state.loop) { try { state.loop.stop(); } catch (e) {} state.loop = null; }
+    if (state.canvas) state.canvas.classList.remove("is-on");
+    if (state.onDone) { var cb = state.onDone; state.onDone = null; cb(); }
   }
 
   function play(targetSlug, onDone) {
@@ -234,11 +244,16 @@ fn hash21(p: vec2f) -> f32 {
     state.start = performance.now();
     state.playing = true;
     if (state.loop) { try { state.loop.stop(); } catch (e) {} state.loop = null; }
-    state.loop = vgpu.frameLoop(state.gpu, function () { tickFrame(vgpu); }, { fps: 60 });
+    state.loop = vgpu.frameLoop(state.gpu, tickFrame, { fps: 60 });
+    /* rAF (and so the loop) stalls in a hidden tab — never leave the canvas
+       lit, or the navigation waiting on onDone, if the last tick never comes */
+    clearTimeout(state.safety);
+    state.safety = setTimeout(function () { if (state.playing) finish(); }, WARP_MS + 300);
     return true;
   }
 
   function stop() {
+    clearTimeout(state.safety);
     state.playing = false;
     if (state.loop) { try { state.loop.stop(); } catch (e) {} state.loop = null; }
     if (state.canvas) state.canvas.classList.remove("is-on");
