@@ -1833,6 +1833,8 @@
       var card = document.createElement("article");
       card.className = "dl-card";
       card.style.setProperty("--i", i);
+      card.dataset.search = [p.name, p.org, p.type, p.note || ""].join(" ").toLowerCase();
+      card.dataset.rolling = p.status === "rolling" ? "true" : "false";
 
       var head = document.createElement("button");
       head.className = "dl-card__head";
@@ -1953,6 +1955,7 @@
       grid.appendChild(card);
     });
 
+    initDeadlineOrganizer();
     dlTimer = setInterval(function () {
       var els = grid.querySelectorAll(".dl-card__status[data-target]");
       for (var i = 0; i < els.length; i++) {
@@ -1962,6 +1965,84 @@
         if (countEl) renderCountdown(st, countEl, Number(st.dataset.target));
       }
     }, 1000);
+  }
+
+  function initDeadlineOrganizer() {
+    var organizer = document.getElementById("dlOrganizer");
+    var grid = document.getElementById("dlGrid");
+    if (!organizer || !grid) return;
+
+    var search = document.getElementById("dlSearch");
+    var filter = document.getElementById("dlFilter");
+    var clear = document.getElementById("dlClear");
+    var results = document.getElementById("dlResults");
+    var empty = document.getElementById("dlEmpty");
+    var prev = document.getElementById("dlPrev");
+    var next = document.getElementById("dlNext");
+    var top = document.getElementById("dlTop");
+    var cards = Array.prototype.slice.call(grid.querySelectorAll(".dl-card"));
+    var cursor = -1;
+
+    function categories(card) {
+      var text = card.dataset.search || "";
+      var tags = [];
+      if (/ai|computer|software|cyber|data|programming|coding|informatics|algorithm|computing|technology|math|hackathon|robotics/.test(text)) tags.push("ai");
+      if (/engineering|aerospace|avionics|mechanical|electrical|hardware|robot|radar|space|manufactur|systems|physics|materials/.test(text)) tags.push("engineering");
+      if (/business|entrepreneur|startup|finance|banking|management|economics|leadership|innovation|corporate|venture/.test(text)) tags.push("business");
+      if (/international|exchange|abroad|global|canada|germany|india|singapore|china|indonesia|europe|egypt|foreign/.test(text)) tags.push("international");
+      return tags;
+    }
+
+    function matches(card) {
+      var query = (search.value || "").trim().toLowerCase();
+      var selected = filter.value;
+      var textMatch = !query || card.dataset.search.indexOf(query) !== -1;
+      var status = card.querySelector(".dl-card__status");
+      var statusMatch = true;
+      if (selected === "soon") statusMatch = !!status && (status.classList.contains("s-soon") || status.classList.contains("s-upcoming"));
+      if (selected === "rolling") statusMatch = card.dataset.rolling === "true" || !!status && status.classList.contains("s-open");
+      var categoryMatch = ["all", "soon", "rolling"].indexOf(selected) !== -1 || categories(card).indexOf(selected) !== -1;
+      return textMatch && statusMatch && categoryMatch;
+    }
+
+    function apply() {
+      var visible = [];
+      cards.forEach(function (card) {
+        var show = matches(card);
+        card.classList.toggle("is-filtered", !show);
+        if (show) visible.push(card);
+      });
+      results.textContent = visible.length + " / " + cards.length + " programs";
+      empty.hidden = visible.length > 0;
+      if (cursor >= visible.length) cursor = visible.length - 1;
+      return visible;
+    }
+
+    function jump(delta) {
+      var visible = apply();
+      if (!visible.length) return;
+      cursor = cursor < 0 ? (delta > 0 ? 0 : visible.length - 1) : (cursor + delta + visible.length) % visible.length;
+      var card = visible[cursor];
+      cards.forEach(function (item) { item.classList.remove("is-nav-target"); });
+      card.classList.add("is-nav-target");
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      var head = card.querySelector(".dl-card__head");
+      if (head && head.getAttribute("aria-expanded") !== "true") head.click();
+    }
+
+    search.addEventListener("input", function () { cursor = -1; apply(); });
+    filter.addEventListener("change", function () { cursor = -1; apply(); });
+    clear.addEventListener("click", function () { search.value = ""; filter.value = "all"; cursor = -1; apply(); search.focus(); });
+    prev.addEventListener("click", function () { jump(-1); });
+    next.addEventListener("click", function () { jump(1); });
+    top.addEventListener("click", function () { organizer.scrollIntoView({ behavior: "smooth", block: "start" }); search.focus(); });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "/" && document.activeElement !== search && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "SELECT") {
+        event.preventDefault(); search.focus();
+      }
+      if (event.key === "Escape" && document.activeElement === search) { search.value = ""; apply(); search.blur(); }
+    });
+    apply();
   }
 
   /* ------------------------------------------------------------

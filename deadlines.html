@@ -72,9 +72,19 @@
       <div><h2 class="sec__title">Program Deadlines</h2><p class="sec__label">STEM · business · entrepreneurship · international · live countdowns (CT) · tap a row to expand</p></div>
     </header>
 
+    <div class="dl-organizer reveal" id="dlOrganizer" aria-label="Deadline organizer">
+      <div class="dl-organizer__top"><span class="dl-organizer__eyebrow">ORBIT INDEX / 09</span><span class="dl-organizer__count" id="dlResults">82 programs</span></div>
+      <div class="dl-organizer__tools">
+        <label class="dl-organizer__search"><span aria-hidden="true">⌕</span><input id="dlSearch" type="search" placeholder="Search programs, fields, or hosts · press /" autocomplete="off" /></label>
+        <label class="dl-organizer__select"><span class="sr-only">Filter programs</span><select id="dlFilter"><option value="all">All opportunities</option><option value="ai">AI / computer science</option><option value="engineering">Engineering</option><option value="business">Business / entrepreneurship</option><option value="international">International / exchange</option><option value="soon">Deadlines soon</option><option value="rolling">Rolling / open</option></select></label>
+        <button class="dl-organizer__reset" id="dlClear" type="button">Reset</button>
+      </div>
+      <div class="dl-organizer__nav" aria-label="Deadline navigation"><button type="button" id="dlPrev" title="Previous visible program">↑ <span>Prev</span></button><button type="button" id="dlNext" title="Next visible program">↓ <span>Next</span></button><button type="button" id="dlTop" title="Back to organizer">⌃ <span>Index</span></button></div>
+    </div>
     <div id="dlGrid" class="dl">
       <!-- populated by js/main.js from DEADLINES data -->
     </div>
+    <p class="dl-empty" id="dlEmpty" hidden>No matching programs. Reset the organizer or try another search.</p>
   </div>
 </section>
 
