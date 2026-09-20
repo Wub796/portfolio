@@ -34,7 +34,7 @@ All content (studies, college plan, application process, extracurriculars, daily
 | 06 | `schedule.html` | school-year ⇄ summer week grid, rules |
 | 07 | `meal.html` | calorie cycling, lipid-safe rules, bone stack |
 | 08 | `training.html` | day-by-day workouts, height unlock |
-| 09 | `deadlines.html` | 82 programs, competitions, internships, exchanges, and global opportunities with live countdowns (dark planet) |
+| 09 | `deadlines.html` | 82 programs, competitions, internships, exchanges, and global opportunities with live countdowns, an applied checklist, and the floating orbit dock (dark planet) |
 
 ## Run
 
@@ -59,6 +59,8 @@ Or from the CLI: `npx vercel` (deploys the static folder as-is).
 ## Editing content
 
 - Deadlines live in `DEADLINES` at the top of `js/main.js` — dates render exactly as written, countdowns compute live against the visitor's clock. The list combines the EMERGE Target College Database and a full scan of the uploaded 41-page program spreadsheet, including STEM research, AI/CS, aerospace/electrical/mechanical engineering, business/entrepreneurship, internships, competitions, and international opportunities. Set `primaryKind: "opens"` when only an application-open date is published (the card counts down to the window opening instead of a deadline), and `link` to add a program-page link to the expanded card.
+- The deadlines list is also a checklist: every row carries a tick rail that marks a program as applied, keyed by program name (so marks survive reordering) and stored in `localStorage` under `bw.deadlines.applied.v1`. The dock surfaces the tally — click it to filter to marked programs, use the ✕ beside it (which asks once) to clear every mark, or press `x` to tick the card you last stepped to. Marks are per-browser; no account or server is involved.
+- The floating deadline dock (`#dlDock`) is injected into `<body>` by `js/main.js`, gated to the deadlines planet by `body:not([data-planet="deadlines"]) .dl-dock{display:none}`, and removed when the planet changes so its observers and scroll loop never outlive the page. Its keyboard map: `/` search, `↑ ↓ j k` step, `Home` `End` jump, `x` mark applied, `Esc` clear search.
 - Any element with a `data-deadline` attribute (ISO date) renders a live ticking countdown; college phases marked with `data-phase-start` / `data-phase-end` mark themselves live, and the schedule page auto-selects school/summer by the calendar and highlights the current CT row.
 - Schedule grids are static tables in `schedule.html` (two tables, toggled by `#modeSchool` / `#modeSummer`).
 - Planet config (colors, orbit radius, speed, camera framing) lives in the `P` catalogue at the top of `js/scene.js`.

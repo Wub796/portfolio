@@ -1823,11 +1823,146 @@
     else setStatus(statusEl, "Application open", "s-open");
   }
 
+  /* ------------------------------------------------------------
+     APPLIED MARKS — a checklist you keep.
+     Marks are keyed off the program name (stable across reordering)
+     and persisted to localStorage, so the list remembers what you
+     have actually sent off. The dock reads marks back to filter,
+     count, and clear them.
+     ------------------------------------------------------------ */
+  var APPLIED_KEY = "bw.deadlines.applied.v1";
+  var appliedKeys = null;
+  var dockMarkHook = null;
+
+  function markKey(name) {
+    return String(name).toLowerCase().replace(/[^a-z0-9]+/g, "");
+  }
+
+  function loadMarks() {
+    if (appliedKeys) return appliedKeys;
+    appliedKeys = [];
+    try {
+      var raw = window.localStorage.getItem(APPLIED_KEY);
+      var parsed = raw ? JSON.parse(raw) : [];
+      if (Object.prototype.toString.call(parsed) === "[object Array]") {
+        appliedKeys = parsed.filter(function (k) { return typeof k === "string"; });
+      }
+    } catch (err) { appliedKeys = []; }
+    return appliedKeys;
+  }
+
+  function saveMarks() {
+    try {
+      window.localStorage.setItem(APPLIED_KEY, JSON.stringify(appliedKeys || []));
+    } catch (err) { /* private mode / storage full — marks stay for this session */ }
+  }
+
+  function isMarked(key) { return loadMarks().indexOf(key) !== -1; }
+
+  function setMark(key, on) {
+    var list = loadMarks();
+    var at = list.indexOf(key);
+    if (on && at === -1) list.push(key);
+    else if (!on && at !== -1) list.splice(at, 1);
+    else return false;
+    saveMarks();
+    return true;
+  }
+
   var dlTimer = null;
+
+  function announce(text) {
+    var el = document.getElementById("dlAnnounce");
+    if (el) el.textContent = text;
+  }
+
+  /* the ink: a shockwave ring plus a spray of embers, thrown from the tick */
+  function markInk(card) {
+    var host = card.querySelector(".dl-card__top");
+    var box = card.querySelector(".dl-card__check");
+    if (!host || !box) return;
+    var cx = box.offsetLeft + box.offsetWidth / 2;
+    var cy = box.offsetTop + box.offsetHeight / 2;
+    var live = canAnime && !reducedMotion;
+
+    function spawn(cls, style, life) {
+      var el = document.createElement("i");
+      el.className = cls;
+      el.setAttribute("aria-hidden", "true");
+      el.style.left = cx + "px";
+      el.style.top = cy + "px";
+      host.appendChild(el);
+      if (!live) { host.removeChild(el); return null; }
+      Object.keys(style).forEach(function (k) { el.style.setProperty(k, style[k]); });
+      /* never let ink outlive its animation — a stalled frame loop
+         (backgrounded tab) would otherwise leave it on the row */
+      window.setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, life);
+      return el;
+    }
+
+    var ring = spawn("dl-card__ring", {}, 1100);
+    if (ring) {
+      try {
+        anime.animate(ring, {
+          scale: [0.35, 2.5], opacity: [0.85, 0], duration: 720, ease: "out(3)",
+          onComplete: function () { if (ring.parentNode) ring.parentNode.removeChild(ring); },
+        });
+      } catch (err) { if (ring.parentNode) ring.parentNode.removeChild(ring); }
+    }
+
+    for (var i = 0; i < 14; i++) {
+      var spark = spawn("dl-card__spark", { "--sz": (2 + Math.random() * 3).toFixed(1) + "px" }, 1400);
+      if (!spark) break;
+      (function (el) {
+        var angle = Math.random() * Math.PI * 2;
+        var dist = 22 + Math.random() * 54;
+        try {
+          anime.animate(el, {
+            translateX: Math.cos(angle) * dist,
+            translateY: Math.sin(angle) * dist - 8,
+            scale: [1, 0.15],
+            opacity: [1, 0],
+            duration: 560 + Math.random() * 320,
+            ease: "out(3)",
+            onComplete: function () { if (el.parentNode) el.parentNode.removeChild(el); },
+          });
+        } catch (err) { if (el.parentNode) el.parentNode.removeChild(el); }
+      })(spark);
+    }
+  }
+
+  function markCard(card, on, animate) {
+    var check = card.querySelector(".dl-card__check");
+    var titleEl = card.querySelector(".dl-card__t b");
+    var label = titleEl ? titleEl.textContent : "program";
+
+    card.classList.toggle("is-applied", !!on);
+    card.dataset.applied = on ? "true" : "false";
+    if (check) {
+      check.setAttribute("aria-pressed", String(!!on));
+      check.setAttribute("aria-label", on ? "Unmark " + label : "Mark " + label + " as applied");
+    }
+    if (!animate) return;
+
+    if (on) {
+      card.classList.remove("is-stamping");
+      void card.offsetWidth;
+      card.classList.add("is-stamping");
+      window.setTimeout(function () { card.classList.remove("is-stamping"); }, 760);
+      markInk(card);
+    }
+    if (check && canAnime && !reducedMotion) {
+      try {
+        anime.animate(check, { scale: on ? [0.82, 1] : [1.08, 1], duration: 480, ease: "out(4)" });
+      } catch (err) { /* decorative */ }
+    }
+  }
+
   function initDeadlines() {
     var grid = document.getElementById("dlGrid");
     if (dlTimer) { clearInterval(dlTimer); dlTimer = null; }
-    if (!grid) return;
+    /* leaving the deadlines planet — take the dock (and its observers) with us */
+    if (!grid) { removeDeadlineDock(); return; }
     grid.innerHTML = "";
     DEADLINES.forEach(function (p, i) {
       var card = document.createElement("article");
@@ -1835,6 +1970,7 @@
       card.style.setProperty("--i", i);
       card.dataset.search = [p.name, p.org, p.type, p.note || ""].join(" ").toLowerCase();
       card.dataset.rolling = p.status === "rolling" ? "true" : "false";
+      card.dataset.key = markKey(p.name);
 
       var head = document.createElement("button");
       head.className = "dl-card__head";
@@ -1950,12 +2086,51 @@
         head.setAttribute("aria-expanded", String(open));
       });
 
-      card.appendChild(head);
+      /* the tick rail — a deliberate second affordance beside the row,
+         so marking something applied never opens or closes the card */
+      var rail = document.createElement("span");
+      rail.className = "dl-card__rail";
+      rail.setAttribute("aria-hidden", "true");
+
+      var stamp = document.createElement("span");
+      stamp.className = "dl-card__stamp";
+      stamp.setAttribute("aria-hidden", "true");
+      stamp.textContent = "Applied";
+
+      var check = document.createElement("button");
+      check.className = "dl-card__check";
+      check.type = "button";
+      check.setAttribute("aria-pressed", "false");
+      check.setAttribute("aria-label", "Mark " + p.name + " as applied");
+      check.innerHTML = '<span class="dl-card__box" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M5.6 12.8l4.2 4.2L18.5 7.5"/></svg></span>';
+
+      function setApplied(on) {
+        if (!setMark(card.dataset.key, on)) return;
+        markCard(card, on, true);
+        if (dockMarkHook) dockMarkHook();
+        announce((on ? "Marked " : "Unmarked ") + p.name + " — " +
+          loadMarks().length + " of " + DEADLINES.length + " marked as applied.");
+      }
+
+      check.addEventListener("click", function (event) {
+        event.stopPropagation();
+        setApplied(!card.classList.contains("is-applied"));
+      });
+
+      var top = document.createElement("div");
+      top.className = "dl-card__top";
+      top.appendChild(head);
+      top.appendChild(stamp);
+      top.appendChild(check);
+
+      card.appendChild(rail);
+      card.appendChild(top);
       card.appendChild(body);
+      if (isMarked(card.dataset.key)) markCard(card, true, false);
       grid.appendChild(card);
     });
 
-    initDeadlineOrganizer();
+    initDeadlineDock();
     dlTimer = setInterval(function () {
       var els = grid.querySelectorAll(".dl-card__status[data-target]");
       for (var i = 0; i < els.length; i++) {
@@ -1967,81 +2142,478 @@
     }, 1000);
   }
 
-  function initDeadlineOrganizer() {
-    var organizer = document.getElementById("dlOrganizer");
+  /* ------------------------------------------------------------
+     DEADLINE DOCK — floating bottom navigator.
+     Injected into <body> (outside <main>) so the SPA router's
+     innerHTML swap never detaches it, gated to the deadlines
+     planet by CSS, and removed the moment the planet changes.
+     ------------------------------------------------------------ */
+  var DOCK_MARKUP = [
+    '<div class="dl-dock__glow" aria-hidden="true"></div>',
+    '<div class="dl-dock__shell">',
+      '<div class="dl-dock__bar">',
+        '<span class="dl-dock__brand" aria-hidden="true"><b>09</b><i>Orbit Index</i></span>',
+        '<span class="dl-dock__rule" aria-hidden="true"></span>',
+        '<label class="dl-dock__field">',
+          '<span class="dl-dock__ico" aria-hidden="true"></span>',
+          '<input id="dlSearch" type="search" autocomplete="off" spellcheck="false" placeholder="Search programs, hosts, fields" aria-label="Search programs" />',
+          '<kbd class="dl-dock__kbd" aria-hidden="true">/</kbd>',
+        '</label>',
+        '<div class="dl-dock__meter" aria-live="polite"><b id="dlResults">0</b><span>of <span id="dlTotal">0</span></span></div>',
+        '<button type="button" class="dl-dock__applied" id="dlApplied" aria-pressed="false" title="Show only the programs you have applied to">',
+          '<span class="dl-dock__tick" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.6 12.8l4.2 4.2L18.5 7.5"/></svg></span>',
+          '<b id="dlAppliedN">0</b><i>applied</i>',
+        '</button>',
+        '<button type="button" class="dl-dock__wipe" id="dlWipe" aria-label="Clear all applied marks"><span aria-hidden="true">✕</span><em>Sure?</em></button>',
+        '<div class="dl-dock__steps">',
+          '<button type="button" id="dlPrev" title="Previous program (↑)" aria-label="Previous program">↑</button>',
+          '<button type="button" id="dlNext" title="Next program (↓)" aria-label="Next program">↓</button>',
+          '<button type="button" id="dlTop" title="Back to index (⌂)" aria-label="Back to top of list">⌂</button>',
+        '</div>',
+      '</div>',
+      '<div class="dl-dock__filters">',
+        '<div class="dl-dock__chips" role="group" aria-label="Filter programs">',
+          '<span class="dl-dock__pill" id="dlPill" aria-hidden="true"></span>',
+          '<button type="button" class="dl-chip is-on" data-filter="all" aria-pressed="true">All</button>',
+          '<button type="button" class="dl-chip dl-chip--applied" data-filter="applied" aria-pressed="false">Applied</button>',
+          '<button type="button" class="dl-chip" data-filter="ai" aria-pressed="false">AI · CS</button>',
+          '<button type="button" class="dl-chip" data-filter="engineering" aria-pressed="false">Engineering</button>',
+          '<button type="button" class="dl-chip" data-filter="business" aria-pressed="false">Business</button>',
+          '<button type="button" class="dl-chip" data-filter="international" aria-pressed="false">International</button>',
+          '<button type="button" class="dl-chip" data-filter="soon" aria-pressed="false">Closing soon</button>',
+          '<button type="button" class="dl-chip" data-filter="rolling" aria-pressed="false">Rolling</button>',
+        '</div>',
+        '<span class="dl-dock__pos" id="dlPos" aria-hidden="true"></span>',
+        '<span class="dl-dock__hint" aria-hidden="true">↑ ↓ step · / search · esc clear</span>',
+      '</div>',
+      '<div class="dl-dock__track" aria-hidden="true"><span id="dlTrackFill"></span></div>',
+      '<span class="sr-only" id="dlAnnounce" aria-live="polite"></span>',
+    '</div>',
+  ].join("");
+
+  var dockIO = null;
+  var dockFloatStop = null;
+
+  function removeDeadlineDock() {
+    if (dockIO) { dockIO.disconnect(); dockIO = null; }
+    if (dockFloatStop) { dockFloatStop(); dockFloatStop = null; }
+    dockMarkHook = null;
+    var old = document.getElementById("dlDock");
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+  }
+
+  function initDeadlineDock() {
     var grid = document.getElementById("dlGrid");
-    if (!organizer || !grid) return;
+    removeDeadlineDock();
+    if (!grid) return;
 
-    var search = document.getElementById("dlSearch");
-    var filter = document.getElementById("dlFilter");
-    var clear = document.getElementById("dlClear");
-    var results = document.getElementById("dlResults");
+    var dock = document.createElement("aside");
+    dock.id = "dlDock";
+    dock.className = "dl-dock";
+    dock.setAttribute("aria-label", "Deadline navigator");
+    dock.innerHTML = DOCK_MARKUP;
+    document.body.appendChild(dock);
+
+    var search = dock.querySelector("#dlSearch");
+    var pill = dock.querySelector("#dlPill");
+    var chips = Array.prototype.slice.call(dock.querySelectorAll(".dl-chip"));
+    var results = dock.querySelector("#dlResults");
+    var total = dock.querySelector("#dlTotal");
+    var posOut = dock.querySelector("#dlPos");
+    var appliedBtn = dock.querySelector("#dlApplied");
+    var appliedN = dock.querySelector("#dlAppliedN");
+    var wipe = dock.querySelector("#dlWipe");
+    var wipeTimer = 0;
     var empty = document.getElementById("dlEmpty");
-    var prev = document.getElementById("dlPrev");
-    var next = document.getElementById("dlNext");
-    var top = document.getElementById("dlTop");
+    var prev = dock.querySelector("#dlPrev");
+    var next = dock.querySelector("#dlNext");
+    var top = dock.querySelector("#dlTop");
+    var trackFill = dock.querySelector("#dlTrackFill");
     var cards = Array.prototype.slice.call(grid.querySelectorAll(".dl-card"));
-    var cursor = -1;
+    var state = { filter: "all", cursor: -1, shown: cards.length };
 
-    function categories(card) {
+    total.textContent = String(cards.length);
+    search.placeholder = "Search " + cards.length + " programs, hosts, fields";
+
+    /* ---- category tagging from the card's own search blob ---- */
+    var TAGS = [
+      ["ai", /ai|computer|software|cyber|data|programming|coding|informatics|algorithm|computing|technology|math|hackathon|robotics/],
+      ["engineering", /engineering|aerospace|avionics|mechanical|electrical|hardware|robot|radar|space|manufactur|systems|physics|materials/],
+      ["business", /business|entrepreneur|startup|finance|banking|management|economics|leadership|innovation|corporate|venture/],
+      ["international", /international|exchange|abroad|global|canada|germany|india|singapore|china|indonesia|europe|egypt|foreign/],
+    ];
+    cards.forEach(function (card) {
       var text = card.dataset.search || "";
-      var tags = [];
-      if (/ai|computer|software|cyber|data|programming|coding|informatics|algorithm|computing|technology|math|hackathon|robotics/.test(text)) tags.push("ai");
-      if (/engineering|aerospace|avionics|mechanical|electrical|hardware|robot|radar|space|manufactur|systems|physics|materials/.test(text)) tags.push("engineering");
-      if (/business|entrepreneur|startup|finance|banking|management|economics|leadership|innovation|corporate|venture/.test(text)) tags.push("business");
-      if (/international|exchange|abroad|global|canada|germany|india|singapore|china|indonesia|europe|egypt|foreign/.test(text)) tags.push("international");
-      return tags;
+      card.dataset.tags = TAGS.filter(function (t) { return t[1].test(text); })
+        .map(function (t) { return t[0]; }).join(" ");
+    });
+
+    /* ---- the sliding pill under the active chip ---- */
+    function movePill(chip) {
+      if (!chip) return;
+      var width = chip.offsetWidth, left = chip.offsetLeft;
+      pill.classList.add("is-on");
+      pill.style.width = width + "px";
+      pill.style.transform = "translateX(" + left + "px)";
+      /* keep the active chip centred as the strip scrolls at narrow widths */
+      var strip = chip.parentNode;
+      var target = Math.max(0, left - (strip.clientWidth - width) / 2);
+      if (strip.scrollTo) strip.scrollTo({ left: target, behavior: reducedMotion ? "auto" : "smooth" });
+      else strip.scrollLeft = target;
+    }
+    function setFilter(name, chip) {
+      state.filter = name;
+      state.cursor = -1;
+      chips.forEach(function (c) {
+        var on = c === chip;
+        c.classList.toggle("is-on", on);
+        c.setAttribute("aria-pressed", String(on));
+      });
+      movePill(chip);
+      refreshApplied();
+      apply();
     }
 
     function matches(card) {
       var query = (search.value || "").trim().toLowerCase();
-      var selected = filter.value;
-      var textMatch = !query || card.dataset.search.indexOf(query) !== -1;
-      var status = card.querySelector(".dl-card__status");
-      var statusMatch = true;
-      if (selected === "soon") statusMatch = !!status && (status.classList.contains("s-soon") || status.classList.contains("s-upcoming"));
-      if (selected === "rolling") statusMatch = card.dataset.rolling === "true" || !!status && status.classList.contains("s-open");
-      var categoryMatch = ["all", "soon", "rolling"].indexOf(selected) !== -1 || categories(card).indexOf(selected) !== -1;
-      return textMatch && statusMatch && categoryMatch;
+      if (query && (card.dataset.search || "").indexOf(query) === -1) return false;
+      var f = state.filter;
+      if (f === "all") return true;
+      if (f === "applied") return card.classList.contains("is-applied");
+      if (f === "soon") {
+        var st = card.querySelector(".dl-card__status");
+        return !!st && (st.classList.contains("s-soon") || st.classList.contains("s-upcoming"));
+      }
+      if (f === "rolling") {
+        var s2 = card.querySelector(".dl-card__status");
+        return card.dataset.rolling === "true" || (!!s2 && s2.classList.contains("s-open"));
+      }
+      return (" " + (card.dataset.tags || "") + " ").indexOf(" " + f + " ") !== -1;
+    }
+
+    /* ---- result meter counts to its new value instead of snapping ---- */
+    function setCount(n) {
+      var from = parseInt(results.textContent, 10);
+      if (from === n) { results.textContent = String(n); return; }
+      if (!canAnime || !isFinite(from)) { results.textContent = String(n); return; }
+      var box = { v: from };
+      try {
+        anime.animate(box, {
+          v: n, duration: 520, ease: "out(3)",
+          onUpdate: function () {
+            var v = Math.round(box.v);
+            results.textContent = String(isFinite(v) ? v : n);
+          },
+          onComplete: function () { results.textContent = String(n); },
+        });
+      } catch (err) { results.textContent = String(n); return; }
+      /* the count must land on the truth even if the frame loop stalls */
+      window.setTimeout(function () {
+        if (results.textContent !== String(n)) results.textContent = String(n);
+      }, 620);
     }
 
     function apply() {
       var visible = [];
       cards.forEach(function (card) {
+        var wasHidden = card.classList.contains("is-filtered");
         var show = matches(card);
         card.classList.toggle("is-filtered", !show);
-        if (show) visible.push(card);
+        if (show) {
+          /* cards returning from a filter lift back in with a short stagger */
+          if (wasHidden && canAnime && !reducedMotion) {
+            var i = visible.length;
+            try {
+              anime.animate(card, {
+                opacity: [0, 1],
+                translateY: [12, 0],
+                duration: 460,
+                delay: Math.min(i, 12) * 24,
+                ease: "out(3)",
+              });
+            } catch (err) { /* decorative */ }
+          }
+          visible.push(card);
+        }
       });
-      results.textContent = visible.length + " / " + cards.length + " programs";
-      empty.hidden = visible.length > 0;
-      if (cursor >= visible.length) cursor = visible.length - 1;
+      state.shown = visible.length;
+      setCount(visible.length);
+      if (empty) empty.hidden = visible.length > 0;
+      if (state.cursor >= visible.length) state.cursor = visible.length - 1;
+      setPos(state.cursor, visible.length);
       return visible;
+    }
+
+    /* ---- where you are in the deck, shown only once you start stepping ---- */
+    function setPos(index, count) {
+      if (!posOut) return;
+      if (index < 0 || !count) { posOut.classList.remove("is-on"); return; }
+      posOut.innerHTML = "<b>" + pad(index + 1) + "</b> / " + count;
+      posOut.classList.add("is-on");
+    }
+
+    /* ---- the applied tally: counts what is ticked, and arms the wipe ---- */
+    function markedCards() {
+      return cards.filter(function (card) { return card.classList.contains("is-applied"); });
+    }
+
+    function disarmWipe() {
+      if (!wipe) return;
+      wipe.classList.remove("is-armed");
+      wipe.setAttribute("aria-label", "Clear all applied marks");
+    }
+
+    function refreshApplied() {
+      var n = markedCards().length;
+      dock.classList.toggle("has-marks", n > 0);
+      /* collapsed controls must not stay clickable or focusable */
+      if (appliedBtn) appliedBtn.disabled = n === 0;
+      if (wipe) wipe.disabled = n === 0;
+      if (appliedN) {
+        var before = appliedN.textContent;
+        appliedN.textContent = String(n);
+        if (before !== String(n) && canAnime && !reducedMotion) {
+          try { anime.animate(appliedN, { scale: [1.45, 1], duration: 440, ease: "out(4)" }); } catch (err) { /* decorative */ }
+        }
+      }
+      if (appliedBtn) {
+        var on = state.filter === "applied";
+        appliedBtn.classList.toggle("is-on", on);
+        appliedBtn.setAttribute("aria-pressed", String(on));
+      }
+      disarmWipe();
+    }
+
+    /* wiping is destructive and one stray click away — so it asks once,
+       then defuses itself if you carry on doing something else */
+    function clearMarks() {
+      var marked = markedCards();
+      if (!marked.length) return;
+      appliedKeys = [];
+      saveMarks();
+      /* state first — the tally must never claim marks that are already gone */
+      marked.forEach(function (card) { markCard(card, false, false); });
+      announce("Cleared all applied marks.");
+      refreshApplied();
+
+      /* then the unwind: each row dips and returns in a quick wave */
+      if (canAnime && !reducedMotion) {
+        marked.forEach(function (card, i) {
+          try {
+            anime.animate(card, {
+              opacity: [1, 0.28], duration: 240, delay: i * 22, ease: "out(3)",
+              onComplete: function () {
+                try { anime.animate(card, { opacity: [0.28, 1], duration: 400, ease: "out(3)" }); } catch (err) { /* fine */ }
+              },
+            });
+          } catch (err) { /* decorative */ }
+        });
+      }
+      window.setTimeout(apply, 420);
+    }
+
+    /* ---- jump: filter → cursor → flash → scroll → open ---- */
+    function focusCard(card, count) {
+      cards.forEach(function (c) { c.classList.remove("is-nav-target"); });
+      void card.offsetWidth;
+      card.classList.add("is-nav-target");
+      card.style.scrollMarginBottom = "8rem";
+      /* Lenis rewrites the scroll position every frame, so a native smooth
+         scrollIntoView gets yanked back — hand the jump to Lenis instead. */
+      var rect = card.getBoundingClientRect();
+      var top = (window.scrollY || window.pageYOffset || 0) + rect.top;
+      var centre = Math.max(0, Math.round(top - (window.innerHeight - rect.height) / 2));
+      if (lenis && lenis.scrollTo) lenis.scrollTo(centre, { duration: reducedMotion ? 0 : 0.85 });
+      else card.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "center" });
+      var head = card.querySelector(".dl-card__head");
+      if (head && head.getAttribute("aria-expanded") !== "true") head.click();
+      setPos(state.cursor, count);
     }
 
     function jump(delta) {
       var visible = apply();
       if (!visible.length) return;
-      cursor = cursor < 0 ? (delta > 0 ? 0 : visible.length - 1) : (cursor + delta + visible.length) % visible.length;
-      var card = visible[cursor];
-      cards.forEach(function (item) { item.classList.remove("is-nav-target"); });
-      card.classList.add("is-nav-target");
-      card.scrollIntoView({ behavior: "smooth", block: "center" });
-      var head = card.querySelector(".dl-card__head");
-      if (head && head.getAttribute("aria-expanded") !== "true") head.click();
+      state.cursor = state.cursor < 0
+        ? (delta > 0 ? 0 : visible.length - 1)
+        : (state.cursor + delta + visible.length) % visible.length;
+      focusCard(visible[state.cursor], visible.length);
     }
 
-    search.addEventListener("input", function () { cursor = -1; apply(); });
-    filter.addEventListener("change", function () { cursor = -1; apply(); });
-    clear.addEventListener("click", function () { search.value = ""; filter.value = "all"; cursor = -1; apply(); search.focus(); });
+    function jumpTo(index) {
+      var visible = apply();
+      if (!visible.length) return;
+      state.cursor = Math.max(0, Math.min(visible.length - 1, index));
+      focusCard(visible[state.cursor], visible.length);
+    }
+
+    chips.forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        var name = chip.dataset.filter;
+        if (name === state.filter) { setFilter("all", chips[0]); return; }
+        setFilter(name, chip);
+      });
+    });
+
+    /* the tally doubles as the filter switch; the ✕ beside it clears */
+    if (appliedBtn) {
+      appliedBtn.addEventListener("click", function () {
+        if (state.filter === "applied") { setFilter("all", chips[0]); return; }
+        setFilter("applied", chips.filter(function (c) { return c.dataset.filter === "applied"; })[0] || chips[0]);
+      });
+    }
+    if (wipe) {
+      wipe.addEventListener("click", function () {
+        if (!wipe.classList.contains("is-armed")) {
+          wipe.classList.add("is-armed");
+          wipe.setAttribute("aria-label", "Confirm clearing all applied marks");
+          if (wipeTimer) window.clearTimeout(wipeTimer);
+          wipeTimer = window.setTimeout(disarmWipe, 3400);
+          return;
+        }
+        if (wipeTimer) window.clearTimeout(wipeTimer);
+        clearMarks();
+      });
+    }
+
+    /* any tick anywhere in the list routes back through here */
+    dockMarkHook = function () { refreshApplied(); apply(); };
+    search.addEventListener("input", function () { state.cursor = -1; apply(); });
     prev.addEventListener("click", function () { jump(-1); });
     next.addEventListener("click", function () { jump(1); });
-    top.addEventListener("click", function () { organizer.scrollIntoView({ behavior: "smooth", block: "start" }); search.focus(); });
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "/" && document.activeElement !== search && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "SELECT") {
-        event.preventDefault(); search.focus();
-      }
-      if (event.key === "Escape" && document.activeElement === search) { search.value = ""; apply(); search.blur(); }
+    top.addEventListener("click", function () {
+      if (lenis) lenis.scrollTo(grid, { offset: -90, duration: 1.1 });
+      else grid.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
     });
+
+    /* ---- keyboard: / focuses, ↑ ↓ step, Esc clears ---- */
+    document.addEventListener("keydown", function (event) {
+      var tag = (document.activeElement && document.activeElement.tagName) || "";
+      var typing = tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA";
+      if (event.key === "/" && !typing) { event.preventDefault(); search.focus(); return; }
+      if (event.key === "Escape" && document.activeElement === search) {
+        search.value = ""; state.cursor = -1; apply(); search.blur(); return;
+      }
+      if (typing) return;
+      if (event.key === "ArrowDown" || event.key === "j") { event.preventDefault(); jump(1); }
+      else if (event.key === "ArrowUp" || event.key === "k") { event.preventDefault(); jump(-1); }
+      else if (event.key === "Home") { event.preventDefault(); jumpTo(0); }
+      else if (event.key === "End") { event.preventDefault(); jumpTo(state.shown - 1); }
+      else if (event.key === "x") {
+        event.preventDefault();
+        var pick = document.querySelector(".dl-card.is-nav-target");
+        if (!pick) { var shown = apply(); pick = shown.length ? shown[0] : null; }
+        var tick = pick ? pick.querySelector(".dl-card__check") : null;
+        if (tick) tick.click();
+      }
+    });
+
+    /* ---- the float: an idle bob plus a nudge from scroll velocity ---- */
+    var shell = dock.querySelector(".dl-dock__shell");
+    var bob = { y: 0, push: 0, vel: 0, raf: 0, last: 0, y0: window.scrollY || 0, wrote: null, wroteVel: null };
+    function bobStep(now) {
+      bob.raf = window.requestAnimationFrame(bobStep);
+      var t = now || performance.now();
+      var dt = bob.last ? Math.min(48, t - bob.last) : 16;
+      bob.last = t;
+      bob.push *= Math.pow(0.9, dt / 16);
+      bob.vel *= Math.pow(0.88, dt / 16);
+      var idle = Math.sin(t / 1300) * 3;
+      bob.y += (idle + bob.push - bob.y) * Math.min(1, dt / 150);
+      var y = Math.round(bob.y * 100) / 100;
+      if (y !== bob.wrote) {
+        bob.wrote = y;
+        shell.style.translate = "0 " + y + "px";
+      }
+      var vel = Math.round(bob.vel * 100) / 100;
+      if (vel !== bob.wroteVel) {
+        bob.wroteVel = vel;
+        dock.style.setProperty("--vel", String(vel));
+      }
+    }
+    function onFloatScroll() {
+      var y = window.scrollY || window.pageYOffset || 0;
+      var dy = y - bob.y0;
+      bob.y0 = y;
+      if (!dy) return;
+      bob.push = Math.max(-9, Math.min(15, bob.push - dy * 0.55));
+      bob.vel = Math.min(1, bob.vel + Math.abs(dy) / 90);
+    }
+    window.addEventListener("scroll", onFloatScroll, { passive: true });
+    dockFloatStop = function () {
+      if (bob.raf) { window.cancelAnimationFrame(bob.raf); bob.raf = 0; }
+      window.removeEventListener("scroll", onFloatScroll);
+      shell.style.translate = "";
+    };
+
+    /* ---- reveal while the list is on screen; tuck away at the footer ---- */
+    function setLive(on) {
+      dock.classList.toggle("is-live", !!on);
+      if (on) {
+        if (!reducedMotion && !bob.raf) { bob.last = 0; bob.raf = window.requestAnimationFrame(bobStep); }
+        return;
+      }
+      if (bob.raf) { window.cancelAnimationFrame(bob.raf); bob.raf = 0; }
+      shell.style.translate = "";
+      dock.style.setProperty("--vel", "0");
+    }
+    var footer = document.querySelector(".foot");
+    var visibleSet = false, footerSet = false;
+    function sync() { setLive(visibleSet && !footerSet); }
+    if (typeof IntersectionObserver === "function") {
+      dockIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.target === grid) visibleSet = e.isIntersecting;
+          else if (e.target === footer) footerSet = e.isIntersecting;
+        });
+        sync();
+      }, { rootMargin: "-15% 0px -20% 0px" });
+      dockIO.observe(grid);
+      if (footer) dockIO.observe(footer);
+    } else {
+      visibleSet = true; sync();
+    }
+
+    /* ---- progress rail: how far through the deck you are ---- */
+    function trackProgress() {
+      var rect = grid.getBoundingClientRect();
+      var vh = window.innerHeight || 1;
+      var span = rect.height - vh * 0.5;
+      var p = span > 0 ? (vh * 0.35 - rect.top) / span : 0;
+      trackFill.style.transform = "scaleX(" + Math.max(0, Math.min(1, p)).toFixed(4) + ")";
+    }
+    trackProgress();
+    if (lenis) lenis.on("scroll", trackProgress);
+    window.addEventListener("scroll", trackProgress, { passive: true });
+    window.addEventListener("resize", function () { movePill(dock.querySelector(".dl-chip.is-on")); trackProgress(); }, { passive: true });
+
+    /* ---- entrance: the bar assembles itself, then the chips stagger in ---- */
+    if (canAnime && !reducedMotion) {
+      try {
+        anime.animate([
+          dock.querySelector(".dl-dock__brand"),
+          dock.querySelector(".dl-dock__rule"),
+          dock.querySelector(".dl-dock__field"),
+          dock.querySelector(".dl-dock__meter"),
+          dock.querySelector(".dl-dock__steps"),
+        ], {
+          opacity: [0, 1],
+          translateY: [10, 0],
+          duration: 640,
+          delay: anime.stagger(55, { start: 300 }),
+          ease: "out(3)",
+        });
+        anime.animate(chips, {
+          opacity: [0, 1],
+          translateY: [8, 0],
+          duration: 620,
+          delay: anime.stagger(42, { start: 620 }),
+          ease: "out(3)",
+        });
+      } catch (err) { /* decorative */ }
+    }
+
+    requestAnimationFrame(function () { movePill(dock.querySelector(".dl-chip.is-on")); });
+    refreshApplied();
     apply();
   }
 
