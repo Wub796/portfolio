@@ -75,7 +75,11 @@
     <div id="dlGrid" class="dl">
       <!-- populated by js/main.js from DEADLINES data -->
     </div>
-    <p class="dl-empty" id="dlEmpty" hidden>No matching programs. Reset the dock filters or try another search.</p>
+    <div class="dl-empty" id="dlEmpty" hidden>
+      <span class="dl-empty__mark" aria-hidden="true"><span></span><span></span></span>
+      <p class="dl-empty__copy" data-empty-copy>No programs in this field yet. Pick another filter above.</p>
+      <button class="dl-empty__reset" id="dlReset" type="button" hidden>Show every program</button>
+    </div>
     <!-- the floating dock is injected into <body> by js/main.js -->
   </div>
 </section>

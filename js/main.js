@@ -2225,6 +2225,8 @@
     var wipe = dock.querySelector("#dlWipe");
     var wipeTimer = 0;
     var empty = document.getElementById("dlEmpty");
+    var emptyReset = document.getElementById("dlReset");
+    var deck = document.getElementById("deadlines");
     var prev = dock.querySelector("#dlPrev");
     var next = dock.querySelector("#dlNext");
     var top = dock.querySelector("#dlTop");
@@ -2314,6 +2316,7 @@
     }
 
     function apply() {
+      var wasShown = state.shown;
       var visible = [];
       cards.forEach(function (card) {
         var wasHidden = card.classList.contains("is-filtered");
@@ -2338,10 +2341,37 @@
       });
       state.shown = visible.length;
       setCount(visible.length);
-      if (empty) empty.hidden = visible.length > 0;
+      /* only say it on the way down, so typing never repeats itself */
+      if (!visible.length && wasShown) announce(emptyCopy());
+      if (empty) {
+        empty.hidden = visible.length > 0;
+        if (!empty.hidden) {
+          var msg = empty.querySelector("[data-empty-copy]");
+          if (msg) msg.textContent = emptyCopy();
+          /* the escape hatch only earns its place when something is narrowing the list */
+          if (emptyReset) emptyReset.hidden = !isNarrowed();
+        }
+      }
       if (state.cursor >= visible.length) state.cursor = visible.length - 1;
       setPos(state.cursor, visible.length);
+      /* an empty deck collapses the grid, so the shell's own visibility rule
+         has to be re-checked the instant the filter changes */
+      sync();
       return visible;
+    }
+
+    function isNarrowed() {
+      return state.filter !== "all" || !!(search.value || "").trim();
+    }
+
+    /* the empty state has to say which filter emptied the deck */
+    function emptyCopy() {
+      var query = (search.value || "").trim();
+      if (query) return "Nothing matches \u201c" + query + "\u201d. Clear the search, or pick another field.";
+      if (state.filter === "applied") return "Nothing marked as applied yet \u2014 tick a program's rail to start your list.";
+      if (state.filter === "soon") return "Nothing is closing soon. Try Rolling, or another field.";
+      if (state.filter === "rolling") return "Nothing is rolling or open right now. Try Closing soon.";
+      return "No programs in this field yet. Pick another filter above, or search the whole deck.";
     }
 
     /* ---- where you are in the deck, shown only once you start stepping ---- */
@@ -2481,9 +2511,20 @@
     prev.addEventListener("click", function () { jump(-1); });
     next.addEventListener("click", function () { jump(1); });
     top.addEventListener("click", function () {
-      if (lenis) lenis.scrollTo(grid, { offset: -90, duration: 1.1 });
-      else grid.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+      /* an empty grid has no height to scroll to, so aim at the section itself */
+      var anchor = state.shown ? grid : (deck || grid);
+      if (lenis) lenis.scrollTo(anchor, { offset: -90, duration: 1.1 });
+      else anchor.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
     });
+    if (emptyReset) {
+      emptyReset.addEventListener("click", function () {
+        search.value = "";
+        setFilter("all", chips[0]);
+        var anchor = deck || grid;
+        if (lenis) lenis.scrollTo(anchor, { offset: -90, duration: 0.9 });
+        else anchor.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+      });
+    }
 
     /* ---- keyboard: / focuses, ↑ ↓ step, Esc clears ---- */
     document.addEventListener("keydown", function (event) {
@@ -2557,20 +2598,32 @@
       dock.style.setProperty("--vel", "0");
     }
     var footer = document.querySelector(".foot");
-    var visibleSet = false, footerSet = false;
-    function sync() { setLive(visibleSet && !footerSet); }
+    var gridSet = false, deckSet = false, footerSet = false;
+    /* An empty result collapses the grid to zero height, which is exactly when
+       the navigator matters most: it is the only way back out of that filter.
+       So while nothing matches, the deck's own section keeps it awake and the
+       footer stops tucking it away. */
+    function deckEmpty() { return state.shown === 0; }
+    function sync() {
+      var wanting = deckEmpty();
+      var onDeck = gridSet || (wanting && (deckSet || footerSet));
+      /* the footer only tucks it away while there is still a list to leave */
+      setLive(onDeck && !(footerSet && !wanting));
+    }
     if (typeof IntersectionObserver === "function") {
       dockIO = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
-          if (e.target === grid) visibleSet = e.isIntersecting;
+          if (e.target === grid) gridSet = e.isIntersecting;
+          else if (e.target === deck) deckSet = e.isIntersecting;
           else if (e.target === footer) footerSet = e.isIntersecting;
         });
         sync();
       }, { rootMargin: "-15% 0px -20% 0px" });
       dockIO.observe(grid);
+      if (deck && deck !== grid) dockIO.observe(deck);
       if (footer) dockIO.observe(footer);
     } else {
-      visibleSet = true; sync();
+      gridSet = true; sync();
     }
 
     /* ---- progress rail: how far through the deck you are ---- */
