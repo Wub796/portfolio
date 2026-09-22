@@ -22,8 +22,10 @@
   --olive:#381f13;
   --dark:#1c1b1d;
   --red-brown:#7f3b2d;
-  --f-display:'Antonio','Rader',sans-serif;
-  --f-body:'Formula-Narrow','General',system-ui,sans-serif;
+  /* Awwwards-inspired editorial pairing: Rader has a human, slightly
+     idiosyncratic silhouette; General keeps long-form copy calm and legible. */
+  --f-display:'Rader',sans-serif;
+  --f-body:'General','Robert',system-ui,sans-serif;
   --f-mono:'Supply-Mono','Circular',ui-monospace,monospace;
   --gutter:clamp(1.1rem,4vw,3.5rem);
   --ease:cubic-bezier(.16,1,.3,1);
@@ -50,7 +52,7 @@
   --p6:#b98a5a; --p7:#d9b26a; --p8:#8a6a4f; --p9:#e8c89b;
 }
 
-/* ---------- PP Rader / Formula / Supply Mono (from prashantkoirala465/web-development-portfolio) ---------- */
+/* ---------- Local type system: Rader / General / Formula / Supply Mono ---------- */
 @font-face{font-family:'Rader';src:url('../assets/fonts/rader/PPRader-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:'Rader';src:url('../assets/fonts/rader/PPRader-Medium.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
 @font-face{font-family:'Rader';src:url('../assets/fonts/rader/PPRader-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
@@ -64,6 +66,9 @@
 @font-face{font-family:'Antonio';src:url('../assets/fonts/antonio/Antonio-400.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:'Antonio';src:url('../assets/fonts/antonio/Antonio-600.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
 @font-face{font-family:'Antonio';src:url('../assets/fonts/antonio/Antonio-700.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'General';src:url('../assets/fonts/general.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:'Robert';src:url('../assets/fonts/robert-regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Robert';src:url('../assets/fonts/robert-medium.woff2') format('woff2');font-weight:500 700;font-style:normal;font-display:swap}
 
 *,*::before,*::after{box-sizing:border-box}
 html{background:var(--bg);color-scheme:light;scroll-behavior:smooth;-webkit-text-size-adjust:100%;transition:background-color .6s var(--ease)}
@@ -94,7 +99,7 @@ a:hover{color:var(--accent)}
 .wrap{max-width:1240px;margin:0 auto;padding:0 var(--gutter)}
 
 /* ---------- MILK & BROWN (Fullstack-Empire GSAP-Awwwards) + PRASHANT BRUTALISM ---------- */
-/* condensed Antonio display: huge, bold, brutally tight tracking */
+/* Rader display: expressive but controlled, with deliberate editorial contrast */
 .hero__name,.sec__title,.marquee__track span,.manifesto,.row__name,.phase b,.dl-card__t b,.foot__giant,.nav__brand,.cta__large{letter-spacing:-.03em}
 .panel,.mission__col,.rule,.schedule-wrap,.kpi,.stack__i{border:2px solid var(--text)}
 .panel,.mission__col,.rule{border-radius:1.2em}
@@ -387,7 +392,7 @@ main#top.is-arriving{opacity:0;transform:translateY(24px);transition:none}
   color:var(--muted);margin:0 0 2.2rem;display:flex;align-items:center;gap:.8rem;
 }
 .eyebrow::before{content:'';width:44px;height:1px;background:var(--accent);display:inline-block}
-.hero__name{margin:0 0 2.4rem;font-family:var(--f-display);font-weight:400;letter-spacing:-.01em;line-height:.92;text-transform:uppercase;font-feature-settings:'ss01' on}
+.hero__name{margin:0 0 2.4rem;font-family:var(--f-display);font-weight:500;letter-spacing:-.025em;line-height:.92;text-transform:uppercase}
 .hero__l1{display:block;font-size:clamp(3rem,12vw,10.5rem)}
 .hero__l2{
   display:block;font-size:clamp(3rem,12vw,10.5rem);
@@ -455,7 +460,7 @@ main#top.is-arriving{opacity:0;transform:translateY(24px);transition:none}
   font-weight:800;font-size:clamp(2.6rem,6vw,4.6rem);line-height:1;flex-shrink:0;
   color:transparent;-webkit-text-stroke:1px var(--line-strong);font-family:var(--f-mono);font-weight:700;
 }
-.sec__title{font-family:var(--f-display);font-size:clamp(2.1rem,5.4vw,3.9rem);font-weight:400;letter-spacing:-.01em;line-height:1;margin:0;text-transform:uppercase;font-feature-settings:'ss01' on}
+.sec__title{font-family:var(--f-display);font-size:clamp(2.1rem,5.4vw,3.9rem);font-weight:500;letter-spacing:-.025em;line-height:1;margin:0;text-transform:uppercase}
 .sec__label{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin:.55rem 0 0}
 
 .mini-h{
@@ -503,8 +508,8 @@ ul.check li strong{color:var(--text);font-weight:600}
 
 /* ---------- manifesto / mission ---------- */
 .manifesto{
-  font-family:var(--f-display);font-feature-settings:'ss01' on;font-weight:400;
-  font-size:clamp(1.5rem,3.6vw,2.7rem);line-height:1.28;letter-spacing:-.015em;
+  font-family:var(--f-display);font-weight:400;
+  font-size:clamp(1.5rem,3.6vw,2.7rem);line-height:1.28;letter-spacing:-.02em;
   margin:0 0 3rem;max-width:980px;
 }
 .manifesto em{color:var(--accent);font-style:normal;font-weight:600}
@@ -527,7 +532,7 @@ ul.check li strong{color:var(--text);font-weight:600}
   font-family:var(--f-mono);font-size:.78rem;font-weight:700;color:transparent;
   -webkit-text-stroke:1px var(--line-strong);letter-spacing:.06em;
 }
-.row__name{font-family:var(--f-display);font-feature-settings:'ss01' on;font-weight:400;font-size:clamp(1.15rem,2.2vw,1.55rem);letter-spacing:-.01em;text-transform:uppercase;transition:color .3s}
+.row__name{font-family:var(--f-display);font-weight:500;font-size:clamp(1.15rem,2.2vw,1.55rem);letter-spacing:-.02em;text-transform:uppercase;transition:color .3s}
 .row:hover .row__name{color:var(--accent)}
 .row__mid{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
 .row__val{font-family:var(--f-mono);font-size:.84rem;color:var(--text);white-space:nowrap}
@@ -549,7 +554,7 @@ ul.check li strong{color:var(--text);font-weight:600}
   -webkit-text-stroke:1px var(--line-strong);
 }
 .phase--live .phase__n{color:var(--accent);-webkit-text-stroke:0}
-.phase b{font-family:var(--f-display);font-feature-settings:'ss01' on;font-weight:400;font-size:clamp(1.05rem,2vw,1.4rem);text-transform:uppercase;letter-spacing:-.01em}
+.phase b{font-family:var(--f-display);font-weight:500;font-size:clamp(1.05rem,2vw,1.4rem);text-transform:uppercase;letter-spacing:-.02em}
 .phase--live b{color:var(--accent)}
 .phase__d{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-left:.8rem}
 .phase p{margin:.3rem 0 0;color:var(--muted);font-size:.86rem;max-width:760px}
@@ -1489,7 +1494,7 @@ body[data-planet="deadlines"]{--accent:var(--p9)}
 }
 .foot__nav a:hover{background:rgba(255,255,255,.07);border-color:var(--lime)}
 .foot__nav .fn__k{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45)}
-.foot__nav .fn__t{font-family:var(--f-display);font-weight:400;font-size:clamp(1.15rem,2.2vw,1.6rem);text-transform:uppercase;letter-spacing:-.01em;color:#fff;transition:color .3s;white-space:nowrap}
+.foot__nav .fn__t{font-family:var(--f-display);font-weight:500;font-size:clamp(1.15rem,2.2vw,1.6rem);text-transform:uppercase;letter-spacing:-.02em;color:#fff;transition:color .3s;white-space:nowrap}
 .foot__nav a:hover .fn__t{color:var(--lime)}
 .foot__nav .fn__next{text-align:right;align-items:flex-end}
 @media (max-width:560px){.foot__nav{flex-direction:column}}
