@@ -1501,3 +1501,131 @@ body[data-planet="deadlines"]{--accent:var(--p9)}
 
 /* dead pages keep the giant footer legible */
 body[data-planet="deadlines"] .foot{border-color:rgba(242,231,213,.5)}
+
+/* ============================================================
+   GSAP + DESIGN CRAFT ENHANCEMENTS
+   Typography polish, spotlight cards, 3D tilt perspective,
+   velocity marquee override, split-text characters, and
+   concentric border-radius refinements.
+   Inspired by: jakubkrehel/skills (better-typography, better-ui),
+   ibelick/ui-skills (baseline-ui), React Bits (TiltedCard, SpotlightCard).
+   ============================================================ */
+
+/* ---- Typography craft (jakubkrehel/skills better-typography) ---- */
+.hero__name, .sec__title, .foot__giant,
+.manifesto, h1, h2, h3 {
+  text-wrap: balance;
+}
+.hero__sub, .sec__label, p, blockquote {
+  text-wrap: pretty;
+}
+.hero__stat b, .kpi b, .c-num {
+  font-variant-numeric: tabular-nums;
+}
+/* tighter tracking on large display type */
+.hero__name {
+  letter-spacing: -0.03em;
+}
+.sec__title {
+  letter-spacing: -0.02em;
+}
+.foot__giant {
+  letter-spacing: -0.04em;
+}
+/* expanded tracking for small caps tags */
+.hero__tags span, .eyebrow, .sec__num {
+  letter-spacing: 0.06em;
+}
+
+/* ---- Split text characters (GSAP hero entrance) ---- */
+.split-char {
+  display: inline-block;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+.hero__l2-text {
+  display: inline;
+}
+
+/* ---- 3D tilt perspective (React Bits TiltedCard) ---- */
+.sys__dock-btn, .uni, .kpi, .dl-card {
+  perspective: 800px;
+  transform-style: preserve-3d;
+}
+
+/* ---- Spotlight cursor glow (React Bits SpotlightCard) ---- */
+.has-spotlight {
+  position: relative;
+  overflow: hidden;
+}
+.has-spotlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    280px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(227, 164, 88, 0.12) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.has-spotlight:hover::before {
+  opacity: 1;
+}
+/* on dark planet, brighter spotlight */
+body[data-planet="deadlines"] .has-spotlight::before {
+  background: radial-gradient(
+    280px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(232, 200, 155, 0.18) 0%,
+    transparent 100%
+  );
+}
+
+/* ---- Concentric border radius (jakubkrehel/skills better-ui) ---- */
+/* inner_radius = outer_radius - padding */
+.sys__dock-btn {
+  border-radius: 12px;
+}
+.sys__dock-btn .sys__dock-dot {
+  border-radius: 6px; /* 12px - ~6px padding */
+}
+
+/* ---- Velocity marquee GSAP override ---- */
+/* When GSAP controls the marquee, disable the CSS animation */
+.marquee__track {
+  will-change: transform;
+}
+
+/* ---- Scroll-driven section head reveals ---- */
+.sec__head {
+  will-change: transform, opacity;
+}
+
+/* ---- Motion timing: interactions ≤ 200ms (ibelick baseline-ui) ---- */
+.nav__links a,
+.rail__node,
+.sys__dock-btn,
+.cta,
+.fn__prev, .fn__next {
+  transition-duration: 180ms;
+}
+
+/* ---- Reduced motion: strip all GSAP-added transforms ---- */
+@media (prefers-reduced-motion: reduce) {
+  .split-char,
+  .has-spotlight::before,
+  .sec__head {
+    will-change: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -72,6 +72,30 @@
       note: "Build with real NASA mission data — log ARES-1, Flight Logger, reaction wheel & rover hours for hardware.",
     },
     {
+      org: "U.S. Naval Sea Cadet Corps",
+      name: "Sea Cadet National Council",
+      type: "Leadership Selection",
+      status: "open",
+      events: [
+        ["Applications Open", "September 24, 2026"],
+        ["Selection", "Elite national leadership tier for advanced cadets"],
+        ["Serving Year", "Council term with national program representation"],
+      ],
+      note: "Applications opened Sep 24, 2026 — the national leadership tier above squadron billets. Pairs with PO1 coursework and Sea Cadet squad-leader experience.",
+    },
+    {
+      org: "Houston Volleyball Academy",
+      name: "HVA Elite Academy 2026–27",
+      type: "Athletics · Invitation",
+      status: "open",
+      events: [
+        ["Invitation Received", "September 24, 2026 — time-sensitive"],
+        ["Group Cap", "16 athletes per training group"],
+        ["Season", "2026–27 club year"],
+      ],
+      note: "Invitation to apply for the selective HVA Elite Academy, on top of the 16 White-Yari national club season.",
+    },
+    {
       org: "NASA",
       name: "NASA HUNCH (Software · Hardware · Data Science)",
       type: "Engineering Competition",
@@ -237,7 +261,7 @@
     },
     {
       org: "NASA Johnson Space Center",
-      name: "NASA High School Aerospace Scholars (HAS)",
+      name: "NASA High School Aerospace Scholars (HAS) / TAS Launch Pad",
       type: "Aerospace Program",
       status: "countdown",
       primary: "2026-10-20T23:59:00-05:00",
@@ -246,7 +270,7 @@
         ["Online Coursework", "Junior Year"],
         ["JSC On-Site Residency", "June – July"],
       ],
-      note: "Online course with Johnson Space Center residential experience.",
+      note: "TAS Launch Pad 2026–27 secured — offer accepted Sep 10, 2026 for the year-long online academy and Johnson Space Center residency. This countdown tracks the next application window.",
     },
     {
       org: "Columbia University",
@@ -288,13 +312,80 @@
       org: "Conrad Foundation · Space Center Houston",
       name: "The Conrad Challenge",
       type: "Innovation Competition",
-      status: "open",
+      status: "countdown",
+      primary: "2026-10-29T23:59:00-05:00",
       events: [
-        ["Team Formation", "Aug 15–31, 2026 — 3–5 members + coach · aerospace / aviation track"],
-        ["Innovation Stage", "Investor pitch + business plan — fall 2026"],
-        ["Semifinals", "Jan 15 – Feb 15, 2027"],
+        ["Phase 1 Submission", "October 29, 2026 — investor pitch + technical design"],
+        ["Phase 2 Submission", "January 7, 2027"],
+        ["Innovation Summit", "Live finals at Space Center Houston"],
       ],
-      note: "Prototype an aerospace innovation and commercial spaceflight business plan through technical design review.",
+      note: "The Schollective team is entering — a student-faculty research mentorship platform pitched on the social innovation track.",
+    },
+    {
+      org: "Texas College Access Network (TxCAN)",
+      name: "TxCAN Pitch Competition",
+      type: "Pitch Competition",
+      status: "countdown",
+      primary: "2027-01-08T23:59:00-06:00",
+      events: [
+        ["Interest Form", "Due October 15, 2026"],
+        ["Application Deadline", "January 8, 2027"],
+        ["Award", "$5,000 equity-free grant for Texas student access pathways"],
+      ],
+      note: "Funds student-built tools that widen Texas college access and transition pathways — a direct fit for Schollective's mentor matching.",
+    },
+    {
+      org: "University of Delaware · Horn Entrepreneurship",
+      name: "Diamond Challenge",
+      type: "Entrepreneurship Competition",
+      status: "countdown",
+      primary: "2027-01-14T23:59:00-05:00",
+      events: [
+        ["Opens", "September 16, 2026"],
+        ["Submission Deadline", "January 14, 2027"],
+        ["Prize Pool", "$12,000 first prize from a $100,000 pool · three pitch rounds → Delaware summit"],
+      ],
+      note: "Social innovation track: pitch the venture in three elimination rounds over the winter and spring.",
+      link: "https://diamondchallenge.org/",
+    },
+    {
+      org: "SXSW EDU",
+      name: "Student Impact Challenge",
+      type: "Pitch Competition",
+      status: "countdown",
+      primary: "2027-02-02T23:59:00-06:00",
+      events: [
+        ["Submission Deadline", "February 2, 2027"],
+        ["Live Pitch Showcase", "SXSW EDU, Austin, TX"],
+        ["Focus", "Education-focused student ventures"],
+      ],
+      note: "Austin stage for education startups — the natural showcase for a mentor-matching platform.",
+    },
+    {
+      org: "Blue Ocean Competition",
+      name: "Blue Ocean Student Entrepreneur Competition",
+      type: "Entrepreneurship Competition",
+      status: "countdown",
+      primary: "2027-02-21T23:59:00-05:00",
+      events: [
+        ["Submission Deadline", "February 21, 2027"],
+        ["Format", "Virtual, four elimination rounds"],
+        ["Deliverable", "Strategy canvas + pitch on an uncontested market"],
+      ],
+      note: "Built for the ERRC-grid value-curve framing already used in the Schollective and pitch-deck work.",
+    },
+    {
+      org: "The Paradigm Challenge",
+      name: "The Paradigm Challenge",
+      type: "Innovation Competition",
+      status: "countdown",
+      primary: "2027-05-01T23:59:00-05:00",
+      events: [
+        ["Submission Deadline", "May 1, 2027"],
+        ["Category", "Education / Community Impact"],
+        ["Award", "Up to $100,000 in prizes"],
+      ],
+      note: "Global youth challenge; the education and community-impact category matches the mentorship platform.",
     },
     {
       org: "UC California campuses",
@@ -965,11 +1056,24 @@
       easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
       smoothWheel: true,
     });
-    function raf(time) {
-      lenis.raf(time);
+    /* Sync Lenis through GSAP's ticker when available for a single,
+       jitter-free RAF loop shared by scroll + animations + Three.js */
+    if (window.gsap) {
+      gsap.ticker.add(function (time) {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
       requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    /* Let ScrollTrigger read from Lenis */
+    if (window.ScrollTrigger) {
+      lenis.on("scroll", ScrollTrigger.update);
+    }
   }
 
   function scrollToY(y) {
@@ -2800,6 +2904,332 @@
     liveTimer = setInterval(tick, 1000);
   }
 
+  /* ------------------------------------------------------------
+     GSAP ORCHESTRA — ScrollTrigger reveals, hero SplitText,
+     velocity-reactive marquee, 3D tilt cards.
+     Augments the anime.js orchestra; GSAP handles scroll-driven
+     effects while anime.js keeps springs, scramble, and motion paths.
+     ------------------------------------------------------------ */
+  var gsapAnims = [];
+  var gsapSplits = [];
+
+  function keepGsap(a) { if (a) gsapAnims.push(a); return a; }
+
+  function revertGsapAnims() {
+    gsapAnims.forEach(function (a) {
+      try {
+        if (a.kill) a.kill();
+        else if (a.revert) a.revert();
+      } catch (err) { /* already gone */ }
+    });
+    gsapAnims = [];
+    gsapSplits.forEach(function (s) {
+      try { if (s.revert) s.revert(); } catch (err) {}
+    });
+    gsapSplits = [];
+    /* Clear the decrypting lock so new page's hero can use decryptText */
+    var heroName = document.querySelector(".hero__name");
+    if (heroName) heroName.__decrypting = false;
+  }
+
+  /* ---- lightweight vanilla SplitText (no plugin needed) ---- */
+  function splitText(el, type) {
+    if (!el) return { chars: [], words: [], lines: [], revert: function () {} };
+    var original = el.innerHTML;
+    var text = el.textContent;
+    var result = { chars: [], words: [], lines: [], revert: function () { el.innerHTML = original; } };
+    if (!type) type = "chars";
+
+    if (type === "chars" || type === "both") {
+      el.innerHTML = "";
+      text.split("").forEach(function (c) {
+        var span = document.createElement("span");
+        span.className = "split-char";
+        span.style.display = "inline-block";
+        if (c === " ") { span.innerHTML = "&nbsp;"; span.style.width = "0.3em"; }
+        else span.textContent = c;
+        el.appendChild(span);
+        result.chars.push(span);
+      });
+    } else if (type === "words") {
+      el.innerHTML = "";
+      text.split(/\s+/).forEach(function (w, i) {
+        if (i > 0) {
+          var space = document.createElement("span");
+          space.innerHTML = "&nbsp;";
+          space.style.display = "inline-block";
+          el.appendChild(space);
+        }
+        var span = document.createElement("span");
+        span.className = "split-word";
+        span.style.display = "inline-block";
+        span.textContent = w;
+        el.appendChild(span);
+        result.words.push(span);
+      });
+    }
+    return result;
+  }
+
+  /* ---- GSAP hero entrance — per-character BENJAMIN WU ---- */
+  function initGsapHero() {
+    if (!canGsap) return;
+    var heroName = document.querySelector(".hero__name");
+    if (!heroName) return;
+
+    /* Mark hero name so decryptText() (in initReveals IO callback) won't
+       set el.textContent and destroy the split-char spans we create below.
+       decryptText checks el.__decrypting at the top. */
+    heroName.__decrypting = true;
+
+    /* The CSS .reveal system already controls opacity + blur transitions.
+       GSAP should ONLY drive supplementary transforms (y, rotateX, scale)
+       and the per-character split — never opacity or filter, which would
+       create inline styles that override the CSS class-based reveals. */
+
+    var l1 = heroName.querySelector(".hero__l1");
+    var l2 = heroName.querySelector(".hero__l2");
+
+    if (l1) {
+      var split1 = splitText(l1, "chars");
+      gsapSplits.push(split1);
+      keepGsap(gsap.from(split1.chars, {
+        y: 60,
+        rotateX: -90,
+        stagger: 0.04,
+        duration: 0.9,
+        ease: "back.out(1.7)",
+        delay: 0.2,
+      }));
+    }
+
+    if (l2) {
+      /* preserve the asterisk sup */
+      var ast = l2.querySelector(".hero__ast");
+      var mainText = l2.childNodes[0];
+      if (mainText && mainText.nodeType === 3) {
+        var wrapper = document.createElement("span");
+        wrapper.className = "hero__l2-text";
+        wrapper.textContent = mainText.textContent;
+        l2.replaceChild(wrapper, mainText);
+        var split2 = splitText(wrapper, "chars");
+        gsapSplits.push(split2);
+        keepGsap(gsap.from(split2.chars, {
+          y: 80,
+          rotateX: -90,
+          stagger: 0.05,
+          duration: 1,
+          ease: "back.out(1.7)",
+          delay: 0.55,
+        }));
+      }
+    }
+
+    /* subtitle, stats, tags — only add y/scale motion.
+       DO NOT set opacity or filter here; the CSS .reveal.is-in
+       transition already handles those on the parent .hero__meta.reveal */
+    var sub = document.querySelector(".hero__sub");
+    if (sub) {
+      keepGsap(gsap.from(sub, {
+        y: 30,
+        duration: 1.2,
+        ease: "power3.out",
+        delay: 0.9,
+      }));
+    }
+
+    var stats = document.querySelectorAll(".hero__stat");
+    if (stats.length) {
+      keepGsap(gsap.from(stats, {
+        y: 20,
+        stagger: 0.08,
+        duration: 0.7,
+        ease: "power2.out",
+        delay: 1.1,
+      }));
+    }
+
+    var tags = document.querySelectorAll(".hero__tags span");
+    if (tags.length) {
+      keepGsap(gsap.from(tags, {
+        scale: 0.8,
+        stagger: 0.06,
+        duration: 0.5,
+        ease: "back.out(2)",
+        delay: 1.3,
+      }));
+    }
+  }
+
+  /* ---- ScrollTrigger-powered section reveals ---- */
+  function initGsapScrollReveals() {
+    if (!canGsap) return;
+    /* Augment the IntersectionObserver reveals with GSAP-powered
+       section header animations that scrub with scroll position */
+    var secHeads = document.querySelectorAll(".sec__head");
+    secHeads.forEach(function (head) {
+      /* sec__head lives inside .reveal — CSS handles opacity/blur.
+         GSAP only adds a supplementary y-slide on scroll. */
+      keepGsap(gsap.from(head, {
+        y: 50,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: head,
+          start: "top 85%",
+          end: "top 50%",
+          toggleActions: "play none none reverse",
+        },
+      }));
+    });
+
+    /* parallax drift on the system map while scrolling */
+    var sysMap = document.querySelector(".sys");
+    if (sysMap) {
+      keepGsap(gsap.to(sysMap, {
+        y: -40,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".sys-sec",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.5,
+        },
+      }));
+    }
+
+    /* manifesto quote — inside .reveal, so CSS handles opacity */
+    var manifesto = document.querySelector(".manifesto");
+    if (manifesto) {
+      keepGsap(gsap.from(manifesto, {
+        scale: 0.95,
+        duration: 1.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: manifesto,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      }));
+    }
+
+    /* giant footer text scrub */
+    var footGiant = document.querySelector(".foot__giant");
+    if (footGiant) {
+      keepGsap(gsap.fromTo(footGiant,
+        { x: "5%" },
+        {
+          x: "-10%",
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".foot",
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: 1,
+          },
+        }
+      ));
+    }
+  }
+
+  /* ---- velocity-reactive marquee ---- */
+  function initGsapMarquee() {
+    if (!canGsap) return;
+    var track = document.querySelector(".marquee__track");
+    if (!track) return;
+
+    var baseSpeed = 1;
+    var velocityFactor = { v: baseSpeed };
+
+    keepGsap(gsap.to(track, {
+      xPercent: -50,
+      repeat: -1,
+      duration: 30,
+      ease: "none",
+      modifiers: {
+        xPercent: function (x) {
+          return (parseFloat(x) * velocityFactor.v) % -50;
+        },
+      },
+    }));
+
+    /* speed up on scroll, decay back to base */
+    if (lenis) {
+      lenis.on("scroll", function (e) {
+        var v = Math.abs(e.velocity);
+        velocityFactor.v = baseSpeed + v * 0.004;
+      });
+      /* decay back */
+      gsap.ticker.add(function () {
+        velocityFactor.v += (baseSpeed - velocityFactor.v) * 0.05;
+      });
+    }
+  }
+
+  /* ---- 3D tilt cards (React Bits TiltedCard, vanilla) ---- */
+  function initTiltCards() {
+    if (!canGsap || !finePointer) return;
+    var cards = document.querySelectorAll(".sys__dock-btn, .uni, .kpi, .dl-card");
+
+    cards.forEach(function (card) {
+      card.style.transformStyle = "preserve-3d";
+      card.style.transition = "transform 0.15s ease-out";
+
+      card.addEventListener("mousemove", function (e) {
+        var rect = card.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width - 0.5;
+        var y = (e.clientY - rect.top) / rect.height - 0.5;
+        gsap.to(card, {
+          rotateY: x * 12,
+          rotateX: -y * 8,
+          duration: 0.3,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      });
+
+      card.addEventListener("mouseleave", function () {
+        gsap.to(card, {
+          rotateY: 0,
+          rotateX: 0,
+          duration: 0.5,
+          ease: "elastic.out(1, 0.5)",
+          overwrite: "auto",
+        });
+      });
+    });
+  }
+
+  /* ---- spotlight cursor glow on section cards ---- */
+  function initSpotlightCards() {
+    if (!canGsap || !finePointer) return;
+    var cards = document.querySelectorAll(".sys__dock-btn, .card, .uni, .kpi");
+
+    cards.forEach(function (card) {
+      card.addEventListener("mousemove", function (e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        card.style.setProperty("--spot-x", x + "px");
+        card.style.setProperty("--spot-y", y + "px");
+        card.classList.add("has-spotlight");
+      });
+      card.addEventListener("mouseleave", function () {
+        card.classList.remove("has-spotlight");
+      });
+    });
+  }
+
+  /* ---- master GSAP initializer (called alongside anime orchestra) ---- */
+  function initGsapAnims() {
+    if (!canGsap) return;
+    revertGsapAnims();
+    var fns = [initGsapHero, initGsapScrollReveals, initGsapMarquee, initTiltCards, initSpotlightCards];
+    fns.forEach(function (fn) {
+      try { fn(); } catch (err) { /* decorative — never break the page */ }
+    });
+  }
+
   function initPageFeatures() {
     initParallax();
     updateParallax();
@@ -2813,6 +3243,7 @@
     initScheduleNow();
     initLiveTimes();
     initPageAnims();
+    initGsapAnims();
   }
 
   /* ------------------------------------------------------------
@@ -2836,6 +3267,8 @@
      nodes. Each feature is individually guarded.
      ------------------------------------------------------------ */
   var canAnime = !!(window.anime && !reducedMotion);
+  var canGsap = !!(window.gsap && !reducedMotion);
+  if (canGsap) { gsap.registerPlugin(ScrollTrigger); }
   var pageAnims = [];
   var statIO = null;
 
@@ -2850,6 +3283,7 @@
     });
     pageAnims = [];
     if (statIO) { statIO.disconnect(); statIO = null; }
+    revertGsapAnims();
   }
 
   function initMagneticCta() {
