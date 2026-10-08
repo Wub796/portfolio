@@ -1,0 +1,231 @@
+{
+  "pages": [
+    {
+      "page": "mission",
+      "mobile": {
+        "visible": 3,
+        "animations": 0,
+        "width": 390,
+        "svgSizes": [
+          "58px",
+          "58px",
+          "58px"
+        ]
+      },
+      "opened": 3,
+      "deepLink": true,
+      "hashCleared": true,
+      "glow": true,
+      "rollback": {
+        "readable": true,
+        "injected": false,
+        "chests": 0
+      }
+    },
+    {
+      "page": "studies",
+      "mobile": {
+        "visible": 4,
+        "animations": 0,
+        "width": 390,
+        "svgSizes": [
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px"
+        ]
+      },
+      "opened": 7,
+      "deepLink": true,
+      "hashCleared": true,
+      "glow": true,
+      "rollback": {
+        "readable": true,
+        "injected": false,
+        "chests": 0
+      }
+    },
+    {
+      "page": "college",
+      "mobile": {
+        "visible": 4,
+        "animations": 0,
+        "width": 390,
+        "svgSizes": [
+          "58px",
+          "58px",
+          "58px",
+          "58px"
+        ]
+      },
+      "opened": 4,
+      "deepLink": true,
+      "hashCleared": true,
+      "glow": true,
+      "rollback": {
+        "readable": true,
+        "injected": false,
+        "chests": 0
+      }
+    },
+    {
+      "page": "applications",
+      "mobile": {
+        "visible": 3,
+        "animations": 0,
+        "width": 390,
+        "svgSizes": [
+          "58px",
+          "58px",
+          "58px"
+        ]
+      },
+      "opened": 3,
+      "deepLink": true,
+      "hashCleared": true,
+      "glow": true,
+      "rollback": {
+        "readable": true,
+        "injected": false,
+        "chests": 0
+      }
+    },
+    {
+      "page": "extracurriculars",
+      "mobile": {
+        "visible": 4,
+        "animations": 0,
+        "width": 390,
+        "svgSizes": [
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px"
+        ]
+      },
+      "opened": 14,
+      "deepLink": true,
+      "hashCleared": true,
+      "glow": true,
+      "rollback": {
+        "readable": true,
+        "injected": false,
+        "chests": 0
+      }
+    },
+    {
+      "page": "schedule",
+      "mobile": {
+        "visible": 4,
+        "animations": 0,
+        "width": 390,
+        "svgSizes": [
+          "58px",
+          "58px",
+          "58px",
+          "58px"
+        ]
+      },
+      "opened": 4,
+      "deepLink": true,
+      "hashCleared": true,
+      "glow": true,
+      "rollback": {
+        "readable": true,
+        "injected": false,
+        "chests": 0
+      }
+    },
+    {
+      "page": "meal",
+      "mobile": {
+        "visible": 4,
+        "animations": 0,
+        "width": 390,
+        "svgSizes": [
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px"
+        ]
+      },
+      "opened": 6,
+      "deepLink": true,
+      "hashCleared": true,
+      "glow": true,
+      "rollback": {
+        "readable": true,
+        "injected": false,
+        "chests": 0
+      }
+    },
+    {
+      "page": "training",
+      "mobile": {
+        "visible": 4,
+        "animations": 0,
+        "width": 390,
+        "svgSizes": [
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px",
+          "58px"
+        ]
+      },
+      "opened": 6,
+      "deepLink": true,
+      "hashCleared": true,
+      "glow": true,
+      "rollback": {
+        "readable": true,
+        "injected": false,
+        "chests": 0
+      }
+    },
+    {
+      "page": "deadlines",
+      "mobile": {
+        "visible": 1,
+        "animations": 0,
+        "width": 390,
+        "svgSizes": [
+          "58px"
+        ]
+      },
+      "opened": 1,
+      "deepLink": true,
+      "hashCleared": true,
+      "glow": true,
+      "rollback": {
+        "readable": true,
+        "injected": false,
+        "chests": 0
+      }
+    }
+  ],
+  "failures": [],
+  "additional": {
+    "handleDismiss": true,
+    "noJsScreenshots": 9,
+    "fileOrigin": true,
+    "sunClean": true,
+    "router": true
+  }
+}

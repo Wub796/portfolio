@@ -1,0 +1,1504 @@
+{
+  "at": "2026-10-08T13:13:23.628Z",
+  "environment": "Headless Chrome, 1440×1000; real CDP pointer/keyboard input; debugging port 9227",
+  "pages": [
+    {
+      "page": "mission",
+      "count": 3,
+      "nodes": 154,
+      "artNodes": [
+        27,
+        40,
+        34
+      ],
+      "bounds": [
+        {
+          "x": 637.6619873046875,
+          "y": 826.8141479492188,
+          "w": 164,
+          "h": 135.29998779296875,
+          "name": "1. North Star — open"
+        },
+        {
+          "x": 200.087646484375,
+          "y": 333.685546875,
+          "w": 145.43011474609375,
+          "h": 119.9798583984375,
+          "name": "2. Short-term · Summer 2026 — open"
+        },
+        {
+          "x": 1178.26904296875,
+          "y": 361.4157409667969,
+          "w": 146.532470703125,
+          "h": 120.88922119140625,
+          "name": "3. Medium / long-term trajectory — open"
+        }
+      ],
+      "scene": {
+        "ok": false,
+        "err": "Error: Error creating WebGL context."
+      },
+      "anchor": null,
+      "opened": [
+        {
+          "title": "01 · North Star",
+          "opacity": "1",
+          "textLength": 383,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-mission-1",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Short-term · Summer 2026",
+          "opacity": "1",
+          "textLength": 526,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-mission-2",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Medium / long-term trajectory",
+          "opacity": "1",
+          "textLength": 886,
+          "tables": 0,
+          "lists": 2,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-mission-3",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 150,
+        "TaskDuration": 0.11244299999999996,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.011337
+      },
+      "frames": {
+        "fps": 60.004959087527894,
+        "frames": 122,
+        "maxFrameGap": 16.80000000000109
+      },
+      "orbitalMovement": {
+        "distance": 9.112538751186515,
+        "animation": 97
+      }
+    },
+    {
+      "page": "studies",
+      "count": 7,
+      "nodes": 379,
+      "artNodes": [
+        43,
+        56,
+        47,
+        34,
+        40,
+        38,
+        28
+      ],
+      "bounds": [
+        {
+          "x": 651.1112060546875,
+          "y": 755.4478149414062,
+          "w": 164,
+          "h": 135.29998779296875,
+          "name": "1. Flight telemetry — open"
+        },
+        {
+          "x": 248.919677734375,
+          "y": 722.2491455078125,
+          "w": 160.00332641601562,
+          "h": 132.002685546875,
+          "name": "2. Coursework — 9th & 10th grade — open"
+        },
+        {
+          "x": 367.14208984375,
+          "y": 495.1968078613281,
+          "w": 151.4041748046875,
+          "h": 124.90841674804688,
+          "name": "3. State assessments & milestones — open"
+        },
+        {
+          "x": 558.2545166015625,
+          "y": 194.62286376953125,
+          "w": 140.24169921875,
+          "h": 115.69937133789062,
+          "name": "4. Honors & recognition — 2026 — open"
+        },
+        {
+          "x": 692.8887939453125,
+          "y": 259.1521911621094,
+          "w": 140,
+          "h": 115.5,
+          "name": "5. SAT — taken Aug 22, 2026 — open"
+        },
+        {
+          "x": 1208.8853759765625,
+          "y": 605.0771484375,
+          "w": 155.6358642578125,
+          "h": 128.3995361328125,
+          "name": "6. Graduation profile — FHSP Distinguished t… — open"
+        },
+        {
+          "x": 976.85791015625,
+          "y": 519.4031982421875,
+          "w": 152.5958251953125,
+          "h": 125.8916015625,
+          "name": "7. Junior-year ladder (2026–27) — 7 APs — open"
+        }
+      ],
+      "scene": {
+        "ok": false,
+        "err": "Error: Error creating WebGL context."
+      },
+      "anchor": null,
+      "opened": [
+        {
+          "title": "01 · Flight telemetry",
+          "opacity": "1",
+          "textLength": 110,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-1",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Coursework — 9th & 10th grade",
+          "opacity": "1",
+          "textLength": 632,
+          "tables": 1,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-2",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · State assessments & milestones",
+          "opacity": "1",
+          "textLength": 292,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "04 · Honors & recognition — 2026",
+          "opacity": "1",
+          "textLength": 670,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-4",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "05 · SAT — taken Aug 22, 2026",
+          "opacity": "1",
+          "textLength": 189,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-5",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "06 · Graduation profile — FHSP Distinguished t…",
+          "opacity": "1",
+          "textLength": 386,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-6",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "07 · Junior-year ladder (2026–27) — 7 APs",
+          "opacity": "1",
+          "textLength": 438,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-7",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 150,
+        "TaskDuration": 0.13777299999999992,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.012587000000000001
+      },
+      "frames": {
+        "fps": 60.00198353664588,
+        "frames": 122,
+        "maxFrameGap": 16.80000000000291
+      },
+      "orbitalMovement": {
+        "distance": 4.946633048490432,
+        "animation": 97
+      }
+    },
+    {
+      "page": "college",
+      "count": 4,
+      "nodes": 231,
+      "artNodes": [
+        38,
+        27,
+        56,
+        47
+      ],
+      "bounds": [
+        {
+          "x": 637.1500244140625,
+          "y": 826.804443359375,
+          "w": 164,
+          "h": 135.300048828125,
+          "name": "1. Target list · 13 schools — open"
+        },
+        {
+          "x": 107.25469970703125,
+          "y": 490.98907470703125,
+          "w": 151.37655639648438,
+          "h": 124.88568115234375,
+          "name": "2. Strategic pillars — open"
+        },
+        {
+          "x": 706.8499755859375,
+          "y": 187.7955322265625,
+          "w": 140,
+          "h": 115.5,
+          "name": "3. Application rounds — fall 2027 — open"
+        },
+        {
+          "x": 1236.745361328125,
+          "y": 523.6109008789062,
+          "w": 152.6234130859375,
+          "h": 125.91436767578125,
+          "name": "4. Operation Liftoff — open"
+        }
+      ],
+      "scene": {
+        "ok": false,
+        "err": "Error: Error creating WebGL context."
+      },
+      "anchor": null,
+      "opened": [
+        {
+          "title": "01 · Target list · 13 schools",
+          "opacity": "1",
+          "textLength": 504,
+          "tables": 0,
+          "lists": 0,
+          "cards": 13,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-college-1",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Strategic pillars",
+          "opacity": "1",
+          "textLength": 1132,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-college-2",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Application rounds — fall 2027",
+          "opacity": "1",
+          "textLength": 276,
+          "tables": 1,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-college-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "04 · Operation Liftoff",
+          "opacity": "1",
+          "textLength": 1284,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-college-4",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 150,
+        "TaskDuration": 0.11579100000000009,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.012315000000000006
+      },
+      "frames": {
+        "fps": 60,
+        "frames": 121,
+        "maxFrameGap": 16.80000000000109
+      },
+      "orbitalMovement": {
+        "distance": 9.11106892326433,
+        "animation": 97
+      }
+    },
+    {
+      "page": "applications",
+      "count": 3,
+      "nodes": 210,
+      "artNodes": [
+        56,
+        61,
+        40
+      ],
+      "bounds": [
+        {
+          "x": 638.4285888671875,
+          "y": 826.82861328125,
+          "w": 164,
+          "h": 135.300048828125,
+          "name": "1. Six-step application pipeline — open"
+        },
+        {
+          "x": 199.676025390625,
+          "y": 334.0540771484375,
+          "w": 145.443359375,
+          "h": 119.99075317382812,
+          "name": "2. Current pipeline — open"
+        },
+        {
+          "x": 1177.915771484375,
+          "y": 361.03411865234375,
+          "w": 146.515869140625,
+          "h": 120.87554931640625,
+          "name": "3. Required documents — open"
+        }
+      ],
+      "scene": {
+        "ok": false,
+        "err": "Error: Error creating WebGL context."
+      },
+      "anchor": null,
+      "opened": [
+        {
+          "title": "01 · Six-step application pipeline",
+          "opacity": "1",
+          "textLength": 1346,
+          "tables": 0,
+          "lists": 0,
+          "cards": 6,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-applications-1",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Current pipeline",
+          "opacity": "1",
+          "textLength": 1141,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-applications-2",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Required documents",
+          "opacity": "1",
+          "textLength": 500,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-applications-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 150,
+        "TaskDuration": 0.11694499999999997,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.012024
+      },
+      "frames": {
+        "fps": 60.004959087527894,
+        "frames": 122,
+        "maxFrameGap": 16.80000000000109
+      },
+      "orbitalMovement": {
+        "distance": 9.112538751186515,
+        "animation": 97
+      }
+    },
+    {
+      "page": "extracurriculars",
+      "count": 14,
+      "nodes": 700,
+      "artNodes": [
+        38,
+        33,
+        34,
+        40,
+        28,
+        61,
+        56,
+        47,
+        25,
+        27,
+        43,
+        33,
+        38,
+        34
+      ],
+      "bounds": [
+        {
+          "x": 651.3117065429688,
+          "y": 755.07373046875,
+          "w": 163.94097900390625,
+          "h": 135.25128173828125,
+          "name": "1. Sea Cadets · USNSCC — open"
+        },
+        {
+          "x": 397.3444519042969,
+          "y": 788.02880859375,
+          "w": 162.58486938476562,
+          "h": 134.13250732421875,
+          "name": "2. Volleyball — open"
+        },
+        {
+          "x": 421.0927734375,
+          "y": 652.3997802734375,
+          "w": 159.0477294921875,
+          "h": 131.21435546875,
+          "name": "3. Spacecraft Trajectory Research — open"
+        },
+        {
+          "x": 114.80096435546875,
+          "y": 563.2526245117188,
+          "w": 154.12966918945312,
+          "h": 127.15692138671875,
+          "name": "4. GridEvac AI — open"
+        },
+        {
+          "x": 379.86285400390625,
+          "y": 440.505615234375,
+          "w": 148.74871826171875,
+          "h": 122.71771240234375,
+          "name": "5. Ares 1 — open"
+        },
+        {
+          "x": 251.8392333984375,
+          "y": 296.3423767089844,
+          "w": 144.0667724609375,
+          "h": 118.85507202148438,
+          "name": "6. Schollective — open"
+        },
+        {
+          "x": 558.5995483398438,
+          "y": 278.8859558105469,
+          "w": 140.94293212890625,
+          "h": 116.27789306640625,
+          "name": "7. Custom Avionics Flight Logger — open"
+        },
+        {
+          "x": 705.2291870117188,
+          "y": 188.2513427734375,
+          "w": 140.05902099609375,
+          "h": 115.5487060546875,
+          "name": "8. Rocketry Club — open"
+        },
+        {
+          "x": 822.7459106445312,
+          "y": 289.28399658203125,
+          "w": 141.4151611328125,
+          "h": 116.66751098632812,
+          "name": "9. Business Club — open"
+        },
+        {
+          "x": 1133.6397705078125,
+          "y": 320.453857421875,
+          "w": 144.9522705078125,
+          "h": 119.58563232421875,
+          "name": "10. Tellepsen Family Downtown YMCA — open"
+        },
+        {
+          "x": 973.3766479492188,
+          "y": 463.84820556640625,
+          "w": 149.87030029296875,
+          "h": 123.64306640625,
+          "name": "11. EMERGE Scholars — open"
+        },
+        {
+          "x": 1214.377197265625,
+          "y": 593.3102416992188,
+          "w": 155.251220703125,
+          "h": 128.08233642578125,
+          "name": "12. NASA TAS Launch Pad — open"
+        },
+        {
+          "x": 897.06103515625,
+          "y": 671.1244506835938,
+          "w": 159.9332275390625,
+          "h": 131.94488525390625,
+          "name": "13. Honors, Awards & Certifications — open"
+        },
+        {
+          "x": 886.7186889648438,
+          "y": 801.4190673828125,
+          "w": 163.05718994140625,
+          "h": 134.52215576171875,
+          "name": "14. Personal Engineering Portfolio — open"
+        }
+      ],
+      "scene": {
+        "ok": false,
+        "err": "Error: Error creating WebGL context."
+      },
+      "anchor": null,
+      "opened": [
+        {
+          "title": "01 · Sea Cadets · USNSCC",
+          "opacity": "1",
+          "textLength": 425,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-1",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Volleyball",
+          "opacity": "1",
+          "textLength": 431,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-2",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Spacecraft Trajectory Research",
+          "opacity": "1",
+          "textLength": 415,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "04 · GridEvac AI",
+          "opacity": "1",
+          "textLength": 374,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-4",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "05 · Ares 1",
+          "opacity": "1",
+          "textLength": 461,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-5",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "06 · Schollective",
+          "opacity": "1",
+          "textLength": 481,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-6",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "07 · Custom Avionics Flight Logger",
+          "opacity": "1",
+          "textLength": 330,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-7",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "08 · Rocketry Club",
+          "opacity": "1",
+          "textLength": 336,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-8",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "09 · Business Club",
+          "opacity": "1",
+          "textLength": 224,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-9",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "10 · Tellepsen Family Downtown YMCA",
+          "opacity": "1",
+          "textLength": 325,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-10",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "11 · EMERGE Scholars",
+          "opacity": "1",
+          "textLength": 393,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-11",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "12 · NASA TAS Launch Pad",
+          "opacity": "1",
+          "textLength": 273,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-12",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "13 · Honors, Awards & Certifications",
+          "opacity": "1",
+          "textLength": 501,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-13",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "14 · Personal Engineering Portfolio",
+          "opacity": "1",
+          "textLength": 267,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-14",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 150,
+        "TaskDuration": 0.1904459999999999,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.013398999999999994
+      },
+      "frames": {
+        "fps": 60.00198353664588,
+        "frames": 122,
+        "maxFrameGap": 16.80000000000291
+      },
+      "orbitalMovement": {
+        "distance": 4.912237438709105,
+        "animation": 49
+      }
+    },
+    {
+      "page": "schedule",
+      "count": 4,
+      "nodes": 220,
+      "artNodes": [
+        56,
+        33,
+        43,
+        25
+      ],
+      "bounds": [
+        {
+          "x": 637.1504516601562,
+          "y": 826.804443359375,
+          "w": 164,
+          "h": 135.300048828125,
+          "name": "1. School-day cargo — open"
+        },
+        {
+          "x": 107.25469970703125,
+          "y": 490.98931884765625,
+          "w": 151.37655639648438,
+          "h": 124.88568115234375,
+          "name": "2. Summer cargo — open"
+        },
+        {
+          "x": 706.8495483398438,
+          "y": 187.7955322265625,
+          "w": 140,
+          "h": 115.5,
+          "name": "3. Four operating rules — open"
+        },
+        {
+          "x": 1236.745361328125,
+          "y": 523.6107177734375,
+          "w": 152.623291015625,
+          "h": 125.914306640625,
+          "name": "4. Schedule signal key — open"
+        }
+      ],
+      "scene": {
+        "ok": false,
+        "err": "Error: Error creating WebGL context."
+      },
+      "anchor": null,
+      "opened": [
+        {
+          "title": "01 · School-day cargo",
+          "opacity": "1",
+          "textLength": 1300,
+          "tables": 2,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-schedule-1",
+          "innerScroll": false,
+          "blank": false,
+          "toggle": true,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Summer cargo",
+          "opacity": "1",
+          "textLength": 1615,
+          "tables": 2,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-schedule-2",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Four operating rules",
+          "opacity": "1",
+          "textLength": 669,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-schedule-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "04 · Schedule signal key",
+          "opacity": "1",
+          "textLength": 123,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-schedule-4",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 150,
+        "TaskDuration": 0.13044199999999995,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.01348400000000001
+      },
+      "frames": {
+        "fps": 60.00198353664583,
+        "frames": 122,
+        "maxFrameGap": 16.80000000000109
+      },
+      "orbitalMovement": {
+        "distance": 9.111008159911023,
+        "animation": 97
+      }
+    },
+    {
+      "page": "meal",
+      "count": 6,
+      "nodes": 323,
+      "artNodes": [
+        43,
+        33,
+        47,
+        56,
+        34,
+        27
+      ],
+      "bounds": [
+        {
+          "x": 651.24951171875,
+          "y": 755.4515380859375,
+          "w": 164,
+          "h": 135.300048828125,
+          "name": "1. Fuel telemetry — open"
+        },
+        {
+          "x": 166.2225341796875,
+          "y": 653.7099609375,
+          "w": 157.44775390625,
+          "h": 129.89434814453125,
+          "name": "2. Fuel first — growth-protective recomposit… — open"
+        },
+        {
+          "x": 418.3782653808594,
+          "y": 372.85589599609375,
+          "w": 145.44778442382812,
+          "h": 119.994384765625,
+          "name": "3. Practice fuel — Friday + Sunday — open"
+        },
+        {
+          "x": 705.3167724609375,
+          "y": 187.76654052734375,
+          "w": 140,
+          "h": 115.5,
+          "name": "4. Simple school-day template — open"
+        },
+        {
+          "x": 946.3931884765625,
+          "y": 393.60986328125,
+          "w": 146.51025390625,
+          "h": 120.87103271484375,
+          "name": "5. Hydration + body-composition feedback — open"
+        },
+        {
+          "x": 1144.481689453125,
+          "y": 680.4407958984375,
+          "w": 158.51025390625,
+          "h": 130.77105712890625,
+          "name": "6. Growth-supporting nutrients — food first — open"
+        }
+      ],
+      "scene": {
+        "ok": false,
+        "err": "Error: Error creating WebGL context."
+      },
+      "anchor": null,
+      "opened": [
+        {
+          "title": "01 · Fuel telemetry",
+          "opacity": "1",
+          "textLength": 121,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-meal-1",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Fuel first — growth-protective recomposit…",
+          "opacity": "1",
+          "textLength": 877,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-meal-2",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Practice fuel — Friday + Sunday",
+          "opacity": "1",
+          "textLength": 603,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-meal-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "04 · Simple school-day template",
+          "opacity": "1",
+          "textLength": 564,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-meal-4",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "05 · Hydration + body-composition feedback",
+          "opacity": "1",
+          "textLength": 749,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-meal-5",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "06 · Growth-supporting nutrients — food first",
+          "opacity": "1",
+          "textLength": 484,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-meal-6",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 150,
+        "TaskDuration": 0.15254999999999996,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.013329000000000008
+      },
+      "frames": {
+        "fps": 60.00198353664588,
+        "frames": 122,
+        "maxFrameGap": 16.80000000000109
+      },
+      "orbitalMovement": {
+        "distance": 4.946633048490432,
+        "animation": 97
+      }
+    },
+    {
+      "page": "training",
+      "count": 6,
+      "nodes": 318,
+      "artNodes": [
+        61,
+        33,
+        33,
+        47,
+        34,
+        27
+      ],
+      "bounds": [
+        {
+          "x": 651.249267578125,
+          "y": 755.4515380859375,
+          "w": 164,
+          "h": 135.29998779296875,
+          "name": "1. Weekly program · gym — open"
+        },
+        {
+          "x": 166.2222900390625,
+          "y": 653.709716796875,
+          "w": 157.44775390625,
+          "h": 129.89434814453125,
+          "name": "2. Weekly program · home — open"
+        },
+        {
+          "x": 418.37841796875,
+          "y": 372.855712890625,
+          "w": 145.44775390625,
+          "h": 119.994384765625,
+          "name": "3. Evidence-based rules — open"
+        },
+        {
+          "x": 705.3173217773438,
+          "y": 187.76654052734375,
+          "w": 140,
+          "h": 115.5,
+          "name": "4. Volleyball load controls — open"
+        },
+        {
+          "x": 946.393310546875,
+          "y": 393.61004638671875,
+          "w": 146.51025390625,
+          "h": 120.87103271484375,
+          "name": "5. Why this split · sources — open"
+        },
+        {
+          "x": 1144.4814453125,
+          "y": 680.4410400390625,
+          "w": 158.51025390625,
+          "h": 130.77105712890625,
+          "name": "6. Growth & recovery — open"
+        }
+      ],
+      "scene": {
+        "ok": false,
+        "err": "Error: Error creating WebGL context."
+      },
+      "anchor": null,
+      "opened": [
+        {
+          "title": "01 · Weekly program · gym",
+          "opacity": "1",
+          "textLength": 2769,
+          "tables": 0,
+          "lists": 14,
+          "cards": 14,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-training-1",
+          "innerScroll": true,
+          "blank": false,
+          "toggle": true,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Weekly program · home",
+          "opacity": "1",
+          "textLength": 2027,
+          "tables": 0,
+          "lists": 14,
+          "cards": 14,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-training-2",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Evidence-based rules",
+          "opacity": "1",
+          "textLength": 670,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-training-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "04 · Volleyball load controls",
+          "opacity": "1",
+          "textLength": 593,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-training-4",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "05 · Why this split · sources",
+          "opacity": "1",
+          "textLength": 1077,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-training-5",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "06 · Growth & recovery",
+          "opacity": "1",
+          "textLength": 485,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-training-6",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 150,
+        "TaskDuration": 0.14722500000000005,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.012877
+      },
+      "frames": {
+        "fps": 60.00198353664583,
+        "frames": 122,
+        "maxFrameGap": 16.799999999999272
+      },
+      "orbitalMovement": {
+        "distance": 4.946633048490432,
+        "animation": 97
+      }
+    },
+    {
+      "page": "deadlines",
+      "count": 1,
+      "nodes": 124,
+      "artNodes": [
+        91
+      ],
+      "bounds": [
+        {
+          "x": 637.405517578125,
+          "y": 826.809326171875,
+          "w": 164,
+          "h": 135.29998779296875,
+          "name": "1. Program manifest — open"
+        }
+      ],
+      "scene": {
+        "ok": false,
+        "err": "Error: Error creating WebGL context."
+      },
+      "anchor": null,
+      "opened": [
+        {
+          "title": "01 · Program manifest",
+          "opacity": "1",
+          "textLength": 12613,
+          "tables": 0,
+          "lists": 0,
+          "cards": 89,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-deadlines-1",
+          "innerScroll": true,
+          "blank": false,
+          "countdownBefore": "18d 02h 44m 07s · until deadline",
+          "countdownAfter": "18d 02h 44m 06s · until deadline",
+          "searchFocus": true,
+          "emptyState": true,
+          "searchCleared": true,
+          "jump": true,
+          "applied": true,
+          "keyK": true,
+          "keyHome": true,
+          "keyEnd": true,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 154,
+        "TaskDuration": 0.10755700000000001,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.014122999999999997
+      },
+      "frames": {
+        "fps": 60,
+        "frames": 121,
+        "maxFrameGap": 16.80000000000109
+      },
+      "orbitalMovement": {
+        "distance": 9.11106892326433,
+        "animation": 97
+      }
+    }
+  ],
+  "failures": []
+}

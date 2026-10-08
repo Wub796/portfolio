@@ -1076,6 +1076,9 @@
     }
   }
 
+  /* Orbital sheets share this Lenis instance; the Sun never mounts a sheet. */
+  window.__orbitScroll = function (stopped) { if (lenis) { if (stopped) lenis.stop(); else lenis.start(); } };
+
   function scrollToY(y) {
     if (lenis) lenis.scrollTo(y, { offset: -72, duration: 1.2 });
     else window.scrollTo({ top: y, behavior: "smooth" });
@@ -1226,6 +1229,7 @@
         var newMain = doc.getElementById("top");
         if (!newMain || !mainEl) throw new Error("no main");
 
+        document.dispatchEvent(new CustomEvent("bw:page-leave"));
         mainEl.innerHTML = newMain.innerHTML;
         document.title = doc.title;
         var themeMeta = document.querySelector('meta[name="theme-color"]');
@@ -1354,11 +1358,11 @@
     var curAng = 0, curStretch = 0;
     var currentLockLabel = null;
     var currentLockTarget = null;
-    var cursorTargetSelector = "a, button, [role='tab'], .dl-card__head, .cta, .row, .uni, .kpi";
+    var cursorTargetSelector = ".orb__body, .orb__panel, .orb__close, .orb__handle, .orb__footer button, a, button, [role='tab'], .dl-card__head, .cta, .row, .uni, .kpi";
 
     function clearCursorTarget() {
-      reticle.classList.remove("is-target");
-      dotEl.classList.remove("is-target");
+      reticle.classList.remove("is-target", "is-orbital");
+      dotEl.classList.remove("is-target", "is-orbital");
       hudEl.classList.remove("is-target");
       currentLockTarget = null;
       currentLockLabel = null;
@@ -1373,7 +1377,9 @@
       reticle.classList.add("is-target");
       dotEl.classList.add("is-target");
       hudEl.classList.add("is-target");
-      var label = target.getAttribute("data-short") || target.getAttribute("aria-label") || target.innerText || "TARGET";
+      var orbital = !!target.closest('.orb__body, .orb__panel');
+      reticle.classList.toggle('is-orbital', orbital); dotEl.classList.toggle('is-orbital', orbital);
+      var label = target.getAttribute("data-cursor-label") || target.getAttribute("data-short") || target.getAttribute("aria-label") || target.innerText || "TARGET";
       label = label.trim().split("\n")[0].substring(0, 16).toUpperCase();
       currentLockTarget = target;
       currentLockLabel = label || "TARGET";
@@ -1406,6 +1412,11 @@
     }, { passive: true });
 
     window.addEventListener("scroll", updateCursorTargetAtPointer, { passive: true });
+    document.addEventListener("bw:orbit", function (event) {
+      clearCursorTarget();
+      dotEl.classList.toggle('is-docked', !!(event.detail && event.detail.open));
+      reticle.classList.toggle('is-docked', !!(event.detail && event.detail.open));
+    });
 
     document.addEventListener("mouseleave", function () {
       dotEl.style.opacity = "0";
@@ -1489,13 +1500,12 @@
       hudEl.style.transform = "translate3d(" + (hx + 24).toFixed(1) + "px," + (hy + 18).toFixed(1) + "px,0)";
       if (now - lastHudT > 80) {
         lastHudT = now;
-        if (currentLockLabel) {
-          hudEl.innerHTML = '<b>[LOCK // ' + currentLockLabel + ']</b>';
-        } else if (dist > 3) {
-          hudEl.innerHTML = '<b>[VEL]</b> ' + speedKmh + ' km/h · ' + Math.round(curAng * 180 / Math.PI) + '°';
-        } else {
-          hudEl.innerHTML = '<b>[ORBIT]</b> 0 km/h · ' + currentPlanet.toUpperCase();
-        }
+        var hudMarkup = currentLockLabel
+          ? '<b>[LOCK // ' + currentLockLabel + ']</b>'
+          : dist > 3 ? '<b>[VEL]</b> ' + speedKmh + ' km/h · ' + Math.round(curAng * 180 / Math.PI) + '°'
+          : '<b>[ORBIT]</b> 0 km/h · ' + currentPlanet.toUpperCase();
+        if (window.__orbitReading && !currentLockLabel) hudMarkup = '<b>[DOCKED]</b> ' + currentPlanet.toUpperCase();
+        if (hudEl.innerHTML !== hudMarkup) hudEl.innerHTML = hudMarkup;
       }
 
       glow.style.transform = "translate3d(" + gx.toFixed(1) + "px," + gy.toFixed(1) + "px,0) translate(-50%,-50%)";
@@ -2075,6 +2085,7 @@
       card.dataset.search = [p.name, p.org, p.type, p.note || ""].join(" ").toLowerCase();
       card.dataset.rolling = p.status === "rolling" ? "true" : "false";
       card.dataset.key = markKey(p.name);
+      card.dataset.type = p.type;
 
       var head = document.createElement("button");
       head.className = "dl-card__head";
@@ -2552,8 +2563,16 @@
       void card.offsetWidth;
       card.classList.add("is-nav-target");
       card.style.scrollMarginBottom = "8rem";
-      /* Lenis rewrites the scroll position every frame, so a native smooth
-         scrollIntoView gets yanked back — hand the jump to Lenis instead. */
+      /* In a docked payload the panel, not the document, owns scrolling. */
+      var orbitScroll = card.closest(".orb__content");
+      if (orbitScroll) {
+        card.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "center" });
+        var orbitHead = card.querySelector(".dl-card__head");
+        if (orbitHead && orbitHead.getAttribute("aria-expanded") !== "true") orbitHead.click();
+        setPos(state.cursor, count);
+        return;
+      }
+      /* Lenis rewrites the document scroll position every frame. */
       var rect = card.getBoundingClientRect();
       var top = (window.scrollY || window.pageYOffset || 0) + rect.top;
       var centre = Math.max(0, Math.round(top - (window.innerHeight - rect.height) / 2));
@@ -2616,6 +2635,8 @@
     next.addEventListener("click", function () { jump(1); });
     top.addEventListener("click", function () {
       /* an empty grid has no height to scroll to, so aim at the section itself */
+      var orbitalPanel = grid.closest(".orb__content");
+      if (orbitalPanel) { orbitalPanel.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" }); return; }
       var anchor = state.shown ? grid : (deck || grid);
       if (lenis) lenis.scrollTo(anchor, { offset: -90, duration: 1.1 });
       else anchor.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
@@ -2624,6 +2645,8 @@
       emptyReset.addEventListener("click", function () {
         search.value = "";
         setFilter("all", chips[0]);
+        var orbitalPanel = grid.closest(".orb__content");
+        if (orbitalPanel) { orbitalPanel.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" }); return; }
         var anchor = deck || grid;
         if (lenis) lenis.scrollTo(anchor, { offset: -90, duration: 0.9 });
         else anchor.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
@@ -2632,6 +2655,7 @@
 
     /* ---- keyboard: / focuses, ↑ ↓ step, Esc clears ---- */
     document.addEventListener("keydown", function (event) {
+      if (!dock.isConnected || (document.documentElement.classList.contains("orb-ready") && !document.documentElement.classList.contains("orb-open"))) return;
       var tag = (document.activeElement && document.activeElement.tagName) || "";
       var typing = tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA";
       if (event.key === "/" && !typing) { event.preventDefault(); search.focus(); return; }
@@ -2709,6 +2733,7 @@
        footer stops tucking it away. */
     function deckEmpty() { return state.shown === 0; }
     function sync() {
+      if (document.documentElement.classList.contains("orb-ready")) { setLive(document.documentElement.classList.contains("orb-open")); return; }
       var wanting = deckEmpty();
       var onDeck = gridSet || (wanting && (deckSet || footerSet));
       /* the footer only tucks it away while there is still a list to leave */
@@ -2730,6 +2755,8 @@
       gridSet = true; sync();
     }
 
+    document.addEventListener("bw:orbit", function () { if (dock.isConnected) sync(); });
+
     /* ---- progress rail: how far through the deck you are ---- */
     function trackProgress() {
       var rect = grid.getBoundingClientRect();
@@ -2738,6 +2765,7 @@
       var p = span > 0 ? (vh * 0.35 - rect.top) / span : 0;
       trackFill.style.transform = "scaleX(" + Math.max(0, Math.min(1, p)).toFixed(4) + ")";
     }
+    document.addEventListener("scroll", function (event) { if (event.target && event.target.classList && event.target.classList.contains("orb__content") && dock.isConnected) { var s = event.target; var p = s.scrollTop / Math.max(1, s.scrollHeight - s.clientHeight); trackFill.style.transform = "scaleX(" + p.toFixed(4) + ")"; } }, true);
     trackProgress();
     if (lenis) lenis.on("scroll", trackProgress);
     window.addEventListener("scroll", trackProgress, { passive: true });
@@ -3176,6 +3204,7 @@
       card.style.transition = "transform 0.15s ease-out";
 
       card.addEventListener("mousemove", function (e) {
+        if (card.closest('.orb__content')) return; // reading copy stays planar
         var rect = card.getBoundingClientRect();
         var x = (e.clientX - rect.left) / rect.width - 0.5;
         var y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -3207,6 +3236,7 @@
 
     cards.forEach(function (card) {
       card.addEventListener("mousemove", function (e) {
+        if (card.closest('.orb__content')) return; // reading copy stays planar
         var rect = card.getBoundingClientRect();
         var x = e.clientX - rect.left;
         var y = e.clientY - rect.top;
@@ -3244,6 +3274,17 @@
     initLiveTimes();
     initPageAnims();
     initGsapAnims();
+    document.dispatchEvent(new CustomEvent("bw:page-ready"));
+    /* The existing router swaps only main, not destination head/scripts.
+       Lazy-load the dock on arrivals from Sol without editing index.html. */
+    if (currentPlanet !== "sol" && !window.__orbitDock && !document.getElementById("orbitLoader")) {
+      var orbitStyle = document.createElement("link");
+      orbitStyle.rel = "stylesheet"; orbitStyle.href = "css/orbit.css";
+      if (!document.querySelector('link[href="css/orbit.css"]')) document.head.appendChild(orbitStyle);
+      var orbitScript = document.createElement("script");
+      orbitScript.id = "orbitLoader"; orbitScript.src = "js/orbit.js";
+      document.body.appendChild(orbitScript);
+    }
   }
 
   /* ------------------------------------------------------------

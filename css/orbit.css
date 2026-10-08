@@ -1,0 +1,205 @@
+/* Orbital Dock: the activation class is a JS commit, never a CSS visibility gate.
+   Unlike the legacy reveal CSS, the unenhanced document must be readable. */
+html:not(.orb-ready) body:not([data-planet="sol"]) .sec--page :is(.reveal,.cascade){opacity:1!important;transform:none!important;filter:none!important;visibility:visible!important}
+html:not(.orb-ready) body:not([data-planet="sol"]) .sec--page .reveal :is(.sec__title,.manifesto){letter-spacing:normal}
+html.orb-ready .sec--page{padding:0;border:0;min-height:100dvh}
+html.orb-ready .orb__stage{position:relative;height:100dvh;min-height:620px;pointer-events:none}
+html.orb-ready .orb__core{position:absolute;top:94px;left:max(100px,calc((100vw - 1100px)/2));pointer-events:auto;display:grid;gap:8px;text-align:left;transform:translate3d(0,calc(var(--orb-scroll,0)*-26px),0);opacity:calc(1 - var(--orb-scroll,0)*.7);transition:opacity .2s;border:0;background:none;color:var(--text);padding:0;max-width:75vw}
+html.orb-ready .orb__eyebrow,html.orb-ready .orb__hint,html.orb-ready .orb__coordinates{font:11px/1.6 var(--f-mono);letter-spacing:.12em;text-transform:uppercase}
+html.orb-ready .orb__eyebrow{color:var(--accent)}
+html.orb-ready .orb__page{font:500 clamp(26px,3.3vw,48px)/1 var(--f-display);letter-spacing:-.03em;text-transform:uppercase}
+html.orb-ready .orb__hint{font-size:10px;color:var(--muted);letter-spacing:.04em;text-transform:none}
+html.orb-ready .orb__coordinates{position:absolute;bottom:28px;right:5vw;color:var(--muted);font-size:10px}
+html.orb-ready .foot::before{content:'GROUND CONTROL / NEXT DESTINATION';display:block;margin:0 var(--gutter) 30px;font:11px var(--f-mono);letter-spacing:.18em;color:var(--accent)}
+html.orb-ready .orb__layer{position:fixed;inset:0;z-index:3;pointer-events:none;transition:opacity .35s;overflow:hidden}
+/* The page keeps its own chrome above the deck, so the dark Ground Control
+   footer paints over the belt instead of the belt drawing across it. Clicks
+   must still reach the belt through main, so main itself takes no pointer
+   events; only real controls and the footer take them back. */
+html.orb-ready main#top{position:relative;z-index:4;pointer-events:none}
+html.orb-ready main#top :is(a,button,input,select,textarea,summary,label,.foot){pointer-events:auto}
+html.orb-ready .orb__layer .orb__slot{will-change:transform}
+html.orb-ready .orb__body{will-change:transform,opacity}
+html.orb-ready .orb__body:is(:hover,:focus-visible){z-index:25}
+html.orb-ready .orb__slot:has(.orb__body:is(:hover,:focus-visible)){z-index:25!important}
+html.orb-ready .orb__body:is(:hover,:focus-visible) .orb__art{filter:brightness(1.06)}
+/* The offstage state must outrank the scroll handler's inline opacity, or a
+   scrolled-away deck would keep painting. */
+html.orb-ready .orb__layer.orb__offstage{opacity:0!important;pointer-events:none}
+html.orb-ready .orb__offstage .orb__body{pointer-events:none}
+html.orb-ready .orb__slot{position:absolute;left:0;top:0;width:0;height:0;transition:transform .7s var(--ease)}
+/* One footprint drives every part of a body, so a body scales by changing two
+   numbers. Deliberately small against the planet: the belt reads as hardware
+   that has been in orbit all along, not as page furniture parked in space. */
+html.orb-ready .orb__body{--orb-art:70px;--orb-plate:160px;position:absolute;left:calc(var(--orb-plate) / -2);top:-66px;width:var(--orb-plate);height:132px;padding:0;border:0;background:none;color:var(--text);text-align:center;pointer-events:auto;font-family:var(--f-mono);-webkit-tap-highlight-color:transparent;touch-action:pan-y;cursor:pointer}
+html.orb-ready .orb__drift{display:flex;align-items:center;flex-direction:column;width:100%;height:auto;min-height:100%;position:relative;animation:orb-drift 19s ease-in-out infinite;animation-delay:var(--orb-delay)}
+html.orb-ready .orb__art{width:var(--orb-art,70px);height:var(--orb-art,70px);overflow:visible;flex:none;will-change:transform;animation:orb-yaw 26s ease-in-out infinite;animation-delay:var(--orb-delay)}
+/* Chrome lays out animated SVG groups every frame. Keep the named machinery
+   static in steady flight and composite the SVG root instead. The `!important`
+   below is load-bearing: it is what keeps a future rule for any of these parts
+   from silently re-enabling a per-frame layout pass on the whole deck. */
+html.orb-ready .orb__art :is(.orb__machine,.orb__moon,.orb__ring,.orb__dish,.orb__wing,.orb__arm,.orb__leg,.orb__gimbal,.orb__cube,.orb__quadrant,.orb__tug,.orb__cargo){animation:none!important;will-change:auto}
+html.orb-ready .orb__art--probe{animation:orb-roll 300s linear infinite}
+html.orb-ready .orb__art--sail{animation:orb-roll 48s linear infinite}
+html.orb-ready .orb__art--rocket{animation:orb-gimbal 21s ease-in-out infinite}
+html.orb-ready .orb__art--station{animation:orb-station 33s ease-in-out infinite}
+html.orb-ready .orb__art--freighter{animation-duration:43s}
+/* Static part geometry only. The per-part animations that used to live here
+   were dead weight — the guard above outranked every one of them — and their
+   keyframes are gone with them. */
+html.orb-ready .orb__machine{transform-origin:60px 60px}
+html.orb-ready .orb__moon{transform-origin:60px 57px}
+html.orb-ready .orb__ring{transform-origin:60px 57px}
+html.orb-ready .orb__dish{transform-origin:60px 50px}
+html.orb-ready .orb__wing{transform-box:fill-box;transform-origin:center}
+html.orb-ready .orb__arm{transform-origin:78px 53px;transform:rotate(var(--orb-arm-angle,0deg))}
+html.orb-ready .orb__leg{transform-origin:60px 54px}
+html.orb-ready .orb__gimbal{transform-origin:60px 93px}
+html.orb-ready .orb__cube{transform-box:fill-box;transform-origin:center}
+html.orb-ready .orb__quadrant{transform-origin:60px 60px}
+html.orb-ready .orb__tug{transform-origin:60px 60px}
+html.orb-ready .orb__cargo{transform-box:fill-box;transform-origin:center}
+html.orb-ready .orb__beacon{animation:orb-strobe 2.4s steps(1) infinite;animation-delay:var(--orb-strobe);opacity:.35}
+html.orb-ready .orb__plume{opacity:0}
+html.orb-ready [data-state="transit"] .orb__plume{animation:orb-puff .42s steps(6) both}
+html.orb-ready .orb__plate{position:relative;flex:none;display:grid;grid-template-columns:8px 16px 1fr;gap:4px;align-items:center;width:var(--orb-plate,160px);min-height:44px;background:var(--bg);border:1px solid var(--line-strong);border-top:2px solid color-mix(in srgb,var(--text) 48%,transparent);box-shadow:2px 3px 0 color-mix(in srgb,var(--text) 12%,transparent);padding:6px 7px;text-align:left;transition:background .18s,border-color .18s;clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px)}
+html.orb-ready .orb__number{font-size:11px;align-self:start}
+html.orb-ready .orb__name{user-select:text;font-size:11px;line-height:1.4;overflow-wrap:anywhere}
+html.orb-ready .orb__status{grid-column:3;font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted)}
+html.orb-ready .orb__port{width:6px;height:6px;border:1px solid var(--accent);border-radius:50%;background:var(--muted);box-shadow:0 0 0 2px var(--bg);transition:background .18s}
+html.orb-ready .orb__reticle{position:absolute;top:0;left:calc((var(--orb-plate,160px) - var(--orb-art,70px)) / 2);width:var(--orb-art,70px);height:var(--orb-art,70px);opacity:0;transform:scale(1.12);transition:opacity .18s,transform .18s;background:linear-gradient(var(--accent),var(--accent)) 0 0/12px 1px no-repeat,linear-gradient(var(--accent),var(--accent)) 0 0/1px 12px no-repeat,linear-gradient(var(--accent),var(--accent)) 100% 0/12px 1px no-repeat,linear-gradient(var(--accent),var(--accent)) 100% 0/1px 12px no-repeat,linear-gradient(var(--accent),var(--accent)) 0 100%/12px 1px no-repeat,linear-gradient(var(--accent),var(--accent)) 0 100%/1px 12px no-repeat,linear-gradient(var(--accent),var(--accent)) 100% 100%/12px 1px no-repeat,linear-gradient(var(--accent),var(--accent)) 100% 100%/1px 12px no-repeat}
+html.orb-ready .orb__reticle::after{content:'';position:absolute;inset:3px;border:1px dashed var(--accent);border-radius:50%;opacity:.25;animation:orb-roll 36s linear infinite}
+html.orb-ready .orb__body:is(:hover,:focus-visible,[data-state="locked"],.orb__handshake) .orb__reticle{opacity:1;transform:scale(1)}
+html.orb-ready .orb__body:is(:hover,:focus-visible,[data-state="locked"],.orb__handshake) .orb__plate{background:var(--bg2);border-color:var(--accent)}
+html.orb-ready .orb__body:is(:hover,:focus-visible,[data-state="locked"]) .orb__port{background:var(--accent)}
+html.orb-ready .orb__body:is(:hover,:focus-visible) .orb__drift{animation-play-state:paused}
+html.orb-ready .orb__body[data-state="locked"] .orb__drift{transform:scale(1.04);animation:none}
+html.orb-ready .orb__body[data-state="open"]{opacity:0!important;pointer-events:none}
+html.orb-ready .orb__body.orb__far{mask-image:radial-gradient(circle var(--orb-limb-r) at var(--orb-limb-x) var(--orb-limb-y),transparent 96%,#000 100%);-webkit-mask-image:radial-gradient(circle var(--orb-limb-r) at var(--orb-limb-x) var(--orb-limb-y),transparent 96%,#000 100%)}
+html.orb-ready .orb__fallback{position:absolute;left:-85px;top:-85px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 32% 29%,color-mix(in srgb,var(--accent) 40%,var(--bg)),color-mix(in srgb,var(--accent) 18%,transparent) 45%,transparent 71%);box-shadow:0 0 60px color-mix(in srgb,var(--accent) 10%,transparent);opacity:.8}
+html.orb-ready .orb__fallback[hidden]{display:none}
+html.orb-ready .orb__traces{position:absolute;left:0;top:0;width:1px;height:1px;opacity:.19;transition:opacity .3s,transform .7s var(--ease)}
+html.orb-ready .orb__traces svg{width:1px;height:1px;overflow:visible}
+html.orb-ready .orb__traces ellipse{fill:none;stroke:var(--accent);stroke-width:.4;stroke-dasharray:3 7;vector-effect:non-scaling-stroke}
+html.orb-ready .orb__layer:has(.orb__body:hover) .orb__traces{opacity:.22}
+html.orb-ready .orb__debris{position:absolute;height:3px;background:var(--muted);opacity:.25;animation:orb-debris 64s linear infinite;animation-delay:var(--orb-delay)}
+html.orb-ready .orb__debris:nth-of-type(4){background:var(--accent);opacity:.55}
+html.orb-ready .orb__meteor{position:absolute;top:30%;left:70%;width:70px;height:1px;background:linear-gradient(90deg,transparent,var(--accent));opacity:0;animation:orb-meteor 37s linear infinite}
+html.orb-ready .orb__void{position:fixed;inset:0;z-index:400;background:color-mix(in srgb,var(--bg) 50%,transparent);animation:orb-veil-in .3s var(--ease) both}
+html.orb-ready .orb__panel{position:fixed;z-index:410;left:50%;top:50%;transform:translate(-50%,-50%);width:min(760px,92vw);max-height:82vh;max-height:82dvh;display:flex;flex-direction:column;opacity:1;background:var(--bg);color:var(--text);border:1px solid var(--text);box-shadow:9px 11px 0 color-mix(in srgb,var(--text) 22%,transparent);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
+html.orb-ready .orb__panel[data-state="open"]{animation:orb-unfurl .3s var(--ease) both}
+html.orb-ready .orb__panel[data-state="closing"]{animation:orb-fold .21s var(--ease) both}
+html.orb-ready .orb__panel[hidden],html.orb-ready .orb__void[hidden]{display:none}
+html.orb-ready .orb__panel.orb__scrolled .orb__header{box-shadow:0 6px 16px color-mix(in srgb,var(--text) 9%,transparent)}
+html.orb-ready .orb__header{display:flex;align-items:center;gap:14px;padding:12px 20px;background:var(--bg);border-bottom:1px solid var(--line-strong);flex:none;position:sticky;top:0;z-index:2}
+html.orb-ready .orb__thumbnail{width:54px;height:54px;flex:none}
+html.orb-ready .orb__thumbnail .orb__art{width:54px;height:54px}
+html.orb-ready .orb__heading{flex:1;min-width:0}
+html.orb-ready .orb__count{font:10px var(--f-mono);letter-spacing:.12em;color:var(--muted)}
+html.orb-ready .orb__title{font:500 clamp(17px,2.3vw,25px)/1.2 var(--f-display);margin:5px 0 0;letter-spacing:-.02em}
+html.orb-ready .orb__close,html.orb-ready .orb__prev,html.orb-ready .orb__next{font:11px var(--f-mono);color:var(--text);background:none;border:1px solid var(--line-strong);padding:12px;cursor:pointer;min-height:44px}
+html.orb-ready .orb__close{flex:none;font-size:18px;width:44px;height:44px;padding:0}
+@media(pointer:fine){html.orb-ready body.has-cursor :is(.orb__body,.orb__handle,.orb__panel,.orb__panel *,.orb__void):not(input,textarea,select,[contenteditable]){cursor:none!important}html.orb-ready :is(.cursor--dot,.cursor-reticle,.cursor-hud){z-index:480}html.orb-ready .cursor-reticle.is-orbital .cursor-reticle__ring{border-color:var(--accent);animation-duration:9s}html.orb-ready .cursor--dot.is-orbital{box-shadow:0 0 0 3px var(--bg),0 0 0 4px var(--accent)}/* Scale the reticle's own parts, never the reticle root: a `scale` property on
+   the root would multiply its inline translate3d and draw the crosshair at a
+   fraction of the true pointer coordinates. */
+html.orb-ready .cursor-reticle.is-docked :is(.cursor-reticle__ring,.cursor-reticle__cross,.cursor-reticle__brackets){scale:.78}}
+html.orb-ready .orb__close:hover,html.orb-ready .orb__footer button:hover{background:var(--bg2)}
+html.orb-ready .orb__tools{flex:none;background:var(--bg);border-bottom:1px solid var(--line);max-height:28dvh;overflow:auto;overscroll-behavior:contain}
+html.orb-ready .orb__tools:empty{display:none}
+html.orb-ready .orb__tools .toggle{margin:10px 20px;gap:4px}
+html.orb-ready .orb__tools .toggle__b{font-size:11px;padding:8px 14px}
+html.orb-ready .orb__content{padding:24px;overflow:auto;overscroll-behavior:contain;touch-action:pan-y;min-height:0;max-height:60dvh;scroll-behavior:smooth;flex:1}
+html.orb-ready .orb__content>.panel,html.orb-ready .orb__chest>.panel,html.orb-ready .orb__chest>.mission__col{margin:0 0 22px;padding:20px;box-shadow:none;border:1px solid var(--line-strong);border-radius:0}
+html.orb-ready .orb__content :is(.reveal,.flip3d,.cascade){opacity:1!important;transform:none!important;filter:none!important;visibility:visible!important}
+html.orb-ready .orb__content .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;border:0;background:none}
+html.orb-ready .orb__content .kpi{box-shadow:none;border:1px solid var(--line-strong);border-radius:0;padding:20px}
+html.orb-ready .orb__content .grid2{grid-template-columns:1fr}
+html.orb-ready .orb__content .prog{grid-template-columns:repeat(2,minmax(0,1fr))}
+html.orb-ready .orb__content .rules{grid-template-columns:repeat(2,minmax(0,1fr))}
+html.orb-ready .orb__content .row{overflow-wrap:anywhere}
+html.orb-ready .orb__content .manifesto{font-size:clamp(22px,3vw,34px);line-height:1.5;padding:22px;box-shadow:none;border-radius:0;border:1px solid var(--line-strong)}
+/* Card rows dock as one full-width column: the tag drops under the copy
+   instead of stealing half the reading measure. */
+html.orb-ready .orb__content .ecard,html.orb-ready .orb__content .step{grid-template-columns:26px 1fr;gap:14px}
+html.orb-ready .orb__content .ecard>.tag,html.orb-ready .orb__content .step .row__val{grid-column:2}
+html.orb-ready .orb__content .uni{grid-template-columns:28px 1fr auto;gap:8px}
+html.orb-ready .orb__content .uni .row__mid{grid-column:2;font-size:12px}
+html.orb-ready .orb__content .uni .row__val{grid-column:3;grid-row:1}
+html.orb-ready .orb__content .uni .tag{grid-column:3;grid-row:2}
+html.orb-ready .orb__content .schedule-wrap{overflow:auto}
+html.orb-ready .orb__content .sched{min-width:640px}
+html.orb-ready .orb__footer{display:flex;justify-content:space-between;gap:12px;padding:10px 20px;border-top:1px solid var(--line-strong);flex:none}
+html.orb-ready .orb__handle{display:none}
+html.orb-ready .orb__live{position:fixed;width:1px;height:1px;padding:0;margin:-1px;clip-path:inset(50%);overflow:hidden;white-space:nowrap}
+html.orb-ready.orb-open #scene3d{filter:blur(6px) brightness(.55)!important;transform:scale(.86);transition:transform .42s var(--ease),filter .42s var(--ease)}
+html.orb-ready.orb-open .orb__layer{opacity:.35!important}
+html.orb-ready.orb-open .orb__slot:has([data-state="transit"],[data-state="closing"]){z-index:30!important}
+html.orb-ready [data-state="closing"]{pointer-events:none}
+html.orb-ready [data-state="closing"] .orb__drift{animation:none}
+html.orb-ready .orb__panel .orb__content>*{animation:orb-payload .3s var(--ease)}
+html.orb-ready .orb__coordinates::after{content:' / DRAG TO ROTATE';display:none}
+@keyframes orb-payload{from{transform:translate3d(0,8px,0);opacity:.5}to{transform:translate3d(0,0,0);opacity:1}}
+html.orb-ready.orb-open .orb__body{pointer-events:none}
+html.orb-ready:is(.orb-open,.orb-hidden) .orb__layer *,html.orb-ready.orb-hidden .orb__panel *{animation-play-state:paused!important}
+html.orb-ready .dl-dock{display:none!important}
+html.orb-ready.orb-open .orb__tools .dl-dock{display:block!important;position:relative!important;inset:auto!important;z-index:auto!important;width:100%!important;max-width:none!important;margin:0!important;opacity:1!important;transform:none!important;pointer-events:auto!important}
+html.orb-ready .orb__tools .dl-dock__shell{translate:none!important;transform:none!important;box-shadow:none;border-radius:0}
+html.orb-ready .orb__tools .dl-dock__hint{display:none}
+html.orb-ready.orb-intro .orb__drift{animation:orb-launch .8s var(--ease) both;animation-delay:var(--orb-launch-delay)}
+/* Bodies settle INTO an orbit that is already running — a soft fade and a
+   short rise, never a pop out of nothing at full size. */
+@keyframes orb-launch{from{transform:translate3d(0,16px,0) scale(.96);opacity:0}to{transform:translate3d(0,0,0) scale(1);opacity:1}}
+@keyframes orb-drift{0%,100%{transform:translate3d(0,-3px,0)}50%{transform:translate3d(0,3px,0)}}
+@keyframes orb-yaw{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes orb-station{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@keyframes orb-roll{to{transform:rotate(360deg)}}
+@keyframes orb-gimbal{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes orb-strobe{0%,5%{opacity:1}6%,100%{opacity:.25}}
+@keyframes orb-puff{0%,100%{opacity:0;transform:scaleY(.3)}50%{opacity:.8;transform:scaleY(1)}}
+@keyframes orb-debris{to{transform:rotate(360deg) translate3d(3px,6px,0)}}
+@keyframes orb-meteor{0%,94%,100%{opacity:0;transform:translate3d(0,0,0) rotate(-30deg)}95%{opacity:.4}97%{opacity:0;transform:translate3d(-180px,100px,0) rotate(-30deg)}}
+@keyframes orb-unfurl{from{clip-path:polygon(43% 40%,57% 40%,57% 60%,43% 60%,43% 60%,43% 40%)}to{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}}
+/* polygon→polygon interpolates; polygon→inset does not, and the panel used to
+   snap straight to the end value as the close began. The target here is the
+   exact reverse of orb-unfurl's from, so closing reads as opening played
+   backwards. The explicit `from` keeps the interpolation honest even where the
+   resting clip-path is `none`. */
+@keyframes orb-fold{from{opacity:1;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}to{opacity:0;clip-path:polygon(43% 40%,57% 40%,57% 60%,43% 60%,43% 60%,43% 40%)}}
+@keyframes orb-veil-in{from{opacity:0}to{opacity:1}}
+/* Below 760px the panel is a bottom sheet, not a centred card, so it slides
+   instead of unfurling. Reusing the clip animation there made it bloom out of
+   the middle of the viewport on its way up from the bottom edge. */
+@keyframes orb-sheet-in{from{transform:translate3d(0,100%,0);opacity:.35}to{transform:translate3d(0,0,0);opacity:1}}
+@keyframes orb-sheet-out{from{transform:translate3d(0,0,0);opacity:1}to{transform:translate3d(0,100%,0);opacity:0}}
+@media(max-width:1100px) and (min-width:761px){html.orb-ready .orb__core{top:130px}html.orb-ready .orb__body{--orb-art:64px;--orb-plate:150px;height:124px;top:-62px}}
+@media(max-width:760px){
+ html.orb-ready .orb__stage{min-height:650px}
+ html.orb-ready .orb__core{top:112px;left:24px;max-width:90vw}
+ html.orb-ready .orb__page{font-size:29px}
+ html.orb-ready .orb__hint{max-width:240px}
+ html.orb-ready .orb__body{--orb-art:58px;--orb-plate:134px;height:116px;top:-54px}
+ html.orb-ready .orb__plate{grid-template-columns:6px 14px 1fr;gap:3px;padding:5px;min-height:42px}
+ html.orb-ready .orb__name,html.orb-ready .orb__number{font-size:11px}
+ html.orb-ready .orb__coordinates{font-size:9px;bottom:28px;right:24px}
+ html.orb-ready .orb__panel{top:auto;bottom:0;left:0;transform:none;width:100%;max-height:90dvh;box-shadow:none;clip-path:none;border-bottom:0}
+ html.orb-ready .orb__panel[data-state="open"]{animation:orb-sheet-in .3s var(--ease) both}
+ html.orb-ready .orb__panel[data-state="closing"]{animation:orb-sheet-out .21s var(--ease) both}
+ html.orb-ready .orb__header{padding:10px 14px;gap:10px}
+ html.orb-ready .orb__thumbnail,html.orb-ready .orb__thumbnail .orb__art{width:42px;height:42px}
+ html.orb-ready .orb__handle{display:block;width:100%;height:22px;border:0;background:var(--bg);touch-action:none;flex:none}
+ html.orb-ready .orb__handle::after{content:'';display:block;margin:auto;width:44px;height:3px;background:var(--muted);border-radius:2px}
+ html.orb-ready .orb__content{padding:16px;max-height:none}
+ html.orb-ready .orb__content .prog,html.orb-ready .orb__content .rules{grid-template-columns:1fr}
+ html.orb-ready .orb__content .step,html.orb-ready .orb__content .ecard{grid-template-columns:24px 1fr;gap:12px;padding:16px 8px}
+ html.orb-ready .orb__content .step .row__val,html.orb-ready .orb__content .ecard>.tag{grid-column:2}
+ html.orb-ready .orb__footer{padding:8px 12px}
+ html.orb-ready .orb__traces{left:0;top:0;width:1px;height:1px}
+ html.orb-ready .orb__coordinates::after{display:inline}
+}
+@media(max-width:480px){html.orb-ready .orb__panel{height:100dvh;max-height:100dvh;border:0}html.orb-ready .orb__panel[data-state="open"]{animation:none}html.orb-ready .orb__content .tbl{font-size:12px}html.orb-ready .orb__content .tbl td{padding:8px 5px}html.orb-ready .orb__content .kpis{grid-template-columns:1fr 1fr}html.orb-ready .orb__content .kpi{padding:12px}}
+/* The descendant wildcards alone left two elements animating under reduced
+   motion: the panel animates on itself (orb-unfurl / orb-fold / the sheet
+   pair) and the scrim sits outside both subtrees. Name all three roots. */
+html.orb-ready.orb-reduced :is(.orb__layer,.orb__panel,.orb__void),html.orb-ready.orb-reduced :is(.orb__layer,.orb__panel,.orb__void) *{animation:none!important;transition:none!important}
+html.orb-ready.orb-reduced #scene3d{transition:none!important}
+@media(prefers-reduced-motion:reduce){html.orb-ready :is(.orb__layer,.orb__panel,.orb__void),html.orb-ready :is(.orb__layer,.orb__panel,.orb__void) *{animation:none!important;transition:none!important}html.orb-ready #scene3d{transition:none!important}html.orb-ready .orb__content{scroll-behavior:auto}}

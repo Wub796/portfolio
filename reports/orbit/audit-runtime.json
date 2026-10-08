@@ -1,0 +1,358 @@
+{
+ "at": "2026-10-08T13:16:58.076Z",
+ "pages": [
+  {
+   "page": "index",
+   "state": {
+    "planet": "sol",
+    "orbReady": false,
+    "dlDocks": 0,
+    "orbitLayers": 0,
+    "orbitBodies": 0,
+    "orbitStages": 0,
+    "cursorEls": 3,
+    "dupIds": [],
+    "nodes": 291,
+    "brokenImgs": [],
+    "emptyHrefs": 0,
+    "hashOnlyHrefs": 0,
+    "fontsReady": "loaded",
+    "bodyOverflowX": "hidden"
+   },
+   "exceptions": [],
+   "net": [],
+   "http": [],
+   "console": [],
+   "log": [],
+   "envNoise": 8,
+   "clean": true
+  },
+  {
+   "page": "mission",
+   "state": {
+    "planet": "mission",
+    "orbReady": true,
+    "dlDocks": 0,
+    "orbitLayers": 1,
+    "orbitBodies": 3,
+    "orbitStages": 1,
+    "cursorEls": 3,
+    "dupIds": [],
+    "nodes": 325,
+    "brokenImgs": [],
+    "emptyHrefs": 0,
+    "hashOnlyHrefs": 0,
+    "fontsReady": "loaded",
+    "bodyOverflowX": "hidden"
+   },
+   "exceptions": [],
+   "net": [],
+   "http": [],
+   "console": [],
+   "log": [],
+   "envNoise": 8,
+   "clean": true
+  },
+  {
+   "page": "studies",
+   "state": {
+    "planet": "studies",
+    "orbReady": true,
+    "dlDocks": 0,
+    "orbitLayers": 1,
+    "orbitBodies": 7,
+    "orbitStages": 1,
+    "cursorEls": 3,
+    "dupIds": [],
+    "nodes": 672,
+    "brokenImgs": [],
+    "emptyHrefs": 0,
+    "hashOnlyHrefs": 0,
+    "fontsReady": "loaded",
+    "bodyOverflowX": "hidden"
+   },
+   "exceptions": [],
+   "net": [],
+   "http": [],
+   "console": [],
+   "log": [],
+   "envNoise": 8,
+   "clean": true
+  },
+  {
+   "page": "college",
+   "state": {
+    "planet": "college",
+    "orbReady": true,
+    "dlDocks": 0,
+    "orbitLayers": 1,
+    "orbitBodies": 4,
+    "orbitStages": 1,
+    "cursorEls": 3,
+    "dupIds": [],
+    "nodes": 562,
+    "brokenImgs": [],
+    "emptyHrefs": 0,
+    "hashOnlyHrefs": 0,
+    "fontsReady": "loaded",
+    "bodyOverflowX": "hidden"
+   },
+   "exceptions": [],
+   "net": [],
+   "http": [],
+   "console": [],
+   "log": [],
+   "envNoise": 8,
+   "clean": true
+  },
+  {
+   "page": "applications",
+   "state": {
+    "planet": "applications",
+    "orbReady": true,
+    "dlDocks": 0,
+    "orbitLayers": 1,
+    "orbitBodies": 3,
+    "orbitStages": 1,
+    "cursorEls": 3,
+    "dupIds": [],
+    "nodes": 424,
+    "brokenImgs": [],
+    "emptyHrefs": 0,
+    "hashOnlyHrefs": 0,
+    "fontsReady": "loaded",
+    "bodyOverflowX": "hidden"
+   },
+   "exceptions": [],
+   "net": [],
+   "http": [],
+   "console": [],
+   "log": [],
+   "envNoise": 8,
+   "clean": true
+  },
+  {
+   "page": "extracurriculars",
+   "state": {
+    "planet": "extracurriculars",
+    "orbReady": true,
+    "dlDocks": 0,
+    "orbitLayers": 1,
+    "orbitBodies": 14,
+    "orbitStages": 1,
+    "cursorEls": 3,
+    "dupIds": [],
+    "nodes": 934,
+    "brokenImgs": [],
+    "emptyHrefs": 0,
+    "hashOnlyHrefs": 0,
+    "fontsReady": "loaded",
+    "bodyOverflowX": "hidden"
+   },
+   "exceptions": [],
+   "net": [],
+   "http": [],
+   "console": [],
+   "log": [],
+   "envNoise": 8,
+   "clean": true
+  },
+  {
+   "page": "schedule",
+   "state": {
+    "planet": "schedule",
+    "orbReady": true,
+    "dlDocks": 0,
+    "orbitLayers": 1,
+    "orbitBodies": 4,
+    "orbitStages": 1,
+    "cursorEls": 3,
+    "dupIds": [],
+    "nodes": 656,
+    "brokenImgs": [],
+    "emptyHrefs": 0,
+    "hashOnlyHrefs": 0,
+    "fontsReady": "loaded",
+    "bodyOverflowX": "hidden"
+   },
+   "exceptions": [],
+   "net": [],
+   "http": [],
+   "console": [],
+   "log": [],
+   "envNoise": 8,
+   "clean": true
+  },
+  {
+   "page": "meal",
+   "state": {
+    "planet": "meal",
+    "orbReady": true,
+    "dlDocks": 0,
+    "orbitLayers": 1,
+    "orbitBodies": 6,
+    "orbitStages": 1,
+    "cursorEls": 3,
+    "dupIds": [],
+    "nodes": 547,
+    "brokenImgs": [],
+    "emptyHrefs": 0,
+    "hashOnlyHrefs": 0,
+    "fontsReady": "loaded",
+    "bodyOverflowX": "hidden"
+   },
+   "exceptions": [],
+   "net": [],
+   "http": [],
+   "console": [],
+   "log": [],
+   "envNoise": 8,
+   "clean": true
+  },
+  {
+   "page": "training",
+   "state": {
+    "planet": "training",
+    "orbReady": true,
+    "dlDocks": 0,
+    "orbitLayers": 1,
+    "orbitBodies": 6,
+    "orbitStages": 1,
+    "cursorEls": 3,
+    "dupIds": [],
+    "nodes": 816,
+    "brokenImgs": [],
+    "emptyHrefs": 0,
+    "hashOnlyHrefs": 0,
+    "fontsReady": "loaded",
+    "bodyOverflowX": "hidden"
+   },
+   "exceptions": [],
+   "net": [],
+   "http": [],
+   "console": [],
+   "log": [],
+   "envNoise": 8,
+   "clean": true
+  },
+  {
+   "page": "deadlines",
+   "state": {
+    "planet": "deadlines",
+    "orbReady": true,
+    "dlDocks": 1,
+    "orbitLayers": 1,
+    "orbitBodies": 1,
+    "orbitStages": 1,
+    "cursorEls": 3,
+    "dupIds": [],
+    "nodes": 3070,
+    "brokenImgs": [],
+    "emptyHrefs": 0,
+    "hashOnlyHrefs": 0,
+    "fontsReady": "loaded",
+    "bodyOverflowX": "hidden"
+   },
+   "exceptions": [],
+   "net": [],
+   "http": [],
+   "console": [],
+   "log": [],
+   "envNoise": 8,
+   "clean": true
+  }
+ ],
+ "router": {
+  "hops": [
+   {
+    "target": "mission",
+    "linkFound": true,
+    "landed": true,
+    "planet": "mission"
+   },
+   {
+    "target": "studies",
+    "linkFound": true,
+    "landed": true,
+    "planet": "studies"
+   },
+   {
+    "target": "college",
+    "linkFound": true,
+    "landed": true,
+    "planet": "college"
+   },
+   {
+    "target": "applications",
+    "linkFound": true,
+    "landed": true,
+    "planet": "applications"
+   },
+   {
+    "target": "extracurriculars",
+    "linkFound": true,
+    "landed": true,
+    "planet": "extracurriculars"
+   },
+   {
+    "target": "schedule",
+    "linkFound": true,
+    "landed": true,
+    "planet": "schedule"
+   },
+   {
+    "target": "meal",
+    "linkFound": true,
+    "landed": true,
+    "planet": "meal"
+   },
+   {
+    "target": "training",
+    "linkFound": true,
+    "landed": true,
+    "planet": "training"
+   },
+   {
+    "target": "deadlines",
+    "linkFound": true,
+    "landed": true,
+    "planet": "deadlines"
+   },
+   {
+    "target": "index",
+    "linkFound": true,
+    "landed": true,
+    "planet": "sol"
+   }
+  ],
+  "before": 291,
+  "after": {
+   "nodes": 293,
+   "dupIds": [],
+   "dlDocks": 0,
+   "orbitLayers": 0,
+   "panels": 0,
+   "stages": 0,
+   "slots": 0,
+   "layers": 0,
+   "cursorEls": 3
+  },
+  "growth": 2,
+  "exceptions": [],
+  "net": [],
+  "http": [],
+  "console": []
+ },
+ "notes": [
+  "mission: body overflow-x=hidden",
+  "studies: body overflow-x=hidden",
+  "college: body overflow-x=hidden",
+  "applications: body overflow-x=hidden",
+  "extracurriculars: body overflow-x=hidden",
+  "schedule: body overflow-x=hidden",
+  "meal: body overflow-x=hidden",
+  "training: body overflow-x=hidden",
+  "deadlines: body overflow-x=hidden"
+ ],
+ "failures": []
+}

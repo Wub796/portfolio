@@ -1,0 +1,146 @@
+--- computed animation-name per part ---
+.orb__machine    {"name":"none","dur":"0s","play":"running","willChange":"auto"}
+.orb__moon       absent
+.orb__ring       absent
+.orb__dish       {"name":"none","dur":"0s","play":"running","willChange":"auto"}
+.orb__wing       {"name":"none","dur":"0s","play":"running","willChange":"auto"}
+.orb__arm        absent
+.orb__leg        absent
+.orb__gimbal     absent
+.orb__cube       absent
+.orb__quadrant   {"name":"none","dur":"0s","play":"running","willChange":"auto"}
+.orb__tug        absent
+.orb__cargo      absent
+.orb__beacon     {"name":"orb-strobe","dur":"2.4s","play":"running","willChange":"auto"}
+.orb__art        {"name":"orb-roll","dur":"48s","play":"running","willChange":"transform"}
+.orb__drift      {"name":"orb-drift","dur":"19s","play":"running","willChange":"auto"}
+.orb__debris     {"name":"orb-debris","dur":"64s","play":"running","willChange":"auto"}
+.orb__meteor     {"name":"orb-meteor","dur":"37s","play":"running","willChange":"auto"}
+.orb__plate      {"name":"none","dur":"0s","play":"running","willChange":"auto"}
+--- running animations: 30 | entries animating a non-composited property: 0 ---
+   1× reticleSpin [cursor-reticle__ring] transform
+   1× hudBlink [cursor-hud] opacity,transform
+   12× orb-debris [orb__debris] transform
+   1× orb-meteor [orb__meteor] opacity,transform
+   3× orb-drift [orb__drift] transform
+   2× orb-roll [[object SVGAnimatedString]] transform
+   3× orb-strobe [[object SVGAnimatedString]] opacity
+   3× orb-roll [orb__reticle] transform
+   1× orb-yaw [[object SVGAnimatedString]] transform
+   1× (waapi) [orb__body] opacity,transform
+   2× (waapi) [orb__body orb__far] opacity,transform
+--- clip-path interpolation at 50% ---
+  polygon -> inset   : inset(48% 44%)
+  polygon -> polygon : polygon(calc(24% + 6px) 23%, 76% 23%, 76% calc(77% - 6px), calc(74% - 6px) 77%, 24% 77%, 24% calc(23% + 6px))
+--- open/close cycle (desktop 1440x1000) ---
+{
+ "panelOpen": true,
+ "veilOpen": true,
+ "openClip": "polygon(calc(0% + 12px) 0%, 100% 0%, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0% 100%, 0% calc(0% + 12px))",
+ "midOpenNonComp": [
+  "undefined offset,easing,composite,filter,computedOffset",
+  "undefined offset,easing,composite,backgroundColor,computedOffset",
+  "undefined offset,easing,composite,borderBottomColor,computedOffset",
+  "undefined offset,easing,composite,borderLeftColor,computedOffset",
+  "undefined offset,easing,composite,borderRightColor,computedOffset",
+  "undefined offset,easing,composite,borderTopColor,computedOffset"
+ ],
+ "midCloseState": "closing",
+ "hasFold": true,
+ "midCloseClip": "polygon(calc(41.7865% + 0.338651px) 38.8712%, 58.2135% 38.8712%, 58.2135% calc(61.1288% - 0.338651px), calc(44.6086% - 0.338651px) 61.1288%, 41.7865% 61.1288%, 41.7865% calc(38.8712% + 0.338651px))",
+ "lateCloseClip": "polygon(calc(42.9948% + 0.00145983px) 39.9951%, 57.0052% 39.9951%, 57.0052% calc(60.0049% - 0.00145983px), calc(43.0069% - 0.00145983px) 60.0049%, 42.9948% 60.0049%, 42.9948% calc(39.9951% + 0.00145983px))",
+ "closed": true,
+ "veilClosed": true,
+ "retained": 32
+}
+    PASS panel runs a real close animation
+    PASS open clip-path is the resting polygon
+    PASS mid-close clip-path is a polygon (interpolating, not snapped)
+    PASS mid-close clip-path is not the fold end value
+    PASS clip-path advances between 50% and 90% of the fold
+    PASS the fold ends somewhere new
+    PASS panel and scrim both closed
+--- open/close cycle (mobile 600x900, sheet band) ---
+{
+ "open": {
+  "samples": 80,
+  "names": [
+   "orb-sheet-in"
+  ],
+  "first": 0,
+  "last": 0,
+  "min": 0,
+  "max": 453,
+  "endIsExtremeMax": false
+ },
+ "close": {
+  "samples": 41,
+  "names": [
+   "orb-sheet-out"
+  ],
+  "first": 0,
+  "last": 0,
+  "min": 0,
+  "max": 453,
+  "endIsExtremeMax": false
+ },
+ "settled": {
+  "state": "open",
+  "name": "orb-sheet-in",
+  "ty": 0,
+  "op": 1,
+  "hidden": false,
+  "clip": "none"
+ },
+ "after": {
+  "closed": true,
+  "state": "closing"
+ }
+}
+    PASS open uses the sheet keyframes
+    PASS sheet travels the full sheet height up from below the fold
+    PASS sheet comes to rest at translateY 0
+    PASS sheet leaves no desktop clip-path behind
+    PASS close uses the sheet keyframes
+    PASS close starts from translateY 0
+    PASS close slides the sheet away again
+    PASS mobile panel closes
+--- open/close cycle (mobile 390x844, <=480) ---
+{
+ "open": {
+  "samples": 37,
+  "names": [],
+  "first": 0,
+  "last": 0,
+  "min": 0,
+  "max": 0,
+  "endIsExtremeMax": true
+ },
+ "close": {
+  "samples": 41,
+  "names": [
+   "orb-sheet-out"
+  ],
+  "first": 0,
+  "last": 0,
+  "min": 0,
+  "max": 844,
+  "endIsExtremeMax": false
+ },
+ "settled": {
+  "state": "open",
+  "name": "none",
+  "ty": 0,
+  "op": 1,
+  "hidden": false,
+  "clip": "none"
+ },
+ "after": {
+  "closed": true,
+  "state": "closing"
+ }
+}
+    PASS no open animation runs at <=480px (by design)
+    PASS panel still opens and rests at translateY 0
+    PASS close still slides the sheet away
+    PASS narrow panel closes

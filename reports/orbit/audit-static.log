@@ -1,0 +1,106 @@
+{
+ "pages": 10,
+ "css": [
+  "css/orbit.css",
+  "css/style.css"
+ ],
+ "dependencies": [
+  "animejs",
+  "esbuild"
+ ],
+ "problems": [],
+ "notes": [
+  {
+   "kind": "css-duplicate-prop",
+   "where": "css/orbit.css",
+   "detail": "\"max-height\" declared twice in one block"
+  },
+  {
+   "kind": "undefined-var-fallback",
+   "where": "css",
+   "detail": "var(--orb-arm-angle) is undefined but every use supplies a fallback"
+  },
+  {
+   "kind": "undefined-var-fallback",
+   "where": "css",
+   "detail": "var(--sz) is undefined but every use supplies a fallback"
+  },
+  {
+   "kind": "unused-var",
+   "where": "css",
+   "detail": "--page, --c-wake, --c-commute, --c-lesson, --c-wind, --c-sleep, --applied"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/main.js",
+   "detail": "#dlSearch never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/main.js",
+   "detail": "#dlPill never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/main.js",
+   "detail": "#dlResults never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/main.js",
+   "detail": "#dlTotal never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/main.js",
+   "detail": "#dlPos never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/main.js",
+   "detail": "#dlApplied never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/main.js",
+   "detail": "#dlAppliedN never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/main.js",
+   "detail": "#dlWipe never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/main.js",
+   "detail": "#dlPrev never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/main.js",
+   "detail": "#dlNext never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/main.js",
+   "detail": "#dlTop never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/main.js",
+   "detail": "#dlTrackFill never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "js-orphan-id",
+   "where": "js/orbit.js",
+   "detail": "#dlSearch never exists in any page (dead lookup?)"
+  },
+  {
+   "kind": "deps",
+   "where": "package.json",
+   "detail": "animejs, esbuild"
+  }
+ ]
+}
+
+OK: no static problems

@@ -1,0 +1,2022 @@
+{
+  "at": "2026-10-08T03:59:05.627Z",
+  "environment": "Headless Chrome, 1440×1000; real CDP pointer/keyboard input; debugging port 9228",
+  "pages": [
+    {
+      "page": "mission",
+      "count": 3,
+      "nodes": 154,
+      "artNodes": [
+        27,
+        40,
+        34
+      ],
+      "bounds": [
+        {
+          "x": 617.1727905273438,
+          "y": 826.4862060546875,
+          "w": 164,
+          "h": 135.300048828125,
+          "name": "1. North Star — open"
+        },
+        {
+          "x": 164.5859375,
+          "y": 308.5173034667969,
+          "w": 145.56689453125,
+          "h": 120.09271240234375,
+          "name": "2. Short-term · Summer 2026 — open"
+        },
+        {
+          "x": 1150.2366943359375,
+          "y": 329.8964538574219,
+          "w": 146.43310546875,
+          "h": 120.80728149414062,
+          "name": "3. Medium / long-term trajectory — open"
+        }
+      ],
+      "scene": {
+        "ok": true,
+        "slug": "mission",
+        "arrival": 1,
+        "dark": false
+      },
+      "anchor": {
+        "x": 720.0000000000001,
+        "y": 551.3750940476418,
+        "r": 184.04855991947548,
+        "sunX": -0.9997121514805924,
+        "sunY": 0.02399196077950156,
+        "ok": true
+      },
+      "opened": [
+        {
+          "title": "01 · North Star",
+          "opacity": "1",
+          "textLength": 383,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-mission-1",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Short-term · Summer 2026",
+          "opacity": "1",
+          "textLength": 526,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-mission-2",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Medium / long-term trajectory",
+          "opacity": "1",
+          "textLength": 886,
+          "tables": 0,
+          "lists": 2,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-mission-3",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [
+        {
+          "start": 40.400000005960464,
+          "duration": 1048
+        }
+      ],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 49,
+        "TaskDuration": 0.07875499999999991,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.028734999999999955
+      },
+      "frames": {
+        "fps": 19.513146982779634,
+        "frames": 41,
+        "maxFrameGap": 66.79999999999927
+      },
+      "orbitalMovement": {
+        "distance": 9.18038447493716,
+        "animation": 97
+      }
+    },
+    {
+      "page": "studies",
+      "count": 7,
+      "nodes": 379,
+      "artNodes": [
+        43,
+        56,
+        47,
+        34,
+        40,
+        38,
+        28
+      ],
+      "bounds": [
+        {
+          "x": 621.3902587890625,
+          "y": 801.0782470703125,
+          "w": 164,
+          "h": 135.29998779296875,
+          "name": "1. Flight telemetry — open"
+        },
+        {
+          "x": 218.13009643554688,
+          "y": 716.0133666992188,
+          "w": 160.00778198242188,
+          "h": 132.00640869140625,
+          "name": "2. Coursework — 9th & 10th grade — open"
+        },
+        {
+          "x": 300.6112060546875,
+          "y": 473.1881408691406,
+          "w": 151.40969848632812,
+          "h": 124.91299438476562,
+          "name": "3. State assessments & milestones — open"
+        },
+        {
+          "x": 529.1553955078125,
+          "y": 157.24884033203125,
+          "w": 140.243896484375,
+          "h": 115.70120239257812,
+          "name": "4. Honors & recognition — 2026 — open"
+        },
+        {
+          "x": 666.6097412109375,
+          "y": 175.52175903320312,
+          "w": 140,
+          "h": 115.5,
+          "name": "5. SAT — taken Aug 22, 2026 — open"
+        },
+        {
+          "x": 1184.7735595703125,
+          "y": 591.6865234375,
+          "w": 155.6302490234375,
+          "h": 128.39501953125,
+          "name": "6. Graduation profile — FHSP Distinguished t… — open"
+        },
+        {
+          "x": 987.3887939453125,
+          "y": 503.411865234375,
+          "w": 152.59033203125,
+          "h": 125.88702392578125,
+          "name": "7. Junior-year ladder (2026–27) — 7 APs — open"
+        }
+      ],
+      "scene": {
+        "ok": true,
+        "slug": "studies",
+        "arrival": 1,
+        "dark": false
+      },
+      "anchor": {
+        "x": 720,
+        "y": 551.0518383806308,
+        "r": 183.5018376156101,
+        "sunX": 0.9595281775508256,
+        "sunY": -0.2816126355226114,
+        "ok": true
+      },
+      "opened": [
+        {
+          "title": "01 · Flight telemetry",
+          "opacity": "1",
+          "textLength": 110,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-1",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Coursework — 9th & 10th grade",
+          "opacity": "1",
+          "textLength": 632,
+          "tables": 1,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-2",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · State assessments & milestones",
+          "opacity": "1",
+          "textLength": 292,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "04 · Honors & recognition — 2026",
+          "opacity": "1",
+          "textLength": 670,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-4",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "05 · SAT — taken Aug 22, 2026",
+          "opacity": "1",
+          "textLength": 189,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-5",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "06 · Graduation profile — FHSP Distinguished t…",
+          "opacity": "1",
+          "textLength": 386,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-6",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "07 · Junior-year ladder (2026–27) — 7 APs",
+          "opacity": "1",
+          "textLength": 438,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-studies-7",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [
+        {
+          "start": 26.399999976158142,
+          "duration": 1428
+        }
+      ],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 45,
+        "TaskDuration": 0.11027399999999998,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.029876000000000014
+      },
+      "frames": {
+        "fps": 18.04966095907116,
+        "frames": 38,
+        "maxFrameGap": 66.70000000000073
+      },
+      "orbitalMovement": {
+        "distance": 5.154418496492682,
+        "animation": 97
+      }
+    },
+    {
+      "page": "college",
+      "count": 4,
+      "nodes": 231,
+      "artNodes": [
+        38,
+        27,
+        56,
+        47
+      ],
+      "bounds": [
+        {
+          "x": 611.26220703125,
+          "y": 827.1292724609375,
+          "w": 164,
+          "h": 135.29998779296875,
+          "name": "1. Target list · 13 schools — open"
+        },
+        {
+          "x": 75.161865234375,
+          "y": 471.34197998046875,
+          "w": 151.42620849609375,
+          "h": 124.9266357421875,
+          "name": "2. Strategic pillars — open"
+        },
+        {
+          "x": 676.73779296875,
+          "y": 147.47073364257812,
+          "w": 140,
+          "h": 115.5,
+          "name": "3. Application rounds — fall 2027 — open"
+        },
+        {
+          "x": 1212.838134765625,
+          "y": 503.2580261230469,
+          "w": 152.57373046875,
+          "h": 125.87338256835938,
+          "name": "4. Operation Liftoff — open"
+        }
+      ],
+      "scene": {
+        "ok": true,
+        "slug": "college",
+        "arrival": 1,
+        "dark": false
+      },
+      "anchor": {
+        "x": 720,
+        "y": 549.6377595706141,
+        "r": 181.3764843412431,
+        "sunX": 0.9965834784083446,
+        "sunY": -0.08259158893933749,
+        "ok": true
+      },
+      "opened": [
+        {
+          "title": "01 · Target list · 13 schools",
+          "opacity": "1",
+          "textLength": 504,
+          "tables": 0,
+          "lists": 0,
+          "cards": 13,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-college-1",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Strategic pillars",
+          "opacity": "1",
+          "textLength": 1132,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-college-2",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Application rounds — fall 2027",
+          "opacity": "1",
+          "textLength": 276,
+          "tables": 1,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-college-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "04 · Operation Liftoff",
+          "opacity": "1",
+          "textLength": 1284,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-college-4",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [
+        {
+          "start": 25.5,
+          "duration": 1339
+        }
+      ],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 49,
+        "TaskDuration": 0.09050399999999992,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.03132899999999994
+      },
+      "frames": {
+        "fps": 19.180642305611574,
+        "frames": 40,
+        "maxFrameGap": 66.70000000000073
+      },
+      "orbitalMovement": {
+        "distance": 8.926803019740603,
+        "animation": 97
+      }
+    },
+    {
+      "page": "applications",
+      "count": 3,
+      "nodes": 210,
+      "artNodes": [
+        56,
+        61,
+        40
+      ],
+      "bounds": [
+        {
+          "x": 611.2617797851562,
+          "y": 827.1763916015625,
+          "w": 164,
+          "h": 135.300048828125,
+          "name": "1. Six-step application pipeline — open"
+        },
+        {
+          "x": 167.76171875,
+          "y": 306.6326599121094,
+          "w": 145.46099853515625,
+          "h": 120.00531005859375,
+          "name": "2. Current pipeline — open"
+        },
+        {
+          "x": 1152.9991455078125,
+          "y": 334.10675048828125,
+          "w": 146.4937744140625,
+          "h": 120.85736083984375,
+          "name": "3. Required documents — open"
+        }
+      ],
+      "scene": {
+        "ok": true,
+        "slug": "applications",
+        "arrival": 1,
+        "dark": false
+      },
+      "anchor": {
+        "x": 720.0000000000003,
+        "y": 551.6085347418907,
+        "r": 184.33643773220228,
+        "sunX": 0.9967191898709006,
+        "sunY": -0.08093736184912043,
+        "ok": true
+      },
+      "opened": [
+        {
+          "title": "01 · Six-step application pipeline",
+          "opacity": "1",
+          "textLength": 1346,
+          "tables": 0,
+          "lists": 0,
+          "cards": 6,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-applications-1",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Current pipeline",
+          "opacity": "1",
+          "textLength": 1141,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-applications-2",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Required documents",
+          "opacity": "1",
+          "textLength": 500,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-applications-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [
+        {
+          "start": 19.30000001192093,
+          "duration": 1263
+        }
+      ],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 62,
+        "TaskDuration": 0.11674000000000007,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.035268999999999995
+      },
+      "frames": {
+        "fps": 24.5,
+        "frames": 50,
+        "maxFrameGap": 50.100000000000364
+      },
+      "orbitalMovement": {
+        "distance": 8.6720321548673,
+        "animation": 97
+      }
+    },
+    {
+      "page": "extracurriculars",
+      "count": 14,
+      "nodes": 700,
+      "artNodes": [
+        38,
+        33,
+        34,
+        40,
+        28,
+        61,
+        56,
+        47,
+        25,
+        27,
+        43,
+        33,
+        38,
+        34
+      ],
+      "bounds": [
+        {
+          "x": 631.3318481445312,
+          "y": 802.3118286132812,
+          "w": 163.97845458984375,
+          "h": 135.2822265625,
+          "name": "1. Sea Cadets · USNSCC — open"
+        },
+        {
+          "x": 381.6552734375,
+          "y": 790.6594848632812,
+          "w": 162.7724609375,
+          "h": 134.2872314453125,
+          "name": "2. Volleyball — open"
+        },
+        {
+          "x": 366.48760986328125,
+          "y": 679.3037719726562,
+          "w": 159.347900390625,
+          "h": 131.46197509765625,
+          "name": "3. Spacecraft Trajectory Research — open"
+        },
+        {
+          "x": 85.2396240234375,
+          "y": 557.2593994140625,
+          "w": 154.5048828125,
+          "h": 127.466552734375,
+          "name": "4. GridEvac AI — open"
+        },
+        {
+          "x": 310.6646728515625,
+          "y": 412.5028991699219,
+          "w": 149.08636474609375,
+          "h": 122.99624633789062,
+          "name": "5. Ares 1 — open"
+        },
+        {
+          "x": 209.59988403320312,
+          "y": 271.94677734375,
+          "w": 144.32940673828125,
+          "h": 119.07177734375,
+          "name": "6. Schollective — open"
+        },
+        {
+          "x": 505.8400573730469,
+          "y": 202.76458740234375,
+          "w": 141.05545043945312,
+          "h": 116.37075805664062,
+          "name": "7. Custom Avionics Flight Logger — open"
+        },
+        {
+          "x": 661.02294921875,
+          "y": 149.50930786132812,
+          "w": 140.02154541015625,
+          "h": 115.51773071289062,
+          "name": "8. Rocketry Club — open"
+        },
+        {
+          "x": 805.0603637695312,
+          "y": 208.0556640625,
+          "w": 141.22760009765625,
+          "h": 116.51275634765625,
+          "name": "9. Business Club — open"
+        },
+        {
+          "x": 1099.665771484375,
+          "y": 282.2268371582031,
+          "w": 144.652099609375,
+          "h": 119.33798217773438,
+          "name": "10. Tellepsen Family Downtown YMCA — open"
+        },
+        {
+          "x": 983.0142822265625,
+          "y": 424.38189697265625,
+          "w": 149.4951171875,
+          "h": 123.33349609375,
+          "name": "11. EMERGE Scholars — open"
+        },
+        {
+          "x": 1195.1416015625,
+          "y": 570.0768432617188,
+          "w": 154.91357421875,
+          "h": 127.80377197265625,
+          "name": "12. NASA TAS Launch Pad — open"
+        },
+        {
+          "x": 905.6689453125,
+          "y": 688.8320922851562,
+          "w": 159.6705322265625,
+          "h": 131.728271484375,
+          "name": "13. Honors, Awards & Certifications — open"
+        },
+        {
+          "x": 875.6142578125,
+          "y": 796.361083984375,
+          "w": 162.944580078125,
+          "h": 134.42926025390625,
+          "name": "14. Personal Engineering Portfolio — open"
+        }
+      ],
+      "scene": {
+        "ok": true,
+        "slug": "extracurriculars",
+        "arrival": 1,
+        "dark": false
+      },
+      "anchor": {
+        "x": 720.0000000000007,
+        "y": 550.8450924851136,
+        "r": 184.61875357669385,
+        "sunX": -0.9956938716594155,
+        "sunY": 0.092702286594687,
+        "ok": true
+      },
+      "opened": [
+        {
+          "title": "01 · Sea Cadets · USNSCC",
+          "opacity": "1",
+          "textLength": 425,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-1",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Volleyball",
+          "opacity": "1",
+          "textLength": 431,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-2",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Spacecraft Trajectory Research",
+          "opacity": "1",
+          "textLength": 415,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "04 · GridEvac AI",
+          "opacity": "1",
+          "textLength": 374,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-4",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "05 · Ares 1",
+          "opacity": "1",
+          "textLength": 461,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-5",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "06 · Schollective",
+          "opacity": "1",
+          "textLength": 481,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-6",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "07 · Custom Avionics Flight Logger",
+          "opacity": "1",
+          "textLength": 330,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-7",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "08 · Rocketry Club",
+          "opacity": "1",
+          "textLength": 336,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-8",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "09 · Business Club",
+          "opacity": "1",
+          "textLength": 224,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-9",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "10 · Tellepsen Family Downtown YMCA",
+          "opacity": "1",
+          "textLength": 325,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-10",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "11 · EMERGE Scholars",
+          "opacity": "1",
+          "textLength": 393,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-11",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "12 · NASA TAS Launch Pad",
+          "opacity": "1",
+          "textLength": 273,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-12",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "13 · Honors, Awards & Certifications",
+          "opacity": "1",
+          "textLength": 501,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-13",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "14 · Personal Engineering Portfolio",
+          "opacity": "1",
+          "textLength": 267,
+          "tables": 0,
+          "lists": 0,
+          "cards": 1,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-extracurriculars-14",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [
+        {
+          "start": 24.900000005960464,
+          "duration": 972
+        },
+        {
+          "start": 2356.5,
+          "duration": 62
+        },
+        {
+          "start": 6541.200000017881,
+          "duration": 52
+        },
+        {
+          "start": 7275.300000011921,
+          "duration": 52
+        },
+        {
+          "start": 9168.40000000596,
+          "duration": 52
+        },
+        {
+          "start": 9902.200000017881,
+          "duration": 52
+        },
+        {
+          "start": 9954.700000017881,
+          "duration": 50
+        },
+        {
+          "start": 10780.800000011921,
+          "duration": 67
+        },
+        {
+          "start": 11391.90000000596,
+          "duration": 59
+        },
+        {
+          "start": 11451.300000011921,
+          "duration": 67
+        },
+        {
+          "start": 11524.600000023842,
+          "duration": 50
+        },
+        {
+          "start": 12284.300000011921,
+          "duration": 101
+        },
+        {
+          "start": 12929.200000017881,
+          "duration": 55
+        },
+        {
+          "start": 12984.200000017881,
+          "duration": 63
+        },
+        {
+          "start": 13055.40000000596,
+          "duration": 49
+        },
+        {
+          "start": 13770.600000023842,
+          "duration": 110
+        },
+        {
+          "start": 14435.300000011921,
+          "duration": 50
+        },
+        {
+          "start": 14485.700000017881,
+          "duration": 74
+        },
+        {
+          "start": 14567.90000000596,
+          "duration": 54
+        },
+        {
+          "start": 15309.5,
+          "duration": 78
+        },
+        {
+          "start": 15933.200000017881,
+          "duration": 59
+        },
+        {
+          "start": 15992.5,
+          "duration": 67
+        },
+        {
+          "start": 16067.100000023842,
+          "duration": 51
+        },
+        {
+          "start": 16794.30000001192,
+          "duration": 100
+        },
+        {
+          "start": 17451.80000001192,
+          "duration": 66
+        },
+        {
+          "start": 17518.100000023842,
+          "duration": 69
+        },
+        {
+          "start": 17594.70000001788,
+          "duration": 52
+        },
+        {
+          "start": 18317,
+          "duration": 60
+        },
+        {
+          "start": 19005.100000023842,
+          "duration": 69
+        },
+        {
+          "start": 19075,
+          "duration": 57
+        },
+        {
+          "start": 19139.40000000596,
+          "duration": 52
+        },
+        {
+          "start": 19850,
+          "duration": 67
+        },
+        {
+          "start": 20566.600000023842,
+          "duration": 69
+        },
+        {
+          "start": 20635.600000023842,
+          "duration": 54
+        },
+        {
+          "start": 21421.40000000596,
+          "duration": 100
+        },
+        {
+          "start": 22077.80000001192,
+          "duration": 64
+        },
+        {
+          "start": 22142.20000001788,
+          "duration": 66
+        },
+        {
+          "start": 22214.5,
+          "duration": 51
+        },
+        {
+          "start": 22906.30000001192,
+          "duration": 101
+        },
+        {
+          "start": 23654.20000001788,
+          "duration": 67
+        },
+        {
+          "start": 23721.30000001192,
+          "duration": 63
+        },
+        {
+          "start": 24476.90000000596,
+          "duration": 103
+        },
+        {
+          "start": 25255.600000023842,
+          "duration": 60
+        },
+        {
+          "start": 25316.40000000596,
+          "duration": 55
+        },
+        {
+          "start": 25378.70000001788,
+          "duration": 52
+        },
+        {
+          "start": 26093.5,
+          "duration": 110
+        },
+        {
+          "start": 26805.30000001192,
+          "duration": 65
+        }
+      ],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 38,
+        "TaskDuration": 0.16799099999999978,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.02666600000000008
+      },
+      "frames": {
+        "fps": 15.001209774981854,
+        "frames": 32,
+        "maxFrameGap": 83.40000000000146
+      },
+      "orbitalMovement": {
+        "distance": 5.434972579202773,
+        "animation": 49
+      }
+    },
+    {
+      "page": "schedule",
+      "count": 4,
+      "nodes": 220,
+      "artNodes": [
+        56,
+        33,
+        43,
+        25
+      ],
+      "bounds": [
+        {
+          "x": 614.0904541015625,
+          "y": 827.025390625,
+          "w": 164,
+          "h": 135.300048828125,
+          "name": "1. School-day cargo — open"
+        },
+        {
+          "x": 75.0389404296875,
+          "y": 475.1197204589844,
+          "w": 151.4869384765625,
+          "h": 124.97671508789062,
+          "name": "2. Summer cargo — open"
+        },
+        {
+          "x": 673.9095458984375,
+          "y": 151.5745849609375,
+          "w": 140,
+          "h": 115.5,
+          "name": "3. Four operating rules — open"
+        },
+        {
+          "x": 1212.9610595703125,
+          "y": 503.48028564453125,
+          "w": 152.5130615234375,
+          "h": 125.82330322265625,
+          "name": "4. Schedule signal key — open"
+        }
+      ],
+      "scene": {
+        "ok": true,
+        "slug": "schedule",
+        "arrival": 1,
+        "dark": false
+      },
+      "anchor": {
+        "x": 720.0000000000003,
+        "y": 551.8032100541833,
+        "r": 185.61220004303175,
+        "sunX": -0.9763285585216609,
+        "sunY": 0.21629273176650157,
+        "ok": true
+      },
+      "opened": [
+        {
+          "title": "01 · School-day cargo",
+          "opacity": "1",
+          "textLength": 1300,
+          "tables": 2,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-schedule-1",
+          "innerScroll": false,
+          "blank": false,
+          "toggle": true,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Summer cargo",
+          "opacity": "1",
+          "textLength": 1615,
+          "tables": 2,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-schedule-2",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Four operating rules",
+          "opacity": "1",
+          "textLength": 669,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-schedule-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "04 · Schedule signal key",
+          "opacity": "1",
+          "textLength": 123,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-schedule-4",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [
+        {
+          "start": 45.69999998807907,
+          "duration": 1068
+        },
+        {
+          "start": 5328.399999976158,
+          "duration": 51
+        },
+        {
+          "start": 5423.799999982119,
+          "duration": 55
+        },
+        {
+          "start": 6108.5999999940395,
+          "duration": 72
+        },
+        {
+          "start": 6180.899999976158,
+          "duration": 82
+        },
+        {
+          "start": 6266.5999999940395,
+          "duration": 59
+        },
+        {
+          "start": 8105.0999999940395,
+          "duration": 58
+        },
+        {
+          "start": 8859.199999988079,
+          "duration": 60
+        },
+        {
+          "start": 10704,
+          "duration": 57
+        },
+        {
+          "start": 11439.399999976158,
+          "duration": 110
+        },
+        {
+          "start": 11549.59999999404,
+          "duration": 57
+        },
+        {
+          "start": 11610.199999988079,
+          "duration": 57
+        },
+        {
+          "start": 12310.799999982119,
+          "duration": 64
+        },
+        {
+          "start": 13114.299999982119,
+          "duration": 58
+        }
+      ],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 57,
+        "TaskDuration": 0.11115399999999998,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.03140100000000001
+      },
+      "frames": {
+        "fps": 22.315893875526903,
+        "frames": 46,
+        "maxFrameGap": 66.70000000000073
+      },
+      "orbitalMovement": {
+        "distance": 8.92632324150841,
+        "animation": 97
+      }
+    },
+    {
+      "page": "meal",
+      "count": 6,
+      "nodes": 323,
+      "artNodes": [
+        43,
+        33,
+        47,
+        56,
+        34,
+        27
+      ],
+      "bounds": [
+        {
+          "x": 621.5396118164062,
+          "y": 801.1196899414062,
+          "w": 164,
+          "h": 135.29998779296875,
+          "name": "1. Fuel telemetry — open"
+        },
+        {
+          "x": 134.792236328125,
+          "y": 643.3140869140625,
+          "w": 157.4786376953125,
+          "h": 129.91986083984375,
+          "name": "2. Fuel first — growth-protective recomposit… — open"
+        },
+        {
+          "x": 357.8148193359375,
+          "y": 318.9312744140625,
+          "w": 145.4786376953125,
+          "h": 120.01986694335938,
+          "name": "3. Practice fuel — Friday + Sunday — open"
+        },
+        {
+          "x": 677.249267578125,
+          "y": 150.251708984375,
+          "w": 140,
+          "h": 115.5,
+          "name": "4. Simple school-day template — open"
+        },
+        {
+          "x": 952.6417846679688,
+          "y": 344.8521728515625,
+          "w": 146.52130126953125,
+          "h": 120.880126953125,
+          "name": "5. Hydration + body-composition feedback — open"
+        },
+        {
+          "x": 1119.95849609375,
+          "y": 671.334228515625,
+          "w": 158.5213623046875,
+          "h": 130.7801513671875,
+          "name": "6. Growth-supporting nutrients — food first — open"
+        }
+      ],
+      "scene": {
+        "ok": true,
+        "slug": "meal",
+        "arrival": 1,
+        "dark": false
+      },
+      "anchor": {
+        "x": 719.9999999999994,
+        "y": 551.3985496870818,
+        "r": 183.7130779618723,
+        "sunX": 0.9582269853414298,
+        "sunY": -0.2860088190309436,
+        "ok": true
+      },
+      "opened": [
+        {
+          "title": "01 · Fuel telemetry",
+          "opacity": "1",
+          "textLength": 121,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-meal-1",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Fuel first — growth-protective recomposit…",
+          "opacity": "1",
+          "textLength": 877,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-meal-2",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Practice fuel — Friday + Sunday",
+          "opacity": "1",
+          "textLength": 603,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-meal-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "04 · Simple school-day template",
+          "opacity": "1",
+          "textLength": 564,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-meal-4",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "05 · Hydration + body-composition feedback",
+          "opacity": "1",
+          "textLength": 749,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-meal-5",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "06 · Growth-supporting nutrients — food first",
+          "opacity": "1",
+          "textLength": 484,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-meal-6",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [
+        {
+          "start": 30.799999982118607,
+          "duration": 778
+        },
+        {
+          "start": 4762.0999999940395,
+          "duration": 51
+        },
+        {
+          "start": 5495.799999982119,
+          "duration": 56
+        },
+        {
+          "start": 7409.0999999940395,
+          "duration": 54
+        },
+        {
+          "start": 8144.199999988079,
+          "duration": 58
+        },
+        {
+          "start": 10028.09999999404,
+          "duration": 61
+        },
+        {
+          "start": 10793.699999988079,
+          "duration": 62
+        },
+        {
+          "start": 10856.5,
+          "duration": 57
+        },
+        {
+          "start": 10919.699999988079,
+          "duration": 53
+        },
+        {
+          "start": 11617.59999999404,
+          "duration": 125
+        },
+        {
+          "start": 12272,
+          "duration": 55
+        },
+        {
+          "start": 12327.59999999404,
+          "duration": 91
+        },
+        {
+          "start": 13102.299999982119,
+          "duration": 60
+        },
+        {
+          "start": 13856.799999982119,
+          "duration": 79
+        },
+        {
+          "start": 13978,
+          "duration": 53
+        },
+        {
+          "start": 14693.299999982119,
+          "duration": 164
+        },
+        {
+          "start": 15475.299999982119,
+          "duration": 61
+        }
+      ],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 55,
+        "TaskDuration": 0.16527899999999995,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.029204999999999925
+      },
+      "frames": {
+        "fps": 21.819985122737418,
+        "frames": 45,
+        "maxFrameGap": 66.70000000000073
+      },
+      "orbitalMovement": {
+        "distance": 5.449886553189482,
+        "animation": 97
+      }
+    },
+    {
+      "page": "training",
+      "count": 6,
+      "nodes": 318,
+      "artNodes": [
+        61,
+        33,
+        33,
+        47,
+        34,
+        27
+      ],
+      "bounds": [
+        {
+          "x": 621.7764892578125,
+          "y": 802.755126953125,
+          "w": 164,
+          "h": 135.29998779296875,
+          "name": "1. Weekly program · gym — open"
+        },
+        {
+          "x": 135.02362060546875,
+          "y": 643.6248779296875,
+          "w": 157.46096801757812,
+          "h": 129.9052734375,
+          "name": "2. Weekly program · home — open"
+        },
+        {
+          "x": 356.2874450683594,
+          "y": 318.295166015625,
+          "w": 145.46096801757812,
+          "h": 120.00531005859375,
+          "name": "3. Evidence-based rules — open"
+        },
+        {
+          "x": 676.7379760742188,
+          "y": 150.18359375,
+          "w": 140,
+          "h": 115.5,
+          "name": "4. Volleyball load controls — open"
+        },
+        {
+          "x": 953.9658203125,
+          "y": 343.8612060546875,
+          "w": 146.4937744140625,
+          "h": 120.85736083984375,
+          "name": "5. Why this split · sources — open"
+        },
+        {
+          "x": 1120.260986328125,
+          "y": 671.113037109375,
+          "w": 158.493896484375,
+          "h": 130.75738525390625,
+          "name": "6. Growth & recovery — open"
+        }
+      ],
+      "scene": {
+        "ok": true,
+        "slug": "training",
+        "arrival": 1,
+        "dark": false
+      },
+      "anchor": {
+        "x": 720,
+        "y": 551.3733403375342,
+        "r": 184.9829769360435,
+        "sunX": 0.9815216108351923,
+        "sunY": 0.1913513194715143,
+        "ok": true
+      },
+      "opened": [
+        {
+          "title": "01 · Weekly program · gym",
+          "opacity": "1",
+          "textLength": 2769,
+          "tables": 0,
+          "lists": 14,
+          "cards": 14,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-training-1",
+          "innerScroll": true,
+          "blank": false,
+          "toggle": true,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "02 · Weekly program · home",
+          "opacity": "1",
+          "textLength": 2027,
+          "tables": 0,
+          "lists": 14,
+          "cards": 14,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-training-2",
+          "innerScroll": true,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "03 · Evidence-based rules",
+          "opacity": "1",
+          "textLength": 670,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-training-3",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "04 · Volleyball load controls",
+          "opacity": "1",
+          "textLength": 593,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-training-4",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "05 · Why this split · sources",
+          "opacity": "1",
+          "textLength": 1077,
+          "tables": 0,
+          "lists": 1,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-training-5",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        },
+        {
+          "title": "06 · Growth & recovery",
+          "opacity": "1",
+          "textLength": 485,
+          "tables": 0,
+          "lists": 0,
+          "cards": 0,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-training-6",
+          "innerScroll": false,
+          "blank": false,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [
+        {
+          "start": 226.90000000596046,
+          "duration": 755
+        },
+        {
+          "start": 5220.4000000059605,
+          "duration": 50
+        },
+        {
+          "start": 5271.0999999940395,
+          "duration": 63
+        },
+        {
+          "start": 5334.5,
+          "duration": 83
+        },
+        {
+          "start": 6048.5999999940395,
+          "duration": 67
+        },
+        {
+          "start": 6116.4000000059605,
+          "duration": 74
+        },
+        {
+          "start": 6195.4000000059605,
+          "duration": 65
+        },
+        {
+          "start": 8059.0999999940395,
+          "duration": 56
+        },
+        {
+          "start": 8791.700000017881,
+          "duration": 51
+        },
+        {
+          "start": 10642.40000000596,
+          "duration": 52
+        },
+        {
+          "start": 11413.800000011921,
+          "duration": 60
+        },
+        {
+          "start": 11474.200000017881,
+          "duration": 52
+        },
+        {
+          "start": 12219.40000000596,
+          "duration": 70
+        },
+        {
+          "start": 12934,
+          "duration": 51
+        },
+        {
+          "start": 12985.09999999404,
+          "duration": 63
+        },
+        {
+          "start": 13053.40000000596,
+          "duration": 51
+        },
+        {
+          "start": 13731,
+          "duration": 76
+        },
+        {
+          "start": 14486.300000011921,
+          "duration": 61
+        },
+        {
+          "start": 14547.40000000596,
+          "duration": 52
+        },
+        {
+          "start": 15324.5,
+          "duration": 56
+        },
+        {
+          "start": 16116.90000000596,
+          "duration": 53
+        }
+      ],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 60,
+        "TaskDuration": 0.1317219999999999,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.02885100000000007
+      },
+      "frames": {
+        "fps": 23.90360505390505,
+        "frames": 50,
+        "maxFrameGap": 66.70000000000073
+      },
+      "orbitalMovement": {
+        "distance": 5.217771498736693,
+        "animation": 97
+      }
+    },
+    {
+      "page": "deadlines",
+      "count": 1,
+      "nodes": 124,
+      "artNodes": [
+        91
+      ],
+      "bounds": [
+        {
+          "x": 615.6322021484375,
+          "y": 827.10205078125,
+          "w": 164,
+          "h": 135.29998779296875,
+          "name": "1. Program manifest — open"
+        }
+      ],
+      "scene": {
+        "ok": true,
+        "slug": "deadlines",
+        "arrival": 1,
+        "dark": true
+      },
+      "anchor": {
+        "x": 719.9999999999991,
+        "y": 550.7713511047892,
+        "r": 184.92956857001127,
+        "sunX": -0.9999999914899437,
+        "sunY": -0.0001304611533660632,
+        "ok": true
+      },
+      "opened": [
+        {
+          "title": "01 · Program manifest",
+          "opacity": "1",
+          "textLength": 12618,
+          "tables": 0,
+          "lists": 0,
+          "cards": 89,
+          "role": "dialog",
+          "modal": "true",
+          "expanded": "true",
+          "hash": "#orb-deadlines-1",
+          "innerScroll": true,
+          "blank": false,
+          "countdownBefore": "18d 11h 57m 56s · until deadline",
+          "countdownAfter": "18d 11h 57m 55s · until deadline",
+          "searchFocus": true,
+          "emptyState": true,
+          "searchCleared": true,
+          "jump": true,
+          "applied": true,
+          "keyK": true,
+          "keyHome": true,
+          "keyEnd": true,
+          "focusRestored": true,
+          "hashCleared": true
+        }
+      ],
+      "identity": true,
+      "sourceParentOrder": true,
+      "teardownSourceOrder": true,
+      "errors": [],
+      "longTasks": [
+        {
+          "start": 252.19999998807907,
+          "duration": 771
+        },
+        {
+          "start": 6887.699999988079,
+          "duration": 56
+        },
+        {
+          "start": 7722.699999988079,
+          "duration": 64
+        },
+        {
+          "start": 8596.5,
+          "duration": 87
+        }
+      ],
+      "idleMetrics": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 80,
+        "TaskDuration": 0.11653000000000002,
+        "LayoutDuration": 0,
+        "ScriptDuration": 0.028748999999999914
+      },
+      "frames": {
+        "fps": 21.324076369947928,
+        "frames": 44,
+        "maxFrameGap": 66.70000000000073
+      },
+      "orbitalMovement": {
+        "distance": 8.67279037700556,
+        "animation": 97
+      }
+    }
+  ],
+  "failures": []
+}

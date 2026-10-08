@@ -457,7 +457,7 @@ main#top.is-arriving{opacity:0;transform:translateY(24px);transition:none}
 .sec{position:relative;padding:clamp(4.5rem,9vw,7.5rem) 0;border-top:1px solid var(--line)}
 .sec__head{display:flex;align-items:center;gap:1.6rem;margin-bottom:clamp(2.4rem,5vw,4rem)}
 .sec__num{
-  font-weight:800;font-size:clamp(2.6rem,6vw,4.6rem);line-height:1;flex-shrink:0;
+  font-size:clamp(2.6rem,6vw,4.6rem);line-height:1;flex-shrink:0;
   color:transparent;-webkit-text-stroke:1px var(--line-strong);font-family:var(--f-mono);font-weight:700;
 }
 .sec__title{font-family:var(--f-display);font-size:clamp(2.1rem,5.4vw,3.9rem);font-weight:500;letter-spacing:-.025em;line-height:1;margin:0;text-transform:uppercase}
@@ -924,7 +924,7 @@ body:not([data-planet="deadlines"]) .dl-dock{display:none}
 @keyframes dlCardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 .dl-card.is-open{background:#312f34}
 .dl-card__head{
-  width:100%;background:none;border:0;color:#fff;text-align:left;padding:0;
+  width:100%;background:none;border:0;color:#fff;text-align:left;
   display:grid;grid-template-columns:52px minmax(0,1fr) auto auto 30px;
   gap:1.1rem;align-items:center;padding:1.15rem 1rem;cursor:pointer;transition:background .3s var(--ease);
   font-family:var(--f-display);
@@ -1449,9 +1449,9 @@ body[data-planet="meal"]{--accent:var(--p7)}
 body[data-planet="training"]{--accent:var(--p8)}
 body[data-planet="deadlines"]{--accent:var(--p9)}
 
-/* glow follows the page accent (color-mix with legacy fallback) */
+/* glow follows the page accent (color-mix with legacy fallback: the plain
+   gradient above is already the resting value, so it need not repeat here) */
 .glow{
-  background:radial-gradient(circle,rgba(162,104,51,.75) 0%,rgba(162,104,51,.2) 38%,transparent 70%);
   background:radial-gradient(circle,color-mix(in srgb,var(--accent) 75%,transparent) 0%,color-mix(in srgb,var(--accent) 20%,transparent) 38%,transparent 70%);
 }
 

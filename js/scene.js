@@ -64,6 +64,10 @@ try {
     deadlines:        { n: "Deadlines",     c: 0xe8c89b, s: 2.80, d: 38.0, sp: 0.011, tilt: -0.20, ring: true,  cam: [0, -2.2, 14.4] },
   };
 
+  /* Give planet stations more deep-space clearance without changing Sol's
+     original catalogue/framing. The dock's pages space world orbits 35% wider. */
+  if (slug !== "sol") Object.keys(P).forEach((k) => { if (k !== "sol") P[k].d *= 1.8; });
+
   /* flight order — scrolling a page flies you toward the next planet */
   const FLIGHT_ORDER = ["sol", "mission", "studies", "college", "applications", "extracurriculars", "schedule", "meal", "training", "deadlines"];
   function nextOf(k) {
@@ -666,7 +670,7 @@ try {
     const pp = planetPos(k, t);
     return {
       pos: new THREE.Vector3(pp.x + cfg.cam[0], pp.y + cfg.cam[1], pp.z + cfg.cam[2]),
-      look: pp.clone(),
+      look: pp.clone().add(new THREE.Vector3(0, document.documentElement.classList.contains("orb-ready") ? cfg.s * .28 : 0, 0)),
     };
   }
 
@@ -740,8 +744,30 @@ try {
     }, { passive: true });
   }
 
+  /* Orbital dock projection: cached at 10 Hz, no DOM layout reads.
+     Failure is isolated from the renderer; sol publishes no dock anchor. */
+  let orbitAnchor = { ok: false }, orbitAnchorAt = -Infinity;
+  const orbitPoint = new THREE.Vector3(), orbitEdge = new THREE.Vector3(), orbitSun = new THREE.Vector3();
+  window.__getOrbitAnchor = () => orbitAnchor;
+  function publishOrbitAnchor(now) {
+    if (currentSlug === "sol" || now - orbitAnchorAt < 100) return;
+    orbitAnchorAt = now;
+    try {
+      camera.updateMatrixWorld();
+      const pp = planetPos(currentSlug, simT);
+      orbitPoint.copy(pp).project(camera);
+      orbitEdge.set(1, 0, 0).applyQuaternion(camera.quaternion).multiplyScalar(P[currentSlug].s).add(pp).project(camera);
+      orbitSun.set(0, 0, 0).project(camera);
+      const x = (orbitPoint.x + 1) * innerWidth / 2, y = (1 - orbitPoint.y) * innerHeight / 2;
+      const dx = (orbitSun.x - orbitPoint.x) * innerWidth / 2, dy = (orbitPoint.y - orbitSun.y) * innerHeight / 2;
+      const length = Math.hypot(dx, dy) || 1;
+      orbitAnchor = { x, y, r: Math.abs(orbitEdge.x - orbitPoint.x) * innerWidth / 2, sunX: dx / length, sunY: dy / length, ok: Number.isFinite(x + y) && orbitPoint.z < 1 };
+    } catch (_) { orbitAnchor = { ok: false }; }
+  }
+
   /* ---------- main loop ---------- */
   const clock = new THREE.Clock();
+  let dockRecede = 0;
 
   function loop() {
     requestAnimationFrame(loop);
@@ -754,6 +780,10 @@ try {
        sky mid-flight */
     Object.keys(bodies).forEach((k) => {
       bodies[k].g.position.copy(planetPos(k, simT));
+      const stationView = currentSlug !== "sol" && document.documentElement.classList.contains("orb-ready");
+      const sizeTarget = stationView && k !== currentSlug ? .24 : 1;
+      const size = bodies[k].g.scale.x + (sizeTarget - bodies[k].g.scale.x) * (1 - Math.exp(-dt * 2));
+      bodies[k].g.scale.setScalar(size);
     });
     window.__sceneVis = Object.keys(bodies);
 
@@ -781,7 +811,11 @@ try {
       const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       const sc = window.scrollY / maxScroll;
       const scE = sc * sc * (3 - 2 * sc); /* smoothstep — no jerk at either end */
-      const travel = Math.min(1, scE * (currentSlug === "sol" ? 1.15 : 0.62));
+      const dockedWorld = currentSlug !== "sol" && document.documentElement.classList.contains("orb-ready");
+      // Keep the station planet under its rig; only leave after Ground Control
+      // takes over. Modal scroll does not fly the world toward another planet.
+      const dockDeparture = Math.max(0, Math.min(1, (window.scrollY - innerHeight * .55) / innerHeight));
+      const travel = Math.min(1, (dockedWorld ? dockDeparture * dockDeparture * (3 - 2 * dockDeparture) : scE) * (currentSlug === "sol" ? 1.15 : 0.62));
 
       if (currentSlug === "sol") {
         /* swing around the whole system — planets sweep past as you scroll */
@@ -801,7 +835,12 @@ try {
       }
 
       /* idle breathing + mouse parallax, scaled down as the journey grows */
-      const idle = 1 - travel;
+      const idle = (1 - travel) * (dockedWorld ? .35 : 1);
+      if (dockedWorld) {
+        const targetRecede = window.__orbitReading ? 1 : 0;
+        dockRecede = reduced ? targetRecede : dockRecede + (targetRecede - dockRecede) * (1 - Math.exp(-dt * 4));
+        camera.position.z += P[currentSlug].s * .75 * dockRecede;
+      }
       camera.position.x += (Math.sin(t * 0.22) * 0.35 + mx * 0.55) * idle;
       camera.position.y += (Math.cos(t * 0.18) * 0.28 + my * 0.42) * idle;
       camera.position.z += Math.sin(t * 0.12) * 0.3 * idle;
@@ -818,6 +857,8 @@ try {
       };
     };
 
+    const stationView = currentSlug !== "sol" && document.documentElement.classList.contains("orb-ready");
+    pathMats.forEach((m) => { m.opacity += ((stationView ? .045 : .3) - m.opacity) * (1 - Math.exp(-dt * 2)); });
     const speed = 1 + Math.min(4, Math.abs(vel) * 0.7);
 
     /* stars drift */
@@ -867,6 +908,7 @@ try {
       });
     }
 
+    publishOrbitAnchor(performance.now());
     renderer.render(scene, camera);
   }
 
@@ -874,6 +916,8 @@ try {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    orbitAnchorAt = -Infinity;
+    publishOrbitAnchor(performance.now());
   }
   window.addEventListener("resize", onResize);
 
@@ -882,6 +926,7 @@ try {
     bodies[k].g.position.copy(planetPos(k, 0));
   });
   window.__sceneVis = Object.keys(bodies);
+  publishOrbitAnchor(performance.now());
   renderer.render(scene, camera);
 
   if (!reduced) {

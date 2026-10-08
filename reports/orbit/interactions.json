@@ -1,0 +1,52 @@
+{
+  "checks": {
+    "home": true,
+    "tabFirst": true,
+    "arrowSwitch": true,
+    "bracketSwitch": true,
+    "focusTrap": true,
+    "cursorAim": {
+      "dx": 0,
+      "dy": 0.9609375
+    },
+    "cursor": {
+      "class": "cursor-reticle is-docked is-target is-orbital",
+      "z": 480,
+      "panelZ": 410,
+      "native": "none",
+      "hud": "[LOCK // CLOSE PANEL]"
+    },
+    "dockedCursor": {
+      "panel": "none",
+      "content": "none",
+      "close": "none",
+      "next": "none",
+      "reticle": "none",
+      "deckInert": false,
+      "hud": "[LOCK // CLOSE PANEL]"
+    },
+    "noHistorySpam": true,
+    "focusRestored": true,
+    "cursorBody": true,
+    "movingPointerClick": true,
+    "modalScrollLocked": true,
+    "groundScroll": {
+      "y": 650,
+      "opacity": "0.153333",
+      "open": false
+    },
+    "bottomDeck": {
+      "atBottom": true,
+      "painted": "0",
+      "offstage": false,
+      "footerOnTop": true
+    },
+    "runtimeRollback": {
+      "readable": true,
+      "layer": false,
+      "panel": false
+    },
+    "backLeaves": true
+  },
+  "failures": []
+}
