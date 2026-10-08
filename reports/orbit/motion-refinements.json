@@ -1,0 +1,158 @@
+{
+  "checks": [
+    {
+      "name": "Offscreen live planet does not show centred spacecraft or fallback",
+      "pass": true
+    },
+    {
+      "name": "Docking requested before arrival waits for the planet",
+      "pass": true
+    },
+    {
+      "name": "Previous planet projection cannot reveal the destination belt",
+      "pass": true
+    },
+    {
+      "name": "Planet entering view reveals one already-orbiting belt",
+      "pass": true
+    },
+    {
+      "name": "New flight hides the departing belt synchronously",
+      "pass": true
+    },
+    {
+      "name": "Unavailable 3D still exposes the fallback and controls",
+      "pass": true
+    },
+    {
+      "name": "Escape cancels the lock before reveal",
+      "pass": true
+    },
+    {
+      "name": "Escape cancels transit with no delayed panel or flight",
+      "pass": true
+    },
+    {
+      "name": "Sail quadrants remain inside a static reading thumbnail",
+      "pass": true,
+      "detail": {
+        "static": true,
+        "inside": true
+      }
+    },
+    {
+      "name": "Next keeps focus on Next",
+      "pass": true
+    },
+    {
+      "name": "Rapid port changes retain only one content animation",
+      "pass": true,
+      "detail": 1
+    },
+    {
+      "name": "Switch has no duplicate payload entrance",
+      "pass": true
+    },
+    {
+      "name": "Close releases the modal by its 560ms fallback",
+      "pass": true,
+      "detail": 552
+    },
+    {
+      "name": "Enabling reduced motion completes an in-flight close",
+      "pass": true
+    },
+    {
+      "name": "Enabling reduced motion completes docking without a flight",
+      "pass": true
+    },
+    {
+      "name": "Sheet tracks the finger",
+      "pass": true
+    },
+    {
+      "name": "Short pull settles instead of triggering the synthetic click",
+      "pass": true
+    },
+    {
+      "name": "Dismissal starts from the dragged offset, not zero",
+      "pass": true
+    },
+    {
+      "name": "Capture loss settles without dismissing",
+      "pass": true
+    },
+    {
+      "name": "Reduced-motion pull does not translate the sheet",
+      "pass": true
+    },
+    {
+      "name": "Reduced-motion short pull stays open",
+      "pass": true,
+      "detail": {
+        "state": {
+          "planet": "studies",
+          "openIndex": 0,
+          "lastIndex": 0,
+          "phase": "open"
+        },
+        "style": "animation: auto ease 0s 1 normal none running none;"
+      }
+    },
+    {
+      "name": "Vertical scrolling does not rotate the port window",
+      "pass": true
+    },
+    {
+      "name": "Switching during sheet entrance keeps the rig alive",
+      "pass": true
+    },
+    {
+      "name": "Port switching restores reading position immediately",
+      "pass": true,
+      "detail": {
+        "saved": 150,
+        "actual": 150,
+        "scrolled": true,
+        "height": 997,
+        "client": 655
+      }
+    },
+    {
+      "name": "Single-port manifests disable meaningless previous/next controls",
+      "pass": true
+    },
+    {
+      "name": "Teardown cancels pending close and restores readable content",
+      "pass": true
+    },
+    {
+      "name": "Idle still has no recurring layout",
+      "pass": true,
+      "detail": {
+        "LayoutCount": 0,
+        "LayoutDuration": 0,
+        "seconds": 2
+      }
+    },
+    {
+      "name": "Idle dock animations only change transform/opacity",
+      "pass": true
+    },
+    {
+      "name": "No uncaught exceptions in this isolated Chrome run",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "failures": [],
+  "measurements": {
+    "revealMs": 462,
+    "closeMs": 552,
+    "idle": {
+      "LayoutCount": 0,
+      "LayoutDuration": 0,
+      "seconds": 2
+    }
+  }
+}

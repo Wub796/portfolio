@@ -5,7 +5,7 @@
       "mobile": {
         "visible": 3,
         "animations": 0,
-        "width": 390,
+        "width": 375,
         "svgSizes": [
           "58px",
           "58px",
@@ -27,7 +27,7 @@
       "mobile": {
         "visible": 4,
         "animations": 0,
-        "width": 390,
+        "width": 375,
         "svgSizes": [
           "58px",
           "58px",
@@ -53,7 +53,7 @@
       "mobile": {
         "visible": 4,
         "animations": 0,
-        "width": 390,
+        "width": 375,
         "svgSizes": [
           "58px",
           "58px",
@@ -76,7 +76,7 @@
       "mobile": {
         "visible": 3,
         "animations": 0,
-        "width": 390,
+        "width": 375,
         "svgSizes": [
           "58px",
           "58px",
@@ -98,7 +98,7 @@
       "mobile": {
         "visible": 4,
         "animations": 0,
-        "width": 390,
+        "width": 375,
         "svgSizes": [
           "58px",
           "58px",
@@ -131,7 +131,7 @@
       "mobile": {
         "visible": 4,
         "animations": 0,
-        "width": 390,
+        "width": 375,
         "svgSizes": [
           "58px",
           "58px",
@@ -154,7 +154,7 @@
       "mobile": {
         "visible": 4,
         "animations": 0,
-        "width": 390,
+        "width": 375,
         "svgSizes": [
           "58px",
           "58px",
@@ -179,7 +179,7 @@
       "mobile": {
         "visible": 4,
         "animations": 0,
-        "width": 390,
+        "width": 375,
         "svgSizes": [
           "58px",
           "58px",
@@ -204,7 +204,7 @@
       "mobile": {
         "visible": 1,
         "animations": 0,
-        "width": 390,
+        "width": 375,
         "svgSizes": [
           "58px"
         ]

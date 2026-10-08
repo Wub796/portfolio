@@ -119,7 +119,9 @@
     var lockedAt = -Infinity, outsideAt = 0, oldOverflow = '', unhide = [], inertSaved = [], lastAnchor = null;
     // The scrim's own fade-out tracks the close; it must be cancelled before the
     // veil is revealed again or the next open would inherit opacity 0.
-    var veilFade = null;
+    var veilFade = null, crossFade = null, sheetSettle = null;
+    var dockingTimer = 0, returnTimer = 0, closeTimer = 0, pendingReveal = null, pendingFinish = null, lockedIndex = -1;
+    var handleClickBlockedUntil = 0, sheetDrag = null;
     var dockScroll = window.scrollY, desiredIndex = -1;
     function listen(n, name, fn, options) {
       var guarded = function (e) { if (!active) return; try { fn(e); } catch (_) { cleanup(); } };
@@ -174,6 +176,8 @@
     function cleanup() {
       if (!active) return; active = false;
       clearInterval(interval); cancelAnimationFrame(frame); timers.forEach(clearTimeout); animations.forEach(function (a) { a.cancel(); });
+      [veilFade, crossFade, sheetSettle].forEach(function (a) { if (a) a.cancel(); });
+      bodies.forEach(function (b) { if (b.flight) b.flight.cancel(); if (b.retreat) b.retreat.cancel(); });
       if (observer) observer.disconnect(); listeners.forEach(function (f) { f(); });
       var wasOpen = state.openIndex >= 0; putBack(); backgroundInert(false); if (wasOpen || root.classList.contains('orb-open')) scrollLock(false);
       groups.forEach(function (g) { restore(g); });
@@ -223,6 +227,9 @@
       listen(core, 'click', function () { bodies[0].button.focus(); });
       el('div', 'orb__coordinates', stage, String(bodies.length).padStart(2, '0') + ' VESSELS / ALL PORTS CLOSED');
       layer = own(el('div', 'orb__layer', document.body)); layer.id = 'orbitLayer';
+      layer.classList.add('orb__approaching'); layer.inert = true;
+      var sceneScript = document.querySelector('script[src="js/scene.js"]');
+      var sceneUnavailable = !!(window.__scene3d && window.__scene3d.ok === false) || document.readyState === 'complete' && !window.__getOrbitAnchor;
       var glow = el('div', 'orb__fallback', layer); glow.setAttribute('aria-hidden', 'true');
       var trace = el('div', 'orb__traces', layer); trace.setAttribute('aria-hidden', 'true');
       trace.innerHTML = '<svg width="1" height="1"><defs><filter id="orb-foil-noise"><feTurbulence type="fractalNoise" baseFrequency=".14" numOctaves="2" seed="8"/><feColorMatrix type="saturate" values="0"/></filter></defs>' + repeat(3, function () { return '<ellipse rx="365" ry="165"/>'; }) + '</svg>';
@@ -237,6 +244,7 @@
       headTools = el('div', 'orb__tools', panel);
       content = el('div', 'orb__content', panel); content.setAttribute('data-lenis-prevent', ''); content.tabIndex = 0; content.setAttribute('role', 'region'); content.setAttribute('aria-label', 'Docked payload');
       var footer = el('footer', 'orb__footer', panel); var prevBody = el('button', 'orb__prev', footer, '← previous body'), nextBody = el('button', 'orb__next', footer, 'next body →'); prevBody.type = nextBody.type = 'button';
+      prevBody.disabled = nextBody.disabled = bodies.length < 2;
       live = own(el('div', 'orb__live', document.body)); live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true');
       bodies.forEach(function (b, i) {
         var slot = el('div', 'orb__slot', layer); b.slot = slot;
@@ -247,14 +255,27 @@
         var plate = el('span', 'orb__plate', b.drift); el('span', 'orb__port', plate); el('span', 'orb__number', plate, String(i + 1).padStart(2, '0')); el('span', 'orb__name', plate, b.title); b.status = el('span', 'orb__status', plate, 'closed');
         el('span', 'orb__reticle', b.drift).setAttribute('aria-hidden', 'true');
         button.dataset.cursorLabel = 'DOCK / ' + b.title;
-        listen(button, 'pointerdown', function () { if (b.motion) b.motion.pause(); });
+        listen(button, 'pointerdown', function (e) { if (e.isPrimary && e.button === 0 && b.motion) b.motion.pause(); });
+        function releasePointer() { if (b.motion && state.openIndex < 0 && !['locked','transit','closing'].includes(state.phase) && !document.hidden) { b.motion.updatePlaybackRate(button.matches(':hover,:focus') ? .3 : 1); b.motion.play(); } }
+        listen(button, 'pointerup', releasePointer); listen(button, 'pointercancel', releasePointer);
         listen(button, 'click', function () { if (performance.now() - lockedAt > 250) open(i); });
         function hover(on) { if (state.openIndex >= 0 || ['locked','transit','closing'].includes(state.phase)) return; button.dataset.state = on ? 'hover' : 'idle'; state.phase = on ? 'hover' : 'idle'; if (b.motion) { b.motion.updatePlaybackRate(on ? .3 : 1); if (b.motion.playState === 'paused' && !document.hidden) b.motion.play(); } }
         listen(button, 'pointerenter', function () { hover(true); }); listen(button, 'pointerleave', function () { hover(false); });
         listen(button, 'focus', function () { hover(true); }); listen(button, 'blur', function () { hover(false); });
       });
       function nominal() { return { x: innerWidth / 2 + (mobile ? 0 : 28), y: innerHeight * (mobile ? .51 : .57), r: Math.min(innerWidth, innerHeight) * .12, sunX: -1, sunY: -.5, ok: false }; }
-      function anchor() { var a = typeof window.__getOrbitAnchor === 'function' && window.__getOrbitAnchor(); return a && a.ok && (!window.__scene3d || window.__scene3d.ok !== false) ? a : nominal(); }
+      function anchor() {
+        if (window.__scene3d && window.__scene3d.ok === false) return nominal();
+        if (typeof window.__getOrbitAnchor === 'function') {
+          var a = window.__getOrbitAnchor();
+          // Never replace an off-screen, stale, or not-yet-projected live planet
+          // with a centred fallback. That made spacecraft precede their planet.
+          return a && (!a.slug || a.slug === planet) ? a : { ok: false, visible: false };
+        }
+        return sceneUnavailable ? nominal() : { ok: false, visible: false };
+      }
+      function inView(a) { return a.visible !== false && (a.ok || a.visible === undefined); }
+      function slotTransform(a) { return 'translate3d(' + Math.round(a.x) + 'px,' + Math.round(a.y) + 'px,0) scale(' + (a.scale || 1) + ') rotate(0deg)'; }
       function transformAt(b, ph) {
         var g = b.geometry, z = Math.sin(ph), scale = mobile ? 1 : .95 + z * .075;
         return 'translate3d(' + (Math.cos(ph) * g.radius).toFixed(2) + 'px,' + (Math.sin(ph) * g.radius * g.inclination).toFixed(2) + 'px,0) scale(' + scale.toFixed(3) + ') rotate(0deg)';
@@ -329,7 +350,7 @@
         var rx = s.rx, ry = s.ry;
         b.geometry = { radius: rx, phase: ph, speed: s.f, inclination: ry / rx, z: Math.sin(ph) };
         b.duration = (mobile ? 220000 : 232000 * s.f) / b.geometry.speed;
-        b.slot.style.transform = 'translate3d(' + Math.round(a.x) + 'px,' + Math.round(a.y) + 'px,0) scale(1) rotate(0deg)';
+        b.slot.style.transform = slotTransform(a);
         b.button.style.transform = transformAt(b, ph);
         // A windowed belt must hold still: its ports are placed, not parked on
         // a revolution, so no WAAPI animation is created for them.
@@ -350,6 +371,10 @@
       }
       function layout(force) {
         mobile = innerWidth <= 760; narrow = !mobile && innerWidth <= 1100; var a = anchor();
+        var visible = inView(a), arriving = layer.classList.contains('orb__approaching');
+        layer.classList.toggle('orb__approaching', !visible); layer.inert = !visible;
+        if (!visible) { bodies.forEach(function (b) { b.button.tabIndex = -1; }); return; }
+        if (arriving) force = true;
         glow.hidden = a.ok; glow.style.transform = 'translate3d(' + Math.round(a.x) + 'px,' + Math.round(a.y) + 'px,0)';
         layer.style.setProperty('--orb-sun-x', a.sunX); layer.style.setProperty('--orb-sun-y', a.sunY);
         if (force || !lastAnchor) {
@@ -366,7 +391,7 @@
         // Re-place on a material change; the phase is preserved, so the belts
         // slide to their true ellipses instead of snapping.
         else if (Math.abs((a.r || 0) - (lastAnchor.r || 0)) > 8 || Math.abs(a.x - lastAnchor.x) > 60 || Math.abs(a.y - lastAnchor.y) > 60) bodies.forEach(function (b) { place(b, a); });
-        else if (Math.abs(a.x - lastAnchor.x) + Math.abs(a.y - lastAnchor.y) > 3 && a.x > 130 && a.x < innerWidth - 130 && a.y > 240 && a.y < innerHeight - 130) bodies.forEach(function (b) { b.slot.style.transform = 'translate3d(' + Math.round(a.x) + 'px,' + Math.round(a.y) + 'px,0) scale(1) rotate(0deg)'; });
+        else if (Math.abs(a.x - lastAnchor.x) + Math.abs(a.y - lastAnchor.y) > 3 || Math.abs((a.scale || 1) - (lastAnchor.scale || 1)) > .01) bodies.forEach(function (b) { b.slot.style.transform = slotTransform(a); });
         bodies.forEach(function (b) { lightBody(b, a); });
         lastAnchor = a;
       }
@@ -393,17 +418,33 @@
         if (tools) { b.tools = tools; b.toolsAnchor = document.createComment('orb switch plate'); tools.parentNode.insertBefore(b.toolsAnchor, tools); headTools.appendChild(tools); }
         if (b.entry.mode) { var mode = document.querySelector(b.entry.mode); if (mode) mode.click(); }
         if (dock) { headTools.appendChild(dock); document.dispatchEvent(new CustomEvent('bw:orbit', { detail: { open: true } })); }
-        content.scrollTop = b.scroll; b.status.textContent = 'docked'; b.button.setAttribute('aria-expanded', 'true'); b.button.setAttribute('aria-label', (i + 1) + '. ' + b.title + ' — docked'); b.button.dataset.state = 'open';
+        content.scrollTo({ top: b.scroll, behavior: 'instant' }); panel.classList.toggle('orb__scrolled', b.scroll > 12);
+        prevBody.setAttribute('aria-label', 'Previous body: ' + bodies[(i + bodies.length - 1) % bodies.length].title);
+        nextBody.setAttribute('aria-label', 'Next body: ' + bodies[(i + 1) % bodies.length].title);
+        b.status.textContent = 'docked'; b.button.setAttribute('aria-expanded', 'true'); b.button.setAttribute('aria-label', (i + 1) + '. ' + b.title + ' — docked'); b.button.dataset.state = 'open';
         stored[planet] = i; safeStorage('bw.orbit.state.v1', stored); hash(i); announce('Panel opened: ' + b.title);
-        if (getComputedStyle(panel).opacity !== '1') throw new Error('reading panel opacity');
+        // A port can be changed during the sheet's entrance, when its opacity
+        // is legitimately between .35 and 1; do not mistake that for failure.
       }
       function open(i) {
         i = (i + bodies.length) % bodies.length;
         if (state.phase === 'locked' || state.phase === 'transit' || state.phase === 'closing') { desiredIndex = i; return; }
         if (state.openIndex === i) return;
+        if (state.openIndex < 0 && layer.classList.contains('orb__approaching')) { desiredIndex = i; return; }
         lockedAt = performance.now();
-        if (state.openIndex >= 0) { putBack(); mount(i); state.phase = 'open'; if (!reduced.matches && content.animate) { var cross = content.animate([{ transform: 'translate3d(12px,0,0)', opacity: .55 }, { transform: 'translate3d(0,0,0)', opacity: 1 }], { duration: 340, easing: 'cubic-bezier(.16,1,.3,1)' }); animations.push(cross); } close.focus({ preventScroll: true }); return; }
-        var b = bodies[i]; state.phase = 'locked'; b.button.dataset.state = 'locked'; b.status.textContent = 'docking…';
+        if (state.openIndex >= 0) {
+          var previous = state.openIndex, focused = document.activeElement;
+          if (crossFade) { crossFade.cancel(); crossFade = null; }
+          panel.classList.add('orb__switching'); putBack(); mount(i); state.phase = 'open';
+          if (!reduced.matches && content.animate) {
+            var direction = (i - previous + bodies.length) % bodies.length === bodies.length - 1 ? -1 : 1;
+            crossFade = content.animate([{ transform: 'translate3d(' + direction * 10 + 'px,0,0)', opacity: .65 }, { transform: 'translate3d(0,0,0)', opacity: 1 }], { duration: 180, easing: 'cubic-bezier(.16,1,.3,1)' });
+            crossFade.onfinish = function () { crossFade.cancel(); crossFade = null; };
+          }
+          if (!panel.contains(focused)) close.focus({ preventScroll: true });
+          return;
+        }
+        var b = bodies[i]; lockedIndex = i; state.phase = 'locked'; b.button.dataset.state = 'locked'; b.status.textContent = 'docking…';
         animations.forEach(function (a) { a.pause(); });
         lightBody(b, anchor()); b.frozenTransform = getComputedStyle(b.button).transform;
         dockScroll = window.scrollY; scrollLock(true); backgroundInert(true);
@@ -411,42 +452,67 @@
         window.__orbitReading = true; document.dispatchEvent(new CustomEvent('bw:orbit', { detail: { open: true, title: b.title } }));
         function transit() {
           state.phase = 'transit'; b.button.dataset.state = 'transit';
-          var a = anchor(), x = b.x, y = b.y;
+          var a = anchor();
           if (!reduced.matches && b.button.animate) {
-            var flight = b.button.animate([{ transform: b.frozenTransform }, { transform: 'translate3d(' + (innerWidth / 2 - a.x) + 'px,' + (innerHeight * .18 - a.y) + 'px,0) scale(.5)' }], { duration: 420, easing: 'cubic-bezier(.16,1,.3,1)' }); b.flight = flight; animations.push(flight);
+            var flight = b.button.animate([{ transform: b.frozenTransform }, { transform: 'translate3d(' + (innerWidth / 2 - a.x) + 'px,' + (innerHeight * .18 - a.y) + 'px,0) scale(.5)' }], { duration: 300, easing: 'cubic-bezier(.16,1,.3,1)' }); b.flight = flight;
           }
-          function unfurl() { panel.hidden = veil.hidden = false; mount(i); state.phase = 'open'; panel.dataset.state = 'open'; outsideAt = performance.now(); close.focus({ preventScroll: true }); if (desiredIndex >= 0) { var next = desiredIndex; desiredIndex = -1; open(next); } }
-          if (reduced.matches) unfurl(); else later(unfurl, 420);
+          if (reduced.matches) reveal(); else dockingTimer = later(reveal, 300);
         }
-        if (reduced.matches) transit(); else later(transit, 220);
+        function reveal() {
+          pendingReveal = null; lockedIndex = -1;
+          if (b.flight) { b.flight.cancel(); b.flight = null; }
+          delete panel.dataset.state; panel.classList.remove('orb__switching','orb__dragging'); panel.style.animation = ''; panel.style.transform = ''; panel.style.removeProperty('--orb-sheet-offset');
+          panel.hidden = veil.hidden = false; mount(i); state.phase = 'open'; panel.dataset.state = 'open'; outsideAt = performance.now(); close.focus({ preventScroll: true });
+          if (desiredIndex >= 0) { var next = desiredIndex; desiredIndex = -1; open(next); }
+        }
+        pendingReveal = reveal;
+        if (reduced.matches) transit(); else dockingTimer = later(transit, 120);
       }
       function closePanel() {
+        if (lockedIndex >= 0 && state.openIndex < 0) {
+          var locked = bodies[lockedIndex]; clearTimeout(dockingTimer); pendingReveal = null; lockedIndex = -1; desiredIndex = -1;
+          if (locked.flight) { locked.flight.cancel(); locked.flight = null; }
+          locked.button.dataset.state = 'idle'; locked.status.textContent = 'closed';
+          root.classList.remove('orb-open'); state.phase = 'idle'; window.__orbitReading = false;
+          backgroundInert(false); scrollLock(false); animations.forEach(function (a) { if (!document.hidden) a.play(); });
+          locked.button.focus({ preventScroll: true }); announce('Docking cancelled');
+          document.dispatchEvent(new CustomEvent('bw:orbit', { detail: { open: false } }));
+          return;
+        }
         if (state.openIndex < 0 || state.phase === 'closing') return;
-        var b = bodies[state.openIndex]; state.phase = 'closing'; panel.dataset.state = 'closing';
+        if (crossFade) { crossFade.cancel(); crossFade = null; }
+        if (sheetSettle) { sheetSettle.cancel(); sheetSettle = null; }
+        sheetDrag = null;
+        var b = bodies[state.openIndex]; state.phase = 'closing'; panel.style.animation = ''; panel.dataset.state = 'closing';
         window.__orbitReading = false;
         // Take the scrim down in step with the fold instead of leaving ~450ms of
         // bare scrim behind a panel that has already gone. Guarded, and skipped
         // when motion is reduced (finish() then hides it immediately).
         if (!reduced.matches && veil.animate) {
-          try { veilFade = veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' }); }
+          try { veilFade = veil.animate([{ opacity: getComputedStyle(veil).opacity }, { opacity: 0 }], { duration: 210, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' }); }
           catch (_) { veilFade = null; }
         }
-        if (!reduced.matches) later(function () {
+        if (!reduced.matches) returnTimer = later(function () {
           b.drift.insertBefore(b.svg, b.drift.firstChild); b.button.dataset.state = 'closing';
-          var a = anchor(); var retreat = b.button.animate([{ transform: 'translate3d(' + (innerWidth / 2 - a.x) + 'px,' + (innerHeight * .18 - a.y) + 'px,0) scale(.5)', opacity: 0 }, { transform: b.frozenTransform || transformAt(b, phaseAt(b)), opacity: 1 }], { duration: 294, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' }); b.retreat = retreat; animations.push(retreat);
+          var a = anchor(); var retreat = b.button.animate([{ transform: 'translate3d(' + (innerWidth / 2 - a.x) + 'px,' + (innerHeight * .18 - a.y) + 'px,0) scale(.5)', opacity: 0 }, { transform: b.frozenTransform || transformAt(b, phaseAt(b)), opacity: 1 }], { duration: 294, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' }); b.retreat = retreat;
+          retreat.onfinish = finish;
         }, 210);
         function finish() {
-          putBack(); panel.hidden = veil.hidden = true; root.classList.remove('orb-open'); state.phase = 'idle'; backgroundInert(false); scrollLock(false); hash(-1);
+          if (!active || state.phase !== 'closing') return;
+          clearTimeout(returnTimer); clearTimeout(closeTimer); pendingFinish = null;
+          putBack(); panel.hidden = veil.hidden = true; delete panel.dataset.state; panel.style.transform = ''; panel.style.removeProperty('--orb-sheet-offset'); root.classList.remove('orb-open'); state.phase = 'idle'; backgroundInert(false); scrollLock(false); hash(-1);
           if (b.retreat) { b.retreat.cancel(); b.retreat = null; }
           if (veilFade) { try { veilFade.cancel(); } catch (_) {} veilFade = null; }
-          animations.forEach(function (a) { if (a.playState === 'paused') a.play(); });
+          animations.forEach(function (a) { if (a.playState === 'paused' && !document.hidden) a.play(); });
           b.button.focus({ preventScroll: true }); state.phase = 'idle'; announce('Panel closed: ' + b.title);
           document.dispatchEvent(new CustomEvent('bw:orbit', { detail: { open: false } }));
           if (desiredIndex >= 0) { var next = desiredIndex; desiredIndex = -1; open(next); }
         }
-        if (reduced.matches) finish(); else later(finish, 658);
+        pendingFinish = finish;
+        if (reduced.matches) finish(); else closeTimer = later(finish, 560);
       }
-      listen(close, 'click', closePanel); listen(handle, 'click', closePanel);
+      listen(close, 'click', closePanel);
+      listen(handle, 'click', function (e) { if (e.detail === 0 || performance.now() > handleClickBlockedUntil) closePanel(); });
       listen(veil, 'click', function () { if (performance.now() - outsideAt > 260) closePanel(); });
       listen(prevBody, 'click', function () { open(state.openIndex - 1); }); listen(nextBody, 'click', function () { open(state.openIndex + 1); });
       listen(content, 'scroll', function () { panel.classList.toggle('orb__scrolled', content.scrollTop > 12); });
@@ -462,6 +528,7 @@
       }, { passive: true });
       listen(document, 'keydown', function (e) {
         var typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) || document.activeElement.isContentEditable;
+        if (e.key === 'Escape' && lockedIndex >= 0) { e.preventDefault(); e.stopImmediatePropagation(); closePanel(); return; }
         if (state.openIndex >= 0) {
           if (e.key === 'Escape') {
             // Deadline search owns its first Escape; a second Escape closes the ship.
@@ -489,32 +556,83 @@
         }
       }, true);
       var drag = null;
-      listen(layer, 'pointerdown', function (e) { if ((!mobile && !narrow) || state.openIndex >= 0) return; drag = { x: e.clientX, time: performance.now(), turn: turn, target: e.target }; });
+      listen(layer, 'pointerdown', function (e) { if ((!mobile && !narrow) || state.openIndex >= 0 || !e.isPrimary || e.button !== 0) return; drag = { x: e.clientX, y: e.clientY, time: performance.now(), turn: turn, id: e.pointerId }; });
       listen(window, 'pointerup', function (e) {
-        if (!drag) return; var dx = e.clientX - drag.x, speed = dx / Math.max(1, performance.now() - drag.time) * 1000;
-        if (Math.abs(dx) > 26 || Math.abs(speed) > 120) { lockedAt = performance.now(); turn = ((drag.turn + (dx < 0 ? 1 : bodies.length - 1)) % bodies.length + bodies.length) % bodies.length; layout(true); }
+        if (!drag || e.pointerId !== drag.id) return; var dx = e.clientX - drag.x, dy = e.clientY - drag.y, speed = dx / Math.max(1, performance.now() - drag.time) * 1000;
+        if (Math.abs(dx) > Math.abs(dy) * 1.2 && (Math.abs(dx) > 26 || Math.abs(dx) > 10 && Math.abs(speed) > 120)) { lockedAt = performance.now(); turn = ((drag.turn + (dx < 0 ? 1 : bodies.length - 1)) % bodies.length + bodies.length) % bodies.length; layout(true); }
         drag = null;
       });
-      var sheetDrag = null;
-      listen(handle, 'pointerdown', function (e) { sheetDrag = e.clientY; handle.setPointerCapture(e.pointerId); });
-      listen(handle, 'pointerup', function (e) { if (sheetDrag !== null && e.clientY - sheetDrag > 60) closePanel(); sheetDrag = null; });
-      listen(window, 'resize', function () { cancelAnimationFrame(frame); frame = requestAnimationFrame(function () { try { layout(true); } catch (_) { cleanup(); } }); });
+      listen(window, 'pointercancel', function () { drag = null; });
+      function settleSheet() {
+        if (!sheetDrag) return;
+        var offset = sheetDrag.offset; sheetDrag = null; panel.classList.remove('orb__dragging');
+        if (!reduced.matches && offset > 0 && panel.animate) {
+          sheetSettle = panel.animate([{ transform: 'translate3d(0,' + offset + 'px,0)' }, { transform: 'translate3d(0,0,0)' }], { duration: 180, easing: 'cubic-bezier(.16,1,.3,1)' });
+          sheetSettle.onfinish = function () { sheetSettle.cancel(); sheetSettle = null; };
+        }
+        panel.style.transform = ''; panel.style.removeProperty('--orb-sheet-offset');
+      }
+      listen(handle, 'pointerdown', function (e) {
+        if (!mobile || state.phase !== 'open' || !e.isPrimary || e.button !== 0) return;
+        if (sheetSettle) { sheetSettle.cancel(); sheetSettle = null; }
+        panel.style.animation = 'none'; panel.classList.add('orb__dragging');
+        sheetDrag = { y: e.clientY, offset: 0, id: e.pointerId }; handle.setPointerCapture(e.pointerId);
+      });
+      listen(handle, 'pointermove', function (e) {
+        if (!sheetDrag || e.pointerId !== sheetDrag.id) return;
+        var dy = e.clientY - sheetDrag.y;
+        if (Math.abs(dy) > 4) handleClickBlockedUntil = performance.now() + 500;
+        sheetDrag.offset = Math.max(0, dy);
+        if (!reduced.matches) { panel.style.transform = 'translate3d(0,' + sheetDrag.offset + 'px,0)'; panel.style.setProperty('--orb-sheet-offset', sheetDrag.offset + 'px'); }
+      });
+      listen(handle, 'pointerup', function (e) {
+        if (!sheetDrag || e.pointerId !== sheetDrag.id) return;
+        // Browsers may coalesce the last pointermove. Suppress the synthetic
+        // click from the release delta too, so a short fast pull is not a tap.
+        if (Math.abs(e.clientY - sheetDrag.y) > 4) handleClickBlockedUntil = performance.now() + 500;
+        sheetDrag.offset = Math.max(0, e.clientY - sheetDrag.y);
+        if (!reduced.matches) panel.style.setProperty('--orb-sheet-offset', sheetDrag.offset + 'px');
+        if (sheetDrag.offset > 60) { panel.classList.remove('orb__dragging'); closePanel(); }
+        else settleSheet();
+      });
+      listen(handle, 'pointercancel', function () { if (sheetDrag) handleClickBlockedUntil = performance.now() + 500; settleSheet(); });
+      listen(handle, 'lostpointercapture', settleSheet);
+      listen(window, 'resize', function () { settleSheet(); cancelAnimationFrame(frame); frame = requestAnimationFrame(function () { try { layout(true); } catch (_) { cleanup(); } }); });
       listen(document, 'visibilitychange', function () { root.classList.toggle('orb-hidden', document.hidden); animations.forEach(function (a) { if (document.hidden || state.openIndex >= 0) a.pause(); else a.play(); }); });
-      listen(reduced, 'change', function () { root.classList.toggle('orb-reduced', reduced.matches); layout(true); });
+      listen(reduced, 'change', function () {
+        root.classList.toggle('orb-reduced', reduced.matches);
+        if (reduced.matches) {
+          if (crossFade) { crossFade.cancel(); crossFade = null; }
+          if (sheetSettle) { sheetSettle.cancel(); sheetSettle = null; }
+          settleSheet();
+          if (pendingReveal) { clearTimeout(dockingTimer); pendingReveal(); }
+          if (pendingFinish) pendingFinish();
+        }
+        layout(true);
+      });
       listen(window, 'pagehide', cleanup);
       root.classList.toggle('orb-reduced', reduced.matches);
       layout(true);
       wrap.hidden = true; wrap.inert = true; root.classList.add('orb-ready');
       document.dispatchEvent(new CustomEvent('bw:orbit', { detail: { open: false } }));
-      interval = setInterval(function () { if (!active || document.hidden || state.openIndex >= 0) return; try { layout(false); } catch (_) { cleanup(); } }, 100);
-      var intro = safeStorage('bw.orbit.intro.v1');
-      if (!reduced.matches && (!intro || Date.now() - intro > 1800000)) {
-        root.classList.add('orb-intro'); bodies.forEach(function (b, i) { b.drift.style.setProperty('--orb-launch-delay', i * 70 + 'ms'); }); safeStorage('bw.orbit.intro.v1', Date.now()); later(function () { root.classList.remove('orb-intro'); }, 900 + bodies.length * 70);
-      } else if (state.lastIndex >= 0 && bodies[state.lastIndex]) { var returning = bodies[state.lastIndex]; returning.button.classList.add('orb__handshake'); later(function () { returning.button.classList.remove('orb__handshake'); }, 300); }
+      interval = setInterval(function () {
+        if (!active || document.hidden || state.openIndex >= 0) return;
+        try {
+          layout(false);
+          if (desiredIndex >= 0 && !layer.inert && !['locked','transit','closing'].includes(state.phase)) { var next = desiredIndex; desiredIndex = -1; open(next); }
+        } catch (_) { cleanup(); }
+      }, 100);
+      // No per-spacecraft launch: the whole belt is already moving when the
+      // camera reaches its planet. Only a failed/missing/finished module uses
+      // the fallback: a slow CDN must not expose ships ahead of the 3D planet.
+      function sceneFailed() { if (!window.__getOrbitAnchor) { sceneUnavailable = true; layout(true); } }
+      if (sceneScript) listen(sceneScript, 'error', sceneFailed);
+      listen(window, 'load', sceneFailed);
+      listen(document, 'bw:orbit-flight', function () { layer.classList.add('orb__approaching'); layer.inert = true; bodies.forEach(function (b) { b.button.tabIndex = -1; }); });
       var match = location.hash.match(new RegExp('^#orb-' + planet + '-(\\d+)$'));
       if (match && bodies[Number(match[1]) - 1]) later(function () { open(Number(match[1]) - 1); }, reduced.matches ? 0 : 1500);
       // Stage/ground-control visibility without per-frame geometry reads.
-      if (window.IntersectionObserver) { observer = new IntersectionObserver(function (entries) { var off = !entries[0].isIntersecting && state.openIndex < 0; layer.classList.toggle('orb__offstage', off); bodies.forEach(function (b) { b.button.tabIndex = off ? -1 : getComputedStyle(b.button).visibility === 'visible' ? 0 : -1; if (b.motion) { if (off) b.motion.pause(); else if (state.openIndex < 0 && !document.hidden) b.motion.play(); } }); }, { threshold: .18 }); observer.observe(stage); }
+      if (window.IntersectionObserver) { observer = new IntersectionObserver(function (entries) { var off = !entries[0].isIntersecting && state.openIndex < 0; layer.classList.toggle('orb__offstage', off); bodies.forEach(function (b) { b.button.tabIndex = off || layer.inert ? -1 : getComputedStyle(b.button).visibility === 'visible' ? 0 : -1; if (b.motion) { if (off) b.motion.pause(); else if (state.openIndex < 0 && !document.hidden) b.motion.play(); } }); }, { threshold: .18 }); observer.observe(stage); }
       listen(window, 'hashchange', function () { var m = location.hash.match(new RegExp('^#orb-' + planet + '-(\\d+)$')); if (m && bodies[Number(m[1]) - 1]) open(Number(m[1]) - 1); });
       run.open = open; run.close = closePanel; run.place = place;
     } catch (err) { window.__orbitDock.lastError = String(err); cleanup(); }

@@ -87,7 +87,7 @@ See `diag/sheet-mobile-50.png`.
 
 `.orb__void` was toggled with `hidden`, so it appeared instantly and vanished only in `finish()` —
 about 450 ms after the panel had already folded, leaving a bare scrim over nothing and then a hard
-removal. It now fades in when it is revealed and fades out over 300 ms in step with the fold
+removal. It now fades in when it is revealed and fades out over 210 ms in step with the fold, sampled from its current opacity
 (`veilFade` in [../../js/orbit.js](../../js/orbit.js), cancelled in `finish()` so a later open
 cannot inherit opacity 0).
 
@@ -111,6 +111,78 @@ animating. All three roots are now named.
 Steady flight remains compositor-only: 30 running animations, **0** animating a non-composited
 property, and `LayoutCount 0` with `LayoutDuration 0` while docked.
 
+## Motion-detail refinement pass · October 8, 2026
+
+New source changes are confined to [orbital CSS](../../css/orbit.css) and
+[the dock controller](../../js/orbit.js); no dependency, build, content, or HTML changes.
+
+- Corrected duplicated SVG pivots: CSS origins on rings and sail quadrants were added to
+  pivots already encoded in SVG rotation attributes. Sail pieces visibly spilled across the
+  reading panel; their bounds now stay within the thumbnail. Thumbnails also stop rotating
+  while reading.
+- Docking now uses a 120 ms lock + 300 ms flight (previously 220 + 420). Escape cancels either
+  phase, restores focus and inert/scroll state, and cancels the pending reveal.
+- Closing finishes on return-flight completion, with a 560 ms safety timeout rather than a
+  fixed 658 ms wait. The scrim fades from its current opacity over the panel's 210 ms fold.
+- Port switches use a single replaceable 180 ms directional animation, not accumulated
+  340 ms animations plus another payload entrance. Persistent controls retain focus,
+  reading positions restore immediately, and single-port manifests disable pointless steps.
+- The mobile sheet tracks the handle's pointer; short pulls settle, longer pulls close from
+  the release offset, and cancellation restores it. Release deltas handle coalesced moves
+  so a fast pull cannot accidentally become a click. Vertical gestures don't rotate ports.
+- Live reduced-motion changes complete pending docking/closing and cancel transitional
+  animations; reduced-motion gestures don't translate the sheet. Cleanup cancels all
+  transient animations, and background tabs don't resume idle motion after a close.
+- Added tactile hover/pressed/keyboard-focus states and mobile bottom-safe-area padding.
+
+[The new browser suite](../../tests/motion-refinements.mjs) passes **23/23 checks**;
+[its measurements](motion-refinements.json) record reveal at **430 ms**, complete close at
+**558 ms**, and idle `LayoutCount 0` / `LayoutDuration 0` across a two-second window.
+These are observed interaction timings, not a claimed hardware rendering speedup.
+See [the corrected desktop frame](diag/refined-desktop.png) and
+[the 35px sheet-pull frame](diag/refined-sheet-drag.png).
+
+The original animation probe passes 19/19 and now actually exits nonzero on a failed
+assertion (previously it only printed FAIL). Nine-page desktop and mobile/reduced suites
+and the interaction suite pass. The nine-page desktop measurement reports zero recurring
+layouts and approximately 60 fps on the no-WebGL test listener.
+
+During verification, the added scroll-position test initially chose non-overflowing telemetry
+instead of coursework; it now uses genuinely overflowing content. A concurrent runtime audit
+also timed out on a CDP mouse event; the sequential rerun completed all 10 pages and all
+10 router hops with `failures: []` in [audit-runtime.json](audit-runtime.json).
+No assertion was weakened to accept a broken interaction.
+
+## Planet-synchronized arrival · October 8, 2026
+
+The belt previously replaced an invalid/offscreen 3D projection with a viewport-centred
+fallback, so spacecraft were visible before their planet arrived. It also used a staggered
+per-body launch. Both behaviors are removed.
+
+[The scene projection](../../js/scene.js) now identifies its planet, reports actual viewport
+visibility and approach scale, and invalidates the previous projection at flight start.
+A planet's centre must be in front of the camera, inside the viewport, and its projected disc
+must reach 60% of the resting radius. [The dock](../../js/orbit.js) waits for that signal,
+then reveals the whole already-moving belt. Offscreen live scenes never use the fallback;
+failed modules still do. Pending modules wait for load/error, not an arbitrary timeout.
+Queued/deep-linked docking waits for the same arrival signal. Reduced-motion navigation
+renders the new planet synchronously because that scene has no recurring render loop.
+
+[orbit-arrival.mjs](../../tests/orbit-arrival.mjs) passes **25/25 checks** with real Three.js
+camera flights on SwiftShader: initial commit, interplanet clicks, revisits, cold/lazy Sol
+arrival, mobile, reduced motion, and a module download held for 2.2 seconds.
+[Arrival samples](arrival.json) assert that every painted belt sample belongs to its own
+visible planet. [The settled WebGL screenshot](diag/arrival-settled.png) confirms the full
+planet/belt scene; software rendering is not a performance benchmark.
+
+The motion suite passes **29/29 checks**, additionally covering invalid/stale projections,
+queued docking, immediate flight invalidation, and failed-scene recovery. The interaction
+suite now waits for visible/non-inert controls, not just a mounted dock, and its injected
+projection error explicitly uses a live scene (failed scenes intentionally skip projection).
+These changes preserve the interaction and rollback assertions; they do not skip them.
+Mobile/reduced fallback coverage and the 19 animation assertions pass. The older refinement
+results above remain historical; current measurements are in the generated JSON artifacts.
+
 ## Limitations
 
 - The SwiftShader WebGL listener runs the scene at roughly 15–25 fps with 50–70 ms tasks. That is a
@@ -121,6 +193,9 @@ property, and `LayoutCount 0` with `LayoutDuration 0` while docked.
   build (clip-path seeks do resolve, transforms do not), which is why sampling crosses the CDP
   boundary per sample.
 - No real screen reader and no physical mobile device were involved.
+- Desktop visual checks succeeded in the visible app browser. Its mobile-sized webview later
+  stopped producing composited frames even after reopening; mobile visual checks therefore
+  used the isolated Chrome screenshots and actual pointer/keyboard suite, not that pane.
 - The app's own preview pane cannot load Three.js: the import map is rejected because
   `modulepreload` precedes `importmap` in `<head>`. That ordering is pre-existing and is also
   present in the untouched `index.html`; the `9228` listener is used for the planet itself.

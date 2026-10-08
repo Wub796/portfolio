@@ -721,12 +721,22 @@ try {
       look: curLook.clone(),
     };
     toFrame = frameOf(currentSlug, simT);
-    arr = 0;
+    arr = reduced ? 1 : 0;
     FLY = 2.8;
+    // Invalidate the previous planet's projection synchronously. The dock must
+    // not interpret a stale on-screen anchor as the destination arriving.
+    orbitAnchor = { ok: false, slug: targetSlug, visible: false };
+    orbitAnchorAt = -Infinity;
+    document.dispatchEvent(new CustomEvent('bw:orbit-flight'));
     themeTarget = targetSlug === "deadlines" ? 1 : 0;
     if (window.__scene3d) {
       window.__scene3d.slug = targetSlug;
       window.__scene3d.dark = targetSlug === "deadlines";
+    }
+    if (reduced) {
+      camera.position.copy(toFrame.pos); curLook.copy(toFrame.look); camera.lookAt(curLook);
+      Object.keys(bodies).forEach((k) => bodies[k].g.position.copy(planetPos(k, simT)));
+      publishOrbitAnchor(performance.now()); renderer.render(scene, camera);
     }
   };
 
@@ -746,7 +756,7 @@ try {
 
   /* Orbital dock projection: cached at 10 Hz, no DOM layout reads.
      Failure is isolated from the renderer; sol publishes no dock anchor. */
-  let orbitAnchor = { ok: false }, orbitAnchorAt = -Infinity;
+  let orbitAnchor = { ok: false, slug: currentSlug, visible: false }, orbitAnchorAt = -Infinity;
   const orbitPoint = new THREE.Vector3(), orbitEdge = new THREE.Vector3(), orbitSun = new THREE.Vector3();
   window.__getOrbitAnchor = () => orbitAnchor;
   function publishOrbitAnchor(now) {
@@ -761,8 +771,17 @@ try {
       const x = (orbitPoint.x + 1) * innerWidth / 2, y = (1 - orbitPoint.y) * innerHeight / 2;
       const dx = (orbitSun.x - orbitPoint.x) * innerWidth / 2, dy = (orbitPoint.y - orbitSun.y) * innerHeight / 2;
       const length = Math.hypot(dx, dy) || 1;
-      orbitAnchor = { x, y, r: Math.abs(orbitEdge.x - orbitPoint.x) * innerWidth / 2, sunX: dx / length, sunY: dy / length, ok: Number.isFinite(x + y) && orbitPoint.z < 1 };
-    } catch (_) { orbitAnchor = { ok: false }; }
+      const r = Math.abs(orbitEdge.x - orbitPoint.x) * innerWidth / 2;
+      const cfg = P[currentSlug];
+      const restingRadius = P[currentSlug].s * innerHeight / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * Math.hypot(...cfg.cam));
+      const ok = Number.isFinite(x + y + r) && orbitPoint.z >= -1 && orbitPoint.z < 1;
+      // A tiny distant planet is technically visible, but a full-size UI belt
+      // around it reads as a spawn. Reveal only as its disc is properly in view,
+      // and let the belt share the final part of its camera approach.
+      const visible = ok && x >= 0 && x <= innerWidth && y >= 0 && y <= innerHeight && r >= restingRadius * .6;
+      orbitAnchor = { x, y, r, slug: currentSlug, visible, scale: arr < 1 ? Math.min(1, r / restingRadius) : 1, sunX: dx / length, sunY: dy / length, ok };
+      if (window.__scene3d) window.__scene3d.arrival = arr;
+    } catch (_) { orbitAnchor = { ok: false, slug: currentSlug, visible: false }; }
   }
 
   /* ---------- main loop ---------- */

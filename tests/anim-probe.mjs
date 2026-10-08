@@ -199,6 +199,8 @@ try {
     ['narrow panel closes', sheetNarrow.after.closed === true],
   ];
   narrowChecks.forEach(([label, ok]) => console.log('   ', ok ? 'PASS' : 'FAIL', label));
+  const failures = [...fold, ...wideChecks, ...narrowChecks].filter(([, ok]) => !ok);
+  if (failures.length) { console.error('Animation assertions failed:', failures.map(([label]) => label)); process.exitCode = 1; }
 } finally {
   try { ws.close(); } catch (_) {}
   await fetch(`http://127.0.0.1:${port}/json/close/${t.id}`).catch(() => {});

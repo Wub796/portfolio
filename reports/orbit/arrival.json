@@ -1,0 +1,6397 @@
+{
+  "checks": [
+    {
+      "name": "Initial dock commit stays hidden until the scene exists",
+      "pass": true
+    },
+    {
+      "name": "studies flight never reveals ships ahead of their own planet",
+      "pass": true,
+      "detail": {
+        "samples": 47,
+        "shown": 22
+      }
+    },
+    {
+      "name": "studies flight holds ships back during the camera approach",
+      "pass": true
+    },
+    {
+      "name": "studies arrival uses existing orbits, not launch keyframes",
+      "pass": true
+    },
+    {
+      "name": "studies flight settles and exposes controls",
+      "pass": true
+    },
+    {
+      "name": "college flight never reveals ships ahead of their own planet",
+      "pass": true,
+      "detail": {
+        "samples": 43,
+        "shown": 21
+      }
+    },
+    {
+      "name": "college flight holds ships back during the camera approach",
+      "pass": true
+    },
+    {
+      "name": "college arrival uses existing orbits, not launch keyframes",
+      "pass": true
+    },
+    {
+      "name": "college flight settles and exposes controls",
+      "pass": true
+    },
+    {
+      "name": "mission flight never reveals ships ahead of their own planet",
+      "pass": true,
+      "detail": {
+        "samples": 43,
+        "shown": 19
+      }
+    },
+    {
+      "name": "mission flight holds ships back during the camera approach",
+      "pass": true
+    },
+    {
+      "name": "mission arrival uses existing orbits, not launch keyframes",
+      "pass": true
+    },
+    {
+      "name": "mission flight settles and exposes controls",
+      "pass": true
+    },
+    {
+      "name": "mission flight never reveals ships ahead of their own planet",
+      "pass": true,
+      "detail": {
+        "samples": 45,
+        "shown": 18
+      }
+    },
+    {
+      "name": "mission flight holds ships back during the camera approach",
+      "pass": true
+    },
+    {
+      "name": "mission arrival uses existing orbits, not launch keyframes",
+      "pass": true
+    },
+    {
+      "name": "mission flight settles and exposes controls",
+      "pass": true
+    },
+    {
+      "name": "studies flight never reveals ships ahead of their own planet",
+      "pass": true,
+      "detail": {
+        "samples": 54,
+        "shown": 21
+      }
+    },
+    {
+      "name": "studies flight holds ships back during the camera approach",
+      "pass": true
+    },
+    {
+      "name": "studies arrival uses existing orbits, not launch keyframes",
+      "pass": true
+    },
+    {
+      "name": "studies flight settles and exposes controls",
+      "pass": true
+    },
+    {
+      "name": "Mobile arrival also waits for the planet",
+      "pass": true
+    },
+    {
+      "name": "Slow scene loading never exposes a viewport-centred fallback belt",
+      "pass": true
+    },
+    {
+      "name": "Delayed real scene eventually reveals reachable spacecraft",
+      "pass": true
+    },
+    {
+      "name": "Reduced-motion navigation renders the destination planet immediately",
+      "pass": true
+    }
+  ],
+  "failures": [],
+  "flights": [
+    {
+      "page": "studies",
+      "rows": [
+        {
+          "planet": "mission",
+          "anchor": {
+            "ok": false,
+            "slug": "studies",
+            "visible": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(720px, 551px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 1,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 4314.863441103649,
+            "y": -1548.9380882995256,
+            "r": 648.5550613899966,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8909453073875088,
+            "sunY": 0.45411062445639555,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(720px, 551px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.04228571427719934,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 4314.863441103649,
+            "y": -1548.9380882995256,
+            "r": 648.5550613899966,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8909453073875088,
+            "sunY": 0.45411062445639555,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.04228571427719934,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 4334.724220455778,
+            "y": -1546.400969611573,
+            "r": 647.569095368182,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.892040347602025,
+            "sunY": 0.4519557702364895,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.08571428570364203,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 4334.724220455778,
+            "y": -1546.400969611573,
+            "r": 647.569095368182,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.892040347602025,
+            "sunY": 0.4519557702364895,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.08571428570364203,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 4370.765145534191,
+            "y": -1554.4377776527094,
+            "r": 649.5381784142855,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8929309488294881,
+            "sunY": 0.45019364791439476,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.13064285713647095,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 4370.765145534191,
+            "y": -1554.4377776527094,
+            "r": 649.5381784142855,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8929309488294881,
+            "sunY": 0.45019364791439476,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.13064285713647095,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 4445.763952224209,
+            "y": -1590.7059418365313,
+            "r": 659.4372629148338,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8931159996778276,
+            "sunY": 0.4498264233229021,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.17082142856504237,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 4445.763952224209,
+            "y": -1590.7059418365313,
+            "r": 659.4372629148338,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8931159996778276,
+            "sunY": 0.4498264233229021,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.17082142856504237,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 4603.675691803339,
+            "y": -1683.631876781615,
+            "r": 685.2496848729803,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8921542125491487,
+            "sunY": 0.4517309608946549,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.20824999998722757,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 4603.675691803339,
+            "y": -1683.631876781615,
+            "r": 685.2496848729803,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8921542125491487,
+            "sunY": 0.4517309608946549,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.20824999998722757,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 5069.483370784727,
+            "y": -1977.7094339751914,
+            "r": 767.8322878948402,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8881509847673814,
+            "sunY": 0.4595517688538809,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.25371428570577076,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 5069.483370784727,
+            "y": -1977.7094339751914,
+            "r": 767.8322878948402,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8881509847673814,
+            "sunY": 0.4595517688538809,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.25371428570577076,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 6525.499796314532,
+            "y": -2914.3012086353797,
+            "r": 1034.558687428223,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8780187211121938,
+            "sunY": 0.47862628989275946,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.30057142855865615,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 6525.499796314532,
+            "y": -2914.3012086353797,
+            "r": 1034.558687428223,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8780187211121938,
+            "sunY": 0.47862628989275946,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.30057142855865615,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 15545.99985764668,
+            "y": -8686.037914535784,
+            "r": 2707.636282492295,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8574477946681941,
+            "sunY": 0.5145709663580432,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.34621428570577073,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 15545.99985764668,
+            "y": -8686.037914535784,
+            "r": 2707.636282492295,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": -0.8574477946681941,
+            "sunY": 0.5145709663580432,
+            "ok": false
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.34621428570577073,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": -9481.470730099649,
+            "y": 7216.949131109743,
+            "r": 1951.0972937368033,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": 0.8223359306475831,
+            "sunY": -0.5690022997897048,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.3885357142771993,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": -9481.470730099649,
+            "y": 7216.949131109743,
+            "r": 1951.0972937368033,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": 0.8223359306475831,
+            "sunY": -0.5690022997897048,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.3885357142771993,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": -1852.4091322286893,
+            "y": 2292.5629377310415,
+            "r": 540.9436963572242,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": 0.7601652777523223,
+            "sunY": -0.6497297518966902,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.434321428558656,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": -1852.4091322286893,
+            "y": 2292.5629377310415,
+            "r": 540.9436963572242,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": 0.7601652777523223,
+            "sunY": -0.6497297518966902,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.434321428558656,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": -501.9911288243688,
+            "y": 1356.8578901806595,
+            "r": 304.2388393232993,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": 0.6881376087871156,
+            "sunY": -0.7255802032668413,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.47742857142218514,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": -501.9911288243688,
+            "y": 1356.8578901806595,
+            "r": 304.2388393232993,
+            "slug": "studies",
+            "visible": false,
+            "scale": 1,
+            "sunX": 0.6881376087871156,
+            "sunY": -0.7255802032668413,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.47742857142218514,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 45.82099456086272,
+            "y": 928.7178823845578,
+            "r": 228.567758831955,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.6563097370078279,
+            "sunY": -0.7544915699388005,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.5209999999936137,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 45.82099456086272,
+            "y": 928.7178823845578,
+            "r": 228.567758831955,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.6563097370078279,
+            "sunY": -0.7544915699388005,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(46px, 929px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.5209999999936137,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 287.70971976948715,
+            "y": 731.8463779111214,
+            "r": 208.80921549276943,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.7050685037714182,
+            "sunY": -0.7091392000090913,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(46px, 929px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.5658928571322134,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 287.70971976948715,
+            "y": 731.8463779111214,
+            "r": 208.80921549276943,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.7050685037714182,
+            "sunY": -0.7091392000090913,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(288px, 732px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.5658928571322134,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 406.9282477394669,
+            "y": 647.301636022319,
+            "r": 200.414893494253,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.7772228203597921,
+            "sunY": -0.6292254663568301,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.273147,
+          "launch": false,
+          "scale": "translate3d(407px, 647px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.602785714279328,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 406.9282477394669,
+            "y": 647.301636022319,
+            "r": 200.414893494253,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.7772228203597921,
+            "sunY": -0.6292254663568301,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.484626,
+          "launch": false,
+          "scale": "translate3d(407px, 647px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.602785714279328,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 406.9282477394669,
+            "y": 647.301636022319,
+            "r": 200.414893494253,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.7772228203597921,
+            "sunY": -0.6292254663568301,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.484626,
+          "launch": false,
+          "scale": "translate3d(407px, 647px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.602785714279328,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 495.23106421409125,
+            "y": 596.1189799501188,
+            "r": 192.85809098628624,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.8677359716860374,
+            "sunY": -0.497025435407574,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.924774,
+          "launch": false,
+          "scale": "translate3d(407px, 647px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.6457857142814568,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 495.23106421409125,
+            "y": 596.1189799501188,
+            "r": 192.85809098628624,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.8677359716860374,
+            "sunY": -0.497025435407574,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.988059,
+          "launch": false,
+          "scale": "translate3d(495px, 596px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.6457857142814568,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 535.4450665289362,
+            "y": 576.7329708621901,
+            "r": 188.62633833842992,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.9213781119288655,
+            "sunY": -0.3886674347799142,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(535px, 577px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.6775714285671711,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 535.4450665289362,
+            "y": 576.7329708621901,
+            "r": 188.62633833842992,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.9213781119288655,
+            "sunY": -0.3886674347799142,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(535px, 577px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.6775714285671711,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 567.5929269358279,
+            "y": 562.799946333599,
+            "r": 184.51581718234254,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.9667646151278738,
+            "sunY": -0.2556681030880736,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(535px, 577px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.7227857142899718,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 567.5929269358279,
+            "y": 562.799946333599,
+            "r": 184.51581718234254,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.9667646151278738,
+            "sunY": -0.2556681030880736,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(568px, 563px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.7227857142899718,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 580.3728376748495,
+            "y": 556.952435111328,
+            "r": 182.2434452172813,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9933067711118503,
+            "sunX": 0.9849276934055491,
+            "sunY": -0.17296658279223887,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(568px, 563px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.7659285714370866,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 580.3728376748495,
+            "y": 556.952435111328,
+            "r": 182.2434452172813,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9933067711118503,
+            "sunX": 0.9849276934055491,
+            "sunY": -0.17296658279223887,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(580px, 557px, 0px) scale(0.993307) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.7659285714370866,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 582.8972097323943,
+            "y": 554.4606686490594,
+            "r": 181.011861187405,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9865940975525307,
+            "sunX": 0.9916640924507831,
+            "sunY": -0.12885002034832915,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(580px, 557px, 0px) scale(0.993307) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.8095714285756863,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 582.8972097323943,
+            "y": 554.4606686490594,
+            "r": 181.011861187405,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9865940975525307,
+            "sunX": 0.9916640924507831,
+            "sunY": -0.12885002034832915,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(583px, 554px, 0px) scale(0.986594) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.8095714285756863,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 579.863835104377,
+            "y": 553.5799662939859,
+            "r": 180.38998737163482,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.983204612288766,
+            "sunX": 0.9939869406449907,
+            "sunY": -0.10949868413461224,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(580px, 554px, 0px) scale(0.983205) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.852571428577815,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 579.863835104377,
+            "y": 553.5799662939859,
+            "r": 180.38998737163482,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.983204612288766,
+            "sunX": 0.9939869406449907,
+            "sunY": -0.10949868413461224,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(580px, 554px, 0px) scale(0.983205) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.852571428577815,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 574.1473880209222,
+            "y": 553.3768108790009,
+            "r": 180.04056698227478,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9813001177907497,
+            "sunX": 0.9948284349697035,
+            "sunY": -0.10156960655496614,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(574px, 553px, 0px) scale(0.9813) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.8964285714392154,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 574.1473880209222,
+            "y": 553.3768108790009,
+            "r": 180.04056698227478,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9813001177907497,
+            "sunX": 0.9948284349697035,
+            "sunY": -0.10156960655496614,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(574px, 553px, 0px) scale(0.9813) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.8964285714392154,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 567.6461624414674,
+            "y": 553.4178567876509,
+            "r": 179.7997446196073,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9799875302066664,
+            "sunX": 0.9951816218968648,
+            "sunY": -0.09804865852588558,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(574px, 553px, 0px) scale(0.9813) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.9392142857185435,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 567.6461624414674,
+            "y": 553.4178567876509,
+            "r": 179.7997446196073,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9799875302066664,
+            "sunX": 0.9951816218968648,
+            "sunY": -0.09804865852588558,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(568px, 553px, 0px) scale(0.979988) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.9392142857185435,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 560.9073721352546,
+            "y": 553.5122915094255,
+            "r": 179.57765312322886,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9787770340656609,
+            "sunX": 0.9954246575703932,
+            "sunY": -0.09554973103502203,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(568px, 553px, 0px) scale(0.979988) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.9822857142878434,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 560.9073721352546,
+            "y": 553.5122915094255,
+            "r": 179.57765312322886,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9787770340656609,
+            "sunX": 0.9954246575703932,
+            "sunY": -0.09554973103502203,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(561px, 554px, 0px) scale(0.978777) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.9822857142878434,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 720,
+            "y": 550.9383271075443,
+            "r": 183.10084881558575,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.9749714986503802,
+            "sunY": -0.22232988287549624,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(720px, 551px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 1,
+            "dark": false
+          }
+        }
+      ]
+    },
+    {
+      "page": "college",
+      "rows": [
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": -492.5894145300979,
+            "y": 153.484075040821,
+            "r": 117.53105482828377,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6463548553878881,
+            "sunX": 0.963901973813376,
+            "sunY": 0.26625736586745846,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(720px, 551px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.01785714285714286,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": -492.5894145300979,
+            "y": 153.484075040821,
+            "r": 117.53105482828377,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6463548553878881,
+            "sunX": 0.963901973813376,
+            "sunY": 0.26625736586745846,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(720px, 551px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.01785714285714286,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": -490.81200382777337,
+            "y": 155.7268450757654,
+            "r": 117.1209857777884,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6440997056981382,
+            "sunX": 0.9642284417080524,
+            "sunY": 0.26507265457089463,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(720px, 551px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.06035714285714286,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": -490.81200382777337,
+            "y": 155.7268450757654,
+            "r": 117.1209857777884,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6440997056981382,
+            "sunX": 0.9642284417080524,
+            "sunY": 0.26507265457089463,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(720px, 551px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.06035714285714286,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -489.16717585421975,
+            "y": 157.7441166381612,
+            "r": 116.7522942601761,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.64207210922249,
+            "sunX": 0.9645468454377831,
+            "sunY": 0.26391169537559583,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.10082142857568606,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -489.16717585421975,
+            "y": 157.7441166381612,
+            "r": 116.7522942601761,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.64207210922249,
+            "sunX": 0.9645468454377831,
+            "sunY": 0.26391169537559583,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.10082142857568606,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -487.6611202567754,
+            "y": 159.3666421617606,
+            "r": 116.45541824425405,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6404394577107702,
+            "sunX": 0.9649228141365921,
+            "sunY": 0.2625337364201407,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.14324999999787127,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -486.7791431486089,
+            "y": 159.70759419789965,
+            "r": 116.39154247251219,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6400881768066098,
+            "sunX": 0.9653761156799143,
+            "sunY": 0.2608619467740755,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.18257142856717112,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -486.7791431486089,
+            "y": 159.70759419789965,
+            "r": 116.39154247251219,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6400881768066098,
+            "sunX": 0.9653761156799143,
+            "sunY": 0.2608619467740755,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.18257142856717112,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -486.9975920133439,
+            "y": 157.10430279069737,
+            "r": 116.87184250952753,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6427295575159161,
+            "sunX": 0.9661950479127971,
+            "sunY": 0.2578121979053508,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.228964285712157,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -486.9975920133439,
+            "y": 157.10430279069737,
+            "r": 116.87184250952753,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6427295575159161,
+            "sunX": 0.9661950479127971,
+            "sunY": 0.2578121979053508,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.228964285712157,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -488.63633328344616,
+            "y": 150.94822977611068,
+            "r": 118.05268471166792,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6492235270622244,
+            "sunX": 0.9672814260781056,
+            "sunY": 0.2537058193347293,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.26682142856929986,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -488.63633328344616,
+            "y": 150.94822977611068,
+            "r": 118.05268471166792,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6492235270622244,
+            "sunX": 0.9672814260781056,
+            "sunY": 0.2537058193347293,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.26682142856929986,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -491.33946269547977,
+            "y": 139.71667202476922,
+            "r": 120.3767086676845,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6620043548205029,
+            "sunX": 0.9690207779236598,
+            "sunY": 0.24697921360354355,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.30510714286140034,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -491.33946269547977,
+            "y": 139.71667202476922,
+            "r": 120.3767086676845,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6620043548205029,
+            "sunX": 0.9690207779236598,
+            "sunY": 0.24697921360354355,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.30510714286140034,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -492.37037379223943,
+            "y": 124.07417454815634,
+            "r": 124.159685944703,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6828086072318795,
+            "sunX": 0.9717032721463948,
+            "sunY": 0.23620489177828105,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.3427857142899718,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -492.37037379223943,
+            "y": 124.07417454815634,
+            "r": 124.159685944703,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.6828086072318795,
+            "sunX": 0.9717032721463948,
+            "sunY": 0.23620489177828105,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.3427857142899718,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -476.94191077274,
+            "y": 106.2305153566499,
+            "r": 131.0335423025937,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.7206109603091393,
+            "sunX": 0.9770456148018639,
+            "sunY": 0.21303020113694573,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.38949999999787127,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -476.94191077274,
+            "y": 106.2305153566499,
+            "r": 131.0335423025937,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.7206109603091393,
+            "sunX": 0.9770456148018639,
+            "sunY": 0.21303020113694573,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.38949999999787127,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -402.34680819811695,
+            "y": 116.05089564865112,
+            "r": 138.3947310626469,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.7610933681581851,
+            "sunX": 0.9850283322249762,
+            "sunY": 0.17239253091152804,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.4350714285671711,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -402.34680819811695,
+            "y": 116.05089564865112,
+            "r": 138.3947310626469,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.7610933681581851,
+            "sunX": 0.9850283322249762,
+            "sunY": 0.17239253091152804,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.4350714285671711,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": -207.99526481097422,
+            "y": 187.79223482242284,
+            "r": 142.77974166847372,
+            "slug": "college",
+            "visible": false,
+            "scale": 0.7852084660797045,
+            "sunX": 0.9943476256572236,
+            "sunY": 0.10617343994541124,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.48060714285288536,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 25.439919465678862,
+            "y": 284.4374787222272,
+            "r": 145.22886352965156,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.7986772621244752,
+            "sunX": 0.9989887092435064,
+            "sunY": 0.044961748231056156,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.5166071428571428,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 25.439919465678862,
+            "y": 284.4374787222272,
+            "r": 145.22886352965156,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.7986772621244752,
+            "sunX": 0.9989887092435064,
+            "sunY": 0.044961748231056156,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.5166071428571428,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 247.61722965238852,
+            "y": 377.62208806875066,
+            "r": 150.59812662451114,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.8282051964758508,
+            "sunX": 0.9999930607483766,
+            "sunY": 0.0037253798589470073,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(25px, 284px, 0px) scale(0.798677) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.5602142857121569,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 247.61722965238852,
+            "y": 377.62208806875066,
+            "r": 150.59812662451114,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.8282051964758508,
+            "sunX": 0.9999930607483766,
+            "sunY": 0.0037253798589470073,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(248px, 378px, 0px) scale(0.828205) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.5602142857121569,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 396.40870282934753,
+            "y": 440.4266160026895,
+            "r": 156.45807912103987,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.860431647212701,
+            "sunX": 0.999911743740091,
+            "sunY": -0.013285508294783917,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.171108,
+          "launch": false,
+          "scale": "translate3d(248px, 378px, 0px) scale(0.828205) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.6019642857142856,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 396.40870282934753,
+            "y": 440.4266160026895,
+            "r": 156.45807912103987,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.860431647212701,
+            "sunX": 0.999911743740091,
+            "sunY": -0.013285508294783917,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.484743,
+          "launch": false,
+          "scale": "translate3d(396px, 440px, 0px) scale(0.860432) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.6019642857142856,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 500.3916197208862,
+            "y": 484.73309024299994,
+            "r": 161.20191582332825,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.8865200873289849,
+            "sunX": 0.9997776467105237,
+            "sunY": -0.021086894934227763,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.825021,
+          "launch": false,
+          "scale": "translate3d(396px, 440px, 0px) scale(0.860432) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.6444285714307001,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 500.3916197208862,
+            "y": 484.73309024299994,
+            "r": 161.20191582332825,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.8865200873289849,
+            "sunX": 0.9997776467105237,
+            "sunY": -0.021086894934227763,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.825021,
+          "launch": false,
+          "scale": "translate3d(500px, 485px, 0px) scale(0.88652) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.6444285714307001,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 552.1313854415139,
+            "y": 507.0975249450984,
+            "r": 163.57024257904,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.8995445556274771,
+            "sunX": 0.9997087088355558,
+            "sunY": -0.024134984531707926,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.988069,
+          "launch": false,
+          "scale": "translate3d(500px, 485px, 0px) scale(0.88652) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.6755000000021287,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 552.1313854415139,
+            "y": 507.0975249450984,
+            "r": 163.57024257904,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.8995445556274771,
+            "sunX": 0.9997087088355558,
+            "sunY": -0.024134984531707926,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.998752,
+          "launch": false,
+          "scale": "translate3d(500px, 485px, 0px) scale(0.88652) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.6755000000021287,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 595.9086665854727,
+            "y": 526.5265348920727,
+            "r": 165.41196970816034,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.9096730214524946,
+            "sunX": 0.9996505108766343,
+            "sunY": -0.02643588667104116,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(552px, 507px, 0px) scale(0.899545) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.7165000000063863,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 595.9086665854727,
+            "y": 526.5265348920727,
+            "r": 165.41196970816034,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.9096730214524946,
+            "sunX": 0.9996505108766343,
+            "sunY": -0.02643588667104116,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(596px, 527px, 0px) scale(0.909673) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.7165000000063863,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 619.2574840162829,
+            "y": 537.5561248928067,
+            "r": 166.14834952444937,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.9137226972625472,
+            "sunX": 0.9996202006982251,
+            "sunY": -0.02755819943392359,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(596px, 527px, 0px) scale(0.909673) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.7572500000042575,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 619.2574840162829,
+            "y": 537.5561248928067,
+            "r": 166.14834952444937,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.9137226972625472,
+            "sunX": 0.9996202006982251,
+            "sunY": -0.02755819943392359,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(619px, 538px, 0px) scale(0.913723) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.7572500000042575,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 629.5676713351376,
+            "y": 543.2315193996071,
+            "r": 166.1698175052354,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.9138407591112788,
+            "sunX": 0.9996087252977471,
+            "sunY": -0.027971347994207862,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(619px, 538px, 0px) scale(0.913723) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.7982857142921005,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 629.5676713351376,
+            "y": 543.2315193996071,
+            "r": 166.1698175052354,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.9138407591112788,
+            "sunX": 0.9996087252977471,
+            "sunY": -0.027971347994207862,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(630px, 543px, 0px) scale(0.913841) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.7982857142921005,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 632.1267572550817,
+            "y": 545.6624235482127,
+            "r": 165.78426235299796,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.9117204221073051,
+            "sunX": 0.9996087437789003,
+            "sunY": -0.027970687527641952,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(632px, 546px, 0px) scale(0.91172) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.8382857142921005,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 630.8979991868417,
+            "y": 546.4901658980841,
+            "r": 165.20154543641524,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.9085158060260474,
+            "sunX": 0.9996143484680752,
+            "sunY": -0.027769665765826828,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(632px, 546px, 0px) scale(0.91172) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.8777857142899718,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 630.8979991868417,
+            "y": 546.4901658980841,
+            "r": 165.20154543641524,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.9085158060260474,
+            "sunX": 0.9996143484680752,
+            "sunY": -0.027769665765826828,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(632px, 546px, 0px) scale(0.91172) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.8777857142899718,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 628.0379361904287,
+            "y": 546.6289775363053,
+            "r": 164.52940820055562,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.904819428362122,
+            "sunX": 0.9996222615205911,
+            "sunY": -0.027483345365123896,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(632px, 546px, 0px) scale(0.91172) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.9175357142835856,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 628.0379361904287,
+            "y": 546.6289775363053,
+            "r": 164.52940820055562,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.904819428362122,
+            "sunX": 0.9996222615205911,
+            "sunY": -0.027483345365123896,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(632px, 546px, 0px) scale(0.91172) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.9175357142835856,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 624.7290650637975,
+            "y": 546.5426473189109,
+            "r": 163.8431831544201,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.9010455756462887,
+            "sunX": 0.9996305940089317,
+            "sunY": -0.027178585712839296,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(625px, 547px, 0px) scale(0.901046) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.9566785714349576,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 624.7290650637975,
+            "y": 546.5426473189109,
+            "r": 163.8431831544201,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.9010455756462887,
+            "sunX": 0.9996305940089317,
+            "sunY": -0.027178585712839296,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(625px, 547px, 0px) scale(0.901046) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.9566785714349576,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 621.3602221280258,
+            "y": 546.4165832074406,
+            "r": 163.15554636094348,
+            "slug": "college",
+            "visible": true,
+            "scale": 0.8972639591122047,
+            "sunX": 0.999638829440858,
+            "sunY": -0.026873977638436176,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(625px, 547px, 0px) scale(0.901046) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 0.9958571428592715,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 720.0000000000003,
+            "y": 549.5173693822783,
+            "r": 180.8096786671765,
+            "slug": "college",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.999376007088034,
+            "sunY": -0.03532133146949266,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(621px, 546px, 0px) scale(0.897264) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "college",
+            "arrival": 1,
+            "dark": false
+          }
+        }
+      ]
+    },
+    {
+      "page": "mission",
+      "rows": [
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 2525.630240211585,
+            "y": 586.1500719853872,
+            "r": 91.00035896802251,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.4935687540959961,
+            "sunX": -0.9984881706544079,
+            "sunY": -0.05496701795817187,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(621px, 546px, 0px) scale(0.897264) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.016178571432828904,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 2525.630240211585,
+            "y": 586.1500719853872,
+            "r": 91.00035896802251,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.4935687540959961,
+            "sunX": -0.9984881706544079,
+            "sunY": -0.05496701795817187,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(621px, 546px, 0px) scale(0.897264) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.016178571432828904,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 2526.277333482073,
+            "y": 586.3812083390834,
+            "r": 91.16238039459176,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.49444752770255673,
+            "sunX": -0.9984783005151596,
+            "sunY": -0.055146018898547325,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(621px, 546px, 0px) scale(0.897264) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.05500000000000001,
+            "dark": false
+          }
+        },
+        {
+          "planet": "college",
+          "anchor": {
+            "x": 2526.277333482073,
+            "y": 586.3812083390834,
+            "r": 91.16238039459176,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.49444752770255673,
+            "sunX": -0.9984783005151596,
+            "sunY": -0.055146018898547325,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(621px, 546px, 0px) scale(0.897264) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.05500000000000001,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2526.7363483260583,
+            "y": 586.5855974303906,
+            "r": 91.34025917065853,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.4954123085768195,
+            "sunX": -0.9984657674459239,
+            "sunY": -0.05537247726643766,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.09771428571215698,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2526.122258346888,
+            "y": 586.5628644904772,
+            "r": 91.51182796785051,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.49634286531782695,
+            "sunX": -0.9984462571028024,
+            "sunY": -0.05572317002293158,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.1391428571407284,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2526.122258346888,
+            "y": 586.5628644904772,
+            "r": 91.51182796785051,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.49634286531782695,
+            "sunX": -0.9984462571028024,
+            "sunY": -0.05572317002293158,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.1391428571407284,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2523.035473719485,
+            "y": 586.0155821073672,
+            "r": 91.6690335030237,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.4971955184393349,
+            "sunX": -0.9984102187073453,
+            "sunY": -0.056365194763712406,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.1775714285671711,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2523.035473719485,
+            "y": 586.0155821073672,
+            "r": 91.6690335030237,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.4971955184393349,
+            "sunX": -0.9984102187073453,
+            "sunY": -0.056365194763712406,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.1775714285671711,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2512.0055765865504,
+            "y": 583.8538823593344,
+            "r": 91.85645848556791,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.4982120761339405,
+            "sunX": -0.9983119534702201,
+            "sunY": -0.0580796311840302,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.22464285714285712,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2512.0055765865504,
+            "y": 583.8538823593344,
+            "r": 91.85645848556791,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.4982120761339405,
+            "sunX": -0.9983119534702201,
+            "sunY": -0.0580796311840302,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.22464285714285712,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2491.5011446073463,
+            "y": 579.8093381524995,
+            "r": 92.00599382838945,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.4990231275812834,
+            "sunX": -0.9981378772808143,
+            "sunY": -0.0609981797871893,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.26396428571215697,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2491.5011446073463,
+            "y": 579.8093381524995,
+            "r": 92.00599382838945,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.4990231275812834,
+            "sunX": -0.9981378772808143,
+            "sunY": -0.0609981797871893,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.26396428571215697,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2455.459215871762,
+            "y": 572.9148025665213,
+            "r": 92.14439321933675,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.49977377972960635,
+            "sunX": -0.9978157422586156,
+            "sunY": -0.06605864440697821,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.3020357142814568,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2455.459215871762,
+            "y": 572.9148025665213,
+            "r": 92.14439321933675,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.49977377972960635,
+            "sunX": -0.9978157422586156,
+            "sunY": -0.06605864440697821,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.3020357142814568,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2397.0152080934813,
+            "y": 562.4684744387829,
+            "r": 92.28605181083796,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.500542109165964,
+            "sunX": -0.9972254776227395,
+            "sunY": -0.07444022286438405,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.3394642857142857,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2397.0152080934813,
+            "y": 562.4684744387829,
+            "r": 92.28605181083796,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.500542109165964,
+            "sunX": -0.9972254776227395,
+            "sunY": -0.07444022286438405,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.3394642857142857,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2276.767740354945,
+            "y": 544.0776526713126,
+            "r": 92.57808281912861,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.5021260301807159,
+            "sunX": -0.9956980327906337,
+            "sunY": -0.09265758197180719,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.38682142856929985,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2276.767740354945,
+            "y": 544.0776526713126,
+            "r": 92.57808281912861,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.5021260301807159,
+            "sunX": -0.9956980327906337,
+            "sunY": -0.09265758197180719,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.38682142856929985,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2099.026574230223,
+            "y": 524.8856877869234,
+            "r": 93.49494970262457,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.5070989429306315,
+            "sunX": -0.9925807763447788,
+            "sunY": -0.12158701588079415,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.4320357142814568,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 2099.026574230223,
+            "y": 524.8856877869234,
+            "r": 93.49494970262457,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.5070989429306315,
+            "sunX": -0.9925807763447788,
+            "sunY": -0.12158701588079415,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.4320357142814568,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 1851.5432021700121,
+            "y": 514.1175053711714,
+            "r": 97.20850314846375,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.5272405552090602,
+            "sunX": -0.9867909402973359,
+            "sunY": -0.1619988893390923,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.47714285714285715,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 1851.5432021700121,
+            "y": 514.1175053711714,
+            "r": 97.20850314846375,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.5272405552090602,
+            "sunX": -0.9867909402973359,
+            "sunY": -0.1619988893390923,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.47714285714285715,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 1553.9889236435254,
+            "y": 523.8844603304581,
+            "r": 109.85871205873097,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.5958528982998024,
+            "sunX": -0.9810174783081445,
+            "sunY": -0.19391933182106666,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.5213571428614003,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 1553.9889236435254,
+            "y": 523.8844603304581,
+            "r": 109.85871205873097,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.5958528982998024,
+            "sunX": -0.9810174783081445,
+            "sunY": -0.19391933182106666,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.5213571428614003,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 1325.8568065716759,
+            "y": 540.9692201642695,
+            "r": 127.92150225811093,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.6938220596889145,
+            "sunX": -0.9818288834163339,
+            "sunY": -0.1897683948644628,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(1326px, 541px, 0px) scale(0.693822) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.561464285712157,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 1325.8568065716759,
+            "y": 540.9692201642695,
+            "r": 127.92150225811093,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.6938220596889145,
+            "sunX": -0.9818288834163339,
+            "sunY": -0.1897683948644628,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(1326px, 541px, 0px) scale(0.693822) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.561464285712157,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 1099.7837735468536,
+            "y": 554.3376914597733,
+            "r": 150.1209997146393,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.8142279396813904,
+            "sunX": -0.9877488754866218,
+            "sunY": -0.15605178299178088,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(1100px, 554px, 0px) scale(0.814228) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.6070357142814569,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 947.3878720578898,
+            "y": 557.8816760677947,
+            "r": 165.57323776785285,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.8980379594484484,
+            "sunX": -0.9934684667461763,
+            "sunY": -0.11410699181470685,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.273198,
+          "launch": false,
+          "scale": "translate3d(947px, 558px, 0px) scale(0.898038) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.6428928571407284,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 947.3878720578898,
+            "y": 557.8816760677947,
+            "r": 165.57323776785285,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.8980379594484484,
+            "sunX": -0.9934684667461763,
+            "sunY": -0.11410699181470685,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.484673,
+          "launch": false,
+          "scale": "translate3d(947px, 558px, 0px) scale(0.898038) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.6428928571407284,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 843.5862136150705,
+            "y": 557.4769330070509,
+            "r": 175.91854856143536,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.9541489706249942,
+            "sunX": -0.9973286891792498,
+            "sunY": -0.07304440936854441,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.897745,
+          "launch": false,
+          "scale": "translate3d(947px, 558px, 0px) scale(0.898038) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.6726071428614003,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 843.5862136150705,
+            "y": 557.4769330070509,
+            "r": 175.91854856143536,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.9541489706249942,
+            "sunX": -0.9973286891792498,
+            "sunY": -0.07304440936854441,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.946777,
+          "launch": false,
+          "scale": "translate3d(947px, 558px, 0px) scale(0.898038) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.6726071428614003,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 734.9777517122618,
+            "y": 554.7226404280217,
+            "r": 186.48536101571779,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9999007536695456,
+            "sunY": -0.014088392778265384,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.99875,
+          "launch": false,
+          "scale": "translate3d(844px, 557px, 0px) scale(0.954149) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.7144999999978713,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 734.9777517122618,
+            "y": 554.7226404280217,
+            "r": 186.48536101571779,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9999007536695456,
+            "sunY": -0.014088392778265384,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(735px, 555px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.7144999999978713,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 663.9976804636381,
+            "y": 551.7653947382913,
+            "r": 193.26560774280634,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9993299203429086,
+            "sunY": 0.03660205332267701,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(735px, 555px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.757928571424314,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 663.9976804636381,
+            "y": 551.7653947382913,
+            "r": 193.26560774280634,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9993299203429086,
+            "sunY": 0.03660205332267701,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(664px, 552px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.757928571424314,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 623.8751269974016,
+            "y": 549.7950021459469,
+            "r": 197.10606357166577,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9975577868959826,
+            "sunY": 0.06984598630693901,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(624px, 550px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.801392857144986,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 623.8751269974016,
+            "y": 549.7950021459469,
+            "r": 197.10606357166577,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9975577868959826,
+            "sunY": 0.06984598630693901,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(624px, 550px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.801392857144986,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 602.9808895775085,
+            "y": 548.7817875017586,
+            "r": 199.1635654318788,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9961893164574526,
+            "sunY": 0.08721723325142496,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(624px, 550px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.8436428571385998,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 602.9808895775085,
+            "y": 548.7817875017586,
+            "r": 199.1635654318788,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9961893164574526,
+            "sunY": 0.08721723325142496,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(624px, 550px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.8436428571385998,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 591.5442653936213,
+            "y": 548.3161534435947,
+            "r": 200.35049203319247,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9954456036947006,
+            "sunY": 0.09533126499157014,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(603px, 549px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.8844285714307003,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 591.5442653936213,
+            "y": 548.3161534435947,
+            "r": 200.35049203319247,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9954456036947006,
+            "sunY": 0.09533126499157014,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(592px, 548px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.8844285714307003,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 583.2967969648047,
+            "y": 548.0671776519795,
+            "r": 201.25207054192165,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9950082618024846,
+            "sunY": 0.09979257960789685,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(592px, 548px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.9273928571385999,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 583.2967969648047,
+            "y": 548.0671776519795,
+            "r": 201.25207054192165,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9950082618024846,
+            "sunY": 0.09979257960789685,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(583px, 548px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.9273928571385999,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 576.4092448823156,
+            "y": 547.8978711363824,
+            "r": 202.0195886144847,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9946821715211397,
+            "sunY": 0.1029921242522444,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(576px, 548px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.9685000000042577,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 576.4092448823156,
+            "y": 547.8978711363824,
+            "r": 202.0195886144847,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9946821715211397,
+            "sunY": 0.1029921242522444,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(576px, 548px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.9685000000042577,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 719.9999999999999,
+            "y": 551.0553173018928,
+            "r": 182.8027823715805,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.998072880071459,
+            "sunY": 0.06205260724468417,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(720px, 551px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 1,
+            "dark": false
+          }
+        }
+      ]
+    },
+    {
+      "page": "mission",
+      "rows": [
+        {
+          "planet": "sol",
+          "anchor": {
+            "x": 883.5512897678603,
+            "y": 487.46444363323434,
+            "r": 40.319451929812544,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.21868508960304192,
+            "sunX": -0.997075571992162,
+            "sunY": 0.07642187995923003,
+            "ok": true
+          },
+          "layer": false,
+          "opacity": 0,
+          "launch": false,
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.017035714292100497,
+            "dark": false
+          }
+        },
+        {
+          "planet": "sol",
+          "anchor": {
+            "x": 883.5512897678603,
+            "y": 487.46444363323434,
+            "r": 40.319451929812544,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.21868508960304192,
+            "sunX": -0.997075571992162,
+            "sunY": 0.07642187995923003,
+            "ok": true
+          },
+          "layer": false,
+          "opacity": 0,
+          "launch": false,
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.017035714292100497,
+            "dark": false
+          }
+        },
+        {
+          "planet": "sol",
+          "anchor": {
+            "x": 882.2878687497835,
+            "y": 487.4383976223952,
+            "r": 40.34335663644856,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.21881474421545413,
+            "sunX": -0.9970177658585381,
+            "sunY": 0.07717236916441778,
+            "ok": true
+          },
+          "layer": false,
+          "opacity": 0,
+          "launch": false,
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.059000000006386215,
+            "dark": false
+          }
+        },
+        {
+          "planet": "sol",
+          "anchor": {
+            "x": 882.2878687497835,
+            "y": 487.4383976223952,
+            "r": 40.34335663644856,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.21881474421545413,
+            "sunX": -0.9970177658585381,
+            "sunY": 0.07717236916441778,
+            "ok": true
+          },
+          "layer": false,
+          "opacity": 0,
+          "launch": false,
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.059000000006386215,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 880.9086936892513,
+            "y": 487.4253546736408,
+            "r": 40.37332794483697,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.21897730292959164,
+            "sunX": -0.9969604043626771,
+            "sunY": 0.0779098975291802,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.10428571428571429,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 880.9086936892513,
+            "y": 487.4253546736408,
+            "r": 40.37332794483697,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.21897730292959164,
+            "sunX": -0.9969604043626771,
+            "sunY": 0.0779098975291802,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.10428571428571429,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 880.3529344269303,
+            "y": 487.4343631029582,
+            "r": 40.38922910957224,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.21906354784286522,
+            "sunX": -0.9969437923154758,
+            "sunY": 0.07812217971637399,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.12214285714285715,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 879.2332697371661,
+            "y": 487.5051192045349,
+            "r": 40.43557305927992,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.21931490867019057,
+            "sunX": -0.9969356976897682,
+            "sunY": 0.07822540937454416,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.15674999999148506,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 879.2332697371661,
+            "y": 487.5051192045349,
+            "r": 40.43557305927992,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.21931490867019057,
+            "sunX": -0.9969356976897682,
+            "sunY": 0.07822540937454416,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.15674999999148506,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 879.2332697371661,
+            "y": 487.5051192045349,
+            "r": 40.43557305927992,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.21931490867019057,
+            "sunX": -0.9969356976897682,
+            "sunY": 0.07822540937454416,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.15674999999148506,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 877.4978162316833,
+            "y": 487.8391844753527,
+            "r": 40.5687900220761,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.22003745230735217,
+            "sunX": -0.9970335697308548,
+            "sunY": 0.07696792078358797,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.2046071428486279,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 875.9649205396184,
+            "y": 488.41483156651924,
+            "r": 40.76362717803149,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.22109421223013775,
+            "sunX": -0.9972554626315923,
+            "sunY": 0.07403743817454217,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.23957142855439867,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 875.9649205396184,
+            "y": 488.41483156651924,
+            "r": 40.76362717803149,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.22109421223013775,
+            "sunX": -0.9972554626315923,
+            "sunY": 0.07403743817454217,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.23957142855439867,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 873.4773118062667,
+            "y": 489.83416398400806,
+            "r": 41.21530492942689,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.22354402701699425,
+            "sunX": -0.997820022720266,
+            "sunY": 0.06599395622727477,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.2832142856929984,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 873.4773118062667,
+            "y": 489.83416398400806,
+            "r": 41.21530492942689,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.22354402701699425,
+            "sunX": -0.997820022720266,
+            "sunY": 0.06599395622727477,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.2832142856929984,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 869.9184374556324,
+            "y": 492.5045983888475,
+            "r": 42.05127931837765,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.22807819415973682,
+            "sunX": -0.9987616654817217,
+            "sunY": 0.049750734307921526,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.3267499999808414,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 869.9184374556324,
+            "y": 492.5045983888475,
+            "r": 42.05127931837765,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.22807819415973682,
+            "sunX": -0.9987616654817217,
+            "sunY": 0.049750734307921526,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.3267499999808414,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 864.5970339525456,
+            "y": 497.0480117630463,
+            "r": 43.519747464139215,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.23604288794064687,
+            "sunX": -0.9997952219535712,
+            "sunY": 0.020236456182078776,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.36989285712795605,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 864.5970339525456,
+            "y": 497.0480117630463,
+            "r": 43.519747464139215,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.23604288794064687,
+            "sunX": -0.9997952219535712,
+            "sunY": 0.020236456182078776,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.36989285712795605,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 856.9901518380434,
+            "y": 503.5642328150357,
+            "r": 45.8706090537519,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.24879351704800015,
+            "sunX": -0.9996725330759892,
+            "sunY": -0.025589580173093995,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.410107142840113,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 856.9901518380434,
+            "y": 503.5642328150357,
+            "r": 45.8706090537519,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.24879351704800015,
+            "sunX": -0.9996725330759892,
+            "sunY": -0.025589580173093995,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.410107142840113,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 845.8245158120411,
+            "y": 511.864766074557,
+            "r": 49.75793198098572,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.2698776221627702,
+            "sunX": -0.9958728407429245,
+            "sunY": -0.09075949025097971,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.4486071428337268,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 845.8245158120411,
+            "y": 511.864766074557,
+            "r": 49.75793198098572,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.2698776221627702,
+            "sunX": -0.9958728407429245,
+            "sunY": -0.09075949025097971,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.4486071428337268,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 827.8645025439831,
+            "y": 520.5787087526643,
+            "r": 57.27961829710736,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.31067382764865875,
+            "sunX": -0.9847307147966115,
+            "sunY": -0.17408451779568115,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.48778571426868444,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 799.9774191918906,
+            "y": 523.6445380432718,
+            "r": 72.21992304273894,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.3917072178763514,
+            "sunX": -0.9715863365655679,
+            "sunY": -0.23668542540490078,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.5278571428358556,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 799.9774191918906,
+            "y": 523.6445380432718,
+            "r": 72.21992304273894,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.3917072178763514,
+            "sunX": -0.9715863365655679,
+            "sunY": -0.23668542540490078,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.5278571428358556,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 771.1521235614232,
+            "y": 519.6055945553687,
+            "r": 90.14847962870633,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.48894832150743717,
+            "sunX": -0.9708749591056661,
+            "sunY": -0.23958675627331993,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.5646785714051554,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 771.1521235614232,
+            "y": 519.6055945553687,
+            "r": 90.14847962870633,
+            "slug": "mission",
+            "visible": false,
+            "scale": 0.48894832150743717,
+            "sunX": -0.9708749591056661,
+            "sunY": -0.23958675627331993,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.5646785714051554,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 738.9031371588829,
+            "y": 512.9508272401566,
+            "r": 111.0609593314768,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.6023736603633123,
+            "sunX": -0.9788448200070331,
+            "sunY": -0.20460405261235404,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(739px, 513px, 0px) scale(0.602374) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.6018214285480125,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 705.4989579156253,
+            "y": 506.67588943254293,
+            "r": 132.44701671062242,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.7183675950615214,
+            "sunX": -0.9896061076453013,
+            "sunY": -0.1438045608147264,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(739px, 513px, 0px) scale(0.602374) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.6383571428379842,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 705.4989579156253,
+            "y": 506.67588943254293,
+            "r": 132.44701671062242,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.7183675950615214,
+            "sunX": -0.9896061076453013,
+            "sunY": -0.1438045608147264,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(705px, 507px, 0px) scale(0.718368) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.6383571428379842,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 672.5317336835197,
+            "y": 502.08442483967474,
+            "r": 152.67525407167054,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.8280817327316704,
+            "sunX": -0.9979022865806466,
+            "sunY": -0.06473813742391007,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.17104,
+          "launch": false,
+          "scale": "translate3d(705px, 507px, 0px) scale(0.718368) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.6758571428379841,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 672.5317336835197,
+            "y": 502.08442483967474,
+            "r": 152.67525407167054,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.8280817327316704,
+            "sunX": -0.9979022865806466,
+            "sunY": -0.06473813742391007,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.576068,
+          "launch": false,
+          "scale": "translate3d(673px, 502px, 0px) scale(0.828082) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.6758571428379841,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 672.5317336835197,
+            "y": 502.08442483967474,
+            "r": 152.67525407167054,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.8280817327316704,
+            "sunX": -0.9979022865806466,
+            "sunY": -0.06473813742391007,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.576068,
+          "launch": false,
+          "scale": "translate3d(673px, 502px, 0px) scale(0.828082) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.6758571428379841,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 637.931785661896,
+            "y": 499.2210767099817,
+            "r": 172.31716891239523,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.9346157678271015,
+            "sunX": -0.9993249411684559,
+            "sunY": 0.03673774569379554,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.864724,
+          "launch": false,
+          "scale": "translate3d(673px, 502px, 0px) scale(0.828082) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.7226071428401128,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 637.931785661896,
+            "y": 499.2210767099817,
+            "r": 172.31716891239523,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.9346157678271015,
+            "sunX": -0.9993249411684559,
+            "sunY": 0.03673774569379554,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.946895,
+          "launch": false,
+          "scale": "translate3d(638px, 499px, 0px) scale(0.934616) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.7226071428401128,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 619.6481181624862,
+            "y": 498.4581526325627,
+            "r": 181.56838678761636,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.9847926257244207,
+            "sunX": -0.9953615193591359,
+            "sunY": 0.09620522739993217,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.99875,
+          "launch": false,
+          "scale": "translate3d(620px, 498px, 0px) scale(0.984793) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.754964285695127,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 619.6481181624862,
+            "y": 498.4581526325627,
+            "r": 181.56838678761636,
+            "slug": "mission",
+            "visible": true,
+            "scale": 0.9847926257244207,
+            "sunX": -0.9953615193591359,
+            "sunY": 0.09620522739993217,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(620px, 498px, 0px) scale(0.984793) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.754964285695127,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 600.8926971417407,
+            "y": 498.0734237296516,
+            "r": 189.47086044048027,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.987600483511031,
+            "sunY": 0.1569881682445459,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(601px, 498px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.801428571407284,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 600.8926971417407,
+            "y": 498.0734237296516,
+            "r": 189.47086044048027,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.987600483511031,
+            "sunY": 0.1569881682445459,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(601px, 498px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.801428571407284,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 588.2891595415133,
+            "y": 497.92203670942183,
+            "r": 193.10665872450764,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9812756751216183,
+            "sunY": 0.19260853930865168,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(601px, 498px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.8482142856929983,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 588.2891595415133,
+            "y": 497.92203670942183,
+            "r": 193.10665872450764,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9812756751216183,
+            "sunY": 0.19260853930865168,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(588px, 498px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.8482142856929983,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 579.5125313052731,
+            "y": 497.81307514653093,
+            "r": 194.5129262822664,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9771703232190758,
+            "sunY": 0.21245742966516087,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(588px, 498px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.8918571428422416,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 579.5125313052731,
+            "y": 497.81307514653093,
+            "r": 194.5129262822664,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9771703232190758,
+            "sunY": 0.21245742966516087,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(580px, 498px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.8918571428422416,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 571.4513590036914,
+            "y": 497.70408319505395,
+            "r": 195.21655658696167,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9735482388522753,
+            "sunY": 0.22848156736952152,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(580px, 498px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.9377857142686843,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 571.4513590036914,
+            "y": 497.70408319505395,
+            "r": 195.21655658696167,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9735482388522753,
+            "sunY": 0.22848156736952152,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(571px, 498px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.9377857142686843,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 563.9335429246414,
+            "y": 497.60125279995697,
+            "r": 195.7152778887071,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9697484422791959,
+            "sunY": 0.24410644951961655,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(571px, 498px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.9819999999765837,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 563.9335429246414,
+            "y": 497.60125279995697,
+            "r": 195.7152778887071,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.9697484422791959,
+            "sunY": 0.24410644951961655,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(571px, 498px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 0.9819999999765837,
+            "dark": false
+          }
+        },
+        {
+          "planet": "mission",
+          "anchor": {
+            "x": 719.9999999999998,
+            "y": 550.950723531713,
+            "r": 182.29563646238375,
+            "slug": "mission",
+            "visible": true,
+            "scale": 1,
+            "sunX": -0.989481726446412,
+            "sunY": 0.1446579172690785,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(564px, 498px, 0px) scale(1) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "mission",
+            "arrival": 1,
+            "dark": false
+          }
+        }
+      ]
+    },
+    {
+      "page": "studies",
+      "rows": [
+        {
+          "planet": "sol",
+          "anchor": {
+            "ok": false,
+            "slug": "studies",
+            "visible": false
+          },
+          "layer": false,
+          "opacity": 0,
+          "launch": false,
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 1,
+            "dark": false
+          }
+        },
+        {
+          "planet": "sol",
+          "anchor": {
+            "x": 718.9579587607179,
+            "y": 571.1622629551722,
+            "r": 41.58185146553644,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22663934259385882,
+            "sunX": 0.014641602099652675,
+            "sunY": -0.9998928059987008,
+            "ok": true
+          },
+          "layer": false,
+          "opacity": 0,
+          "launch": false,
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.005964285720671926,
+            "dark": false
+          }
+        },
+        {
+          "planet": "sol",
+          "anchor": {
+            "x": 718.9579587607179,
+            "y": 571.1622629551722,
+            "r": 41.58185146553644,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22663934259385882,
+            "sunX": 0.014641602099652675,
+            "sunY": -0.9998928059987008,
+            "ok": true
+          },
+          "layer": false,
+          "opacity": 0,
+          "launch": false,
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.005964285720671926,
+            "dark": false
+          }
+        },
+        {
+          "planet": "sol",
+          "anchor": {
+            "x": 718.9579587607179,
+            "y": 571.1622629551722,
+            "r": 41.58185146553644,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22663934259385882,
+            "sunX": 0.014641602099652675,
+            "sunY": -0.9998928059987008,
+            "ok": true
+          },
+          "layer": false,
+          "opacity": 0,
+          "launch": false,
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.005964285720671926,
+            "dark": false
+          }
+        },
+        {
+          "planet": "sol",
+          "anchor": {
+            "x": 718.9579587607179,
+            "y": 571.1622629551722,
+            "r": 41.58185146553644,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22663934259385882,
+            "sunX": 0.014641602099652675,
+            "sunY": -0.9998928059987008,
+            "ok": true
+          },
+          "layer": false,
+          "opacity": 0,
+          "launch": false,
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.005964285720671926,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 718.582296687701,
+            "y": 571.1618085028781,
+            "r": 41.58179115580012,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22663901387932328,
+            "sunX": 0.0199182966049772,
+            "sunY": -0.9998016110510904,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.023821428577814788,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 718.582296687701,
+            "y": 571.1618085028781,
+            "r": 41.58179115580012,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22663901387932328,
+            "sunX": 0.0199182966049772,
+            "sunY": -0.9998016110510904,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.023821428577814788,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 718.582296687701,
+            "y": 571.1618085028781,
+            "r": 41.58179115580012,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22663901387932328,
+            "sunX": 0.0199182966049772,
+            "sunY": -0.9998016110510904,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.023821428577814788,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 717.8902431668715,
+            "y": 571.1608214271806,
+            "r": 41.581860982780974,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22663939446701908,
+            "sunX": 0.029634588815024294,
+            "sunY": -0.9995607991241777,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.0567142857185432,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 717.8902431668715,
+            "y": 571.1608214271806,
+            "r": 41.581860982780974,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22663939446701908,
+            "sunX": 0.029634588815024294,
+            "sunY": -0.9995607991241777,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.0567142857185432,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 717.8902431668715,
+            "y": 571.1608214271806,
+            "r": 41.581860982780974,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22663939446701908,
+            "sunX": 0.029634588815024294,
+            "sunY": -0.9995607991241777,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.0567142857185432,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 717.8902431668715,
+            "y": 571.1608214271806,
+            "r": 41.581860982780974,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22663939446701908,
+            "sunX": 0.029634588815024294,
+            "sunY": -0.9995607991241777,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.0567142857185432,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 717.1378679018379,
+            "y": 571.1613288252146,
+            "r": 41.584129757554,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.2266517602853973,
+            "sunX": 0.040185592147256775,
+            "sunY": -0.9991922328480012,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.09242857143282893,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 716.3898211419222,
+            "y": 571.1693860605596,
+            "r": 41.59498740183,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.2267109392125999,
+            "sunX": 0.05064579838255255,
+            "sunY": -0.9987166780955418,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.12775000000638626,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 716.3898211419222,
+            "y": 571.1693860605596,
+            "r": 41.59498740183,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.2267109392125999,
+            "sunX": 0.05064579838255255,
+            "sunY": -0.9987166780955418,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.12775000000638626,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 715.3924239909429,
+            "y": 571.2134086585787,
+            "r": 41.64596501577272,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22698878958490856,
+            "sunX": 0.0644663034519581,
+            "sunY": -0.9979198844192052,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.17400000000638627,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 715.3924239909429,
+            "y": 571.2134086585787,
+            "r": 41.64596501577272,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22698878958490856,
+            "sunX": 0.0644663034519581,
+            "sunY": -0.9979198844192052,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.17400000000638627,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 714.4705474396133,
+            "y": 571.3231775172277,
+            "r": 41.768539580509454,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.2276568747661008,
+            "sunX": 0.07694143600362474,
+            "sunY": -0.9970356139204357,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.21489285714924344,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 714.4705474396133,
+            "y": 571.3231775172277,
+            "r": 41.768539580509454,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.2276568747661008,
+            "sunX": 0.07694143600362474,
+            "sunY": -0.9970356139204357,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.21489285714924344,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 713.4688148393565,
+            "y": 571.5611104444548,
+            "r": 42.033598531165325,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22910156239322713,
+            "sunX": 0.08988127384774433,
+            "sunY": -0.9959524871255188,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.25589285714285726,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 713.4688148393565,
+            "y": 571.5611104444548,
+            "r": 42.033598531165325,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.22910156239322713,
+            "sunX": 0.08988127384774433,
+            "sunY": -0.9959524871255188,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.25589285714285726,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 712.2889010691002,
+            "y": 572.0281125169199,
+            "r": 42.56604358102574,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.23200362162855803,
+            "sunX": 0.1039166744315925,
+            "sunY": -0.9945860067259535,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.2981428571471147,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 712.2889010691002,
+            "y": 572.0281125169199,
+            "r": 42.56604358102574,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.23200362162855803,
+            "sunX": 0.1039166744315925,
+            "sunY": -0.9945860067259535,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.2981428571471147,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 710.8070969726367,
+            "y": 572.8500840947111,
+            "r": 43.57275589457782,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.23749064562780656,
+            "sunX": 0.11941636203231895,
+            "sunY": -0.9928442639603485,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.3415357142899718,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 710.8070969726367,
+            "y": 572.8500840947111,
+            "r": 43.57275589457782,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.23749064562780656,
+            "sunX": 0.11941636203231895,
+            "sunY": -0.9928442639603485,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.3415357142899718,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 709.0447702276849,
+            "y": 573.9486509123561,
+            "r": 45.17800183948039,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.24623994064069718,
+            "sunX": 0.13511654088456795,
+            "sunY": -0.9908297131088616,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.3813571428614004,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 709.0447702276849,
+            "y": 573.9486509123561,
+            "r": 45.17800183948039,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.24623994064069718,
+            "sunX": 0.13511654088456795,
+            "sunY": -0.9908297131088616,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.3813571428614004,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 706.5846448957449,
+            "y": 575.1461492464097,
+            "r": 47.97651797893036,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.26149308199273447,
+            "sunX": 0.1538622038438075,
+            "sunY": -0.9880923146287125,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.42189285714711466,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 703.0124568953082,
+            "y": 575.1984426774759,
+            "r": 52.91895217409848,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.2884315178085303,
+            "sunX": 0.17913519657791355,
+            "sunY": -0.9838244667352976,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.4615714285735574,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 703.0124568953082,
+            "y": 575.1984426774759,
+            "r": 52.91895217409848,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.2884315178085303,
+            "sunX": 0.17913519657791355,
+            "sunY": -0.9838244667352976,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.4615714285735574,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 696.8799273548093,
+            "y": 570.1529554193571,
+            "r": 63.29937343857761,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.3450093701241911,
+            "sunX": 0.22807595430618155,
+            "sunY": -0.9736433428454817,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.5018928571471146,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 696.8799273548093,
+            "y": 570.1529554193571,
+            "r": 63.29937343857761,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.3450093701241911,
+            "sunX": 0.22807595430618155,
+            "sunY": -0.9736433428454817,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.5018928571471146,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 687.9343793477893,
+            "y": 556.4100004424595,
+            "r": 80.88304514384095,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.4408480991661161,
+            "sunX": 0.32407269189072657,
+            "sunY": -0.9460321825237755,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.5427142857121571,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 687.9343793477893,
+            "y": 556.4100004424595,
+            "r": 80.88304514384095,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.4408480991661161,
+            "sunX": 0.32407269189072657,
+            "sunY": -0.9460321825237755,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.5427142857121571,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 678.1239033314998,
+            "y": 538.6954878597936,
+            "r": 102.45431444085135,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.5584209854153374,
+            "sunX": 0.47200432233967615,
+            "sunY": -0.8815962339374319,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.583892857144986,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 678.1239033314998,
+            "y": 538.6954878597936,
+            "r": 102.45431444085135,
+            "slug": "studies",
+            "visible": false,
+            "scale": 0.5584209854153374,
+            "sunX": 0.47200432233967615,
+            "sunY": -0.8815962339374319,
+            "ok": true
+          },
+          "layer": true,
+          "inert": true,
+          "opacity": 0,
+          "launch": false,
+          "scale": "",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.583892857144986,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 668.8784770794135,
+            "y": 521.7579383099492,
+            "r": 125.59614188661732,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.6845541029624459,
+            "sunX": 0.6636716934083065,
+            "sunY": -0.7480239858243523,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(669px, 522px, 0px) scale(0.684554) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.6257499999978713,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 668.8784770794135,
+            "y": 521.7579383099492,
+            "r": 125.59614188661732,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.6845541029624459,
+            "sunX": 0.6636716934083065,
+            "sunY": -0.7480239858243523,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0,
+          "launch": false,
+          "scale": "translate3d(669px, 522px, 0px) scale(0.684554) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.6257499999978713,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 661.7204615333958,
+            "y": 509.8836491038086,
+            "r": 146.17036979435727,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.7966926759947482,
+            "sunX": 0.8360375878615025,
+            "sunY": -0.5486721714126938,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.382421,
+          "launch": false,
+          "scale": "translate3d(669px, 522px, 0px) scale(0.684554) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.6674642857164145,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 661.7204615333958,
+            "y": 509.8836491038086,
+            "r": 146.17036979435727,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.7966926759947482,
+            "sunX": 0.8360375878615025,
+            "sunY": -0.5486721714126938,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.654336,
+          "launch": false,
+          "scale": "translate3d(662px, 510px, 0px) scale(0.796693) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.6674642857164145,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 661.7204615333958,
+            "y": 509.8836491038086,
+            "r": 146.17036979435727,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.7966926759947482,
+            "sunX": 0.8360375878615025,
+            "sunY": -0.5486721714126938,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.654336,
+          "launch": false,
+          "scale": "translate3d(662px, 510px, 0px) scale(0.796693) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.6674642857164145,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 661.7204615333958,
+            "y": 509.8836491038086,
+            "r": 146.17036979435727,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.7966926759947482,
+            "sunX": 0.8360375878615025,
+            "sunY": -0.5486721714126938,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.654336,
+          "launch": false,
+          "scale": "translate3d(662px, 510px, 0px) scale(0.796693) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.6674642857164145,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 661.7204615333958,
+            "y": 509.8836491038086,
+            "r": 146.17036979435727,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.7966926759947482,
+            "sunX": 0.8360375878615025,
+            "sunY": -0.5486721714126938,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 0.654336,
+          "launch": false,
+          "scale": "translate3d(662px, 510px, 0px) scale(0.796693) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.6674642857164145,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 655.9005932015995,
+            "y": 503.14343648250724,
+            "r": 163.8140799728329,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.8928586410692114,
+            "sunX": 0.9465277205956135,
+            "sunY": -0.3226224947893006,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(662px, 510px, 0px) scale(0.796693) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.7168928571471146,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 655.9005932015995,
+            "y": 503.14343648250724,
+            "r": 163.8140799728329,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.8928586410692114,
+            "sunX": 0.9465277205956135,
+            "sunY": -0.3226224947893006,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(656px, 503px, 0px) scale(0.892859) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.7168928571471146,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 651.7633019585247,
+            "y": 501.2758371915248,
+            "r": 173.36689650813048,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9449256843386533,
+            "sunX": 0.9816064677985885,
+            "sunY": -0.19091553728279592,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(656px, 503px, 0px) scale(0.892859) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.763321428575686,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 648.9974644904562,
+            "y": 500.987769050219,
+            "r": 176.98010354715186,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9646192486970854,
+            "sunX": 0.9900451874276345,
+            "sunY": -0.14074987336186057,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(652px, 501px, 0px) scale(0.944926) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.7963571428614002,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 648.9974644904562,
+            "y": 500.987769050219,
+            "r": 176.98010354715186,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9646192486970854,
+            "sunX": 0.9900451874276345,
+            "sunY": -0.14074987336186057,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(649px, 501px, 0px) scale(0.964619) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.7963571428614002,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 648.9974644904562,
+            "y": 500.987769050219,
+            "r": 176.98010354715186,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9646192486970854,
+            "sunX": 0.9900451874276345,
+            "sunY": -0.14074987336186057,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(649px, 501px, 0px) scale(0.964619) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.7963571428614002,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 645.0130033494008,
+            "y": 500.97067677480544,
+            "r": 179.2822997695504,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9771672286445132,
+            "sunX": 0.9942274703831387,
+            "sunY": -0.10729276366812876,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(645px, 501px, 0px) scale(0.977167) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.8434642857206719,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 645.0130033494008,
+            "y": 500.97067677480544,
+            "r": 179.2822997695504,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9771672286445132,
+            "sunX": 0.9942274703831387,
+            "sunY": -0.10729276366812876,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(645px, 501px, 0px) scale(0.977167) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.8434642857206719,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 640.715468068313,
+            "y": 501.0310613878718,
+            "r": 179.85763125428574,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9803030377746582,
+            "sunX": 0.995407906301087,
+            "sunY": -0.09572408303706215,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(645px, 501px, 0px) scale(0.977167) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.8935357142984868,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 640.715468068313,
+            "y": 501.0310613878718,
+            "r": 179.85763125428574,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9803030377746582,
+            "sunX": 0.995407906301087,
+            "sunY": -0.09572408303706215,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(641px, 501px, 0px) scale(0.980303) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.8935357142984868,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 636.6586123779532,
+            "y": 501.083389168374,
+            "r": 179.77976751949012,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9798786462421983,
+            "sunX": 0.9957128053304906,
+            "sunY": -0.0924986989145497,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(641px, 501px, 0px) scale(0.980303) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.9407142857249294,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 636.6586123779532,
+            "y": 501.083389168374,
+            "r": 179.77976751949012,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9798786462421983,
+            "sunX": 0.9957128053304906,
+            "sunY": -0.0924986989145497,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(637px, 501px, 0px) scale(0.979879) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.9407142857249294,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 636.6586123779532,
+            "y": 501.083389168374,
+            "r": 179.77976751949012,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9798786462421983,
+            "sunX": 0.9957128053304906,
+            "sunY": -0.0924986989145497,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(637px, 501px, 0px) scale(0.979879) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.9407142857249294,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 632.4276574402239,
+            "y": 501.134491422796,
+            "r": 179.5700625391144,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9787356620503952,
+            "sunX": 0.9958777171891743,
+            "sunY": -0.09070596676117218,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(637px, 501px, 0px) scale(0.979879) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.9900714285778148,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 632.4276574402239,
+            "y": 501.134491422796,
+            "r": 179.5700625391144,
+            "slug": "studies",
+            "visible": true,
+            "scale": 0.9787356620503952,
+            "sunX": 0.9958777171891743,
+            "sunY": -0.09070596676117218,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(632px, 501px, 0px) scale(0.978736) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 0.9900714285778148,
+            "dark": false
+          }
+        },
+        {
+          "planet": "studies",
+          "anchor": {
+            "x": 719.9999999999999,
+            "y": 550.9350210737254,
+            "r": 183.0892981554146,
+            "slug": "studies",
+            "visible": true,
+            "scale": 1,
+            "sunX": 0.9882558016668904,
+            "sunY": -0.15280860732213855,
+            "ok": true
+          },
+          "layer": true,
+          "inert": false,
+          "opacity": 1,
+          "launch": false,
+          "scale": "translate3d(632px, 501px, 0px) scale(0.978736) rotate(0deg)",
+          "scene": {
+            "ok": true,
+            "slug": "studies",
+            "arrival": 1,
+            "dark": false
+          }
+        }
+      ]
+    }
+  ]
+}
